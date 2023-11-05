@@ -40,5 +40,13 @@ userRoute.get('/productdetail',userController.loadProductDetail)
 userRoute.get('/wishlist',userController.loadWishlist)
 userRoute.get('/addwishlist',userController.addToWishlist)
 userRoute.get('/removewishlist',userController.removeFromWishlist)
+userRoute.get('/myaccount',userController.loadProfile)
+userRoute.post('/editProfile',userController.editProfile)
+userRoute.get('/addAddress',userController.loadAddAddress)
+userRoute.post('/addAddress',userController.addAddress);
+userRoute.get('/editaddress',userController.loadEditAddress);
+userRoute.post('/editaddress',userController.editAddress)
+userRoute.get('/deleteaddress',userController.deleteAddress)
+userRoute.get('/defaultaddress',userController.defaultAddress)
 
 module.exports = userRoute;

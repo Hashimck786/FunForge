@@ -1,6 +1,7 @@
 
 const User = require('../models/userModel')
 const Product = require('../models/prodectModel')
+const Address = require('../models/addressModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -346,9 +347,150 @@ const removeFromWishlist = async(req,res) => {
   }
 }
 
+// loading user Profile....................................................................................................
+
+const loadProfile = async(req,res) => {
+  try {
+    const userId = req.session.data._id
+    const userData = await User.findOne({_id:userId})
+    const userAddress = userData.address;
+    const addressData = await Address.find({_id:{$in:userAddress}})
+    res.render('userProfile.ejs',{user:userData,address:addressData})
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+// editing User Profile......................................................................................
+
+const editProfile = async(req,res) => {
+  try {
+    const id = req.query.id;
+    const updated = await User.updateOne({_id:id},{
+      name:req.body.name,
+      mobile:req.body.mobile,
+      email:req.body.email
+    })
+    res.redirect('/gadgetly/myaccount')
+  }catch(error){
+    console.error(error)
+  }
+}
+
+// loading address adding page........................................................................................
+
+const loadAddAddress = async(req,res) => {
+  try {
+      const userId = req.session.data._id;
+      const userData = await User.findOne({_id:userId})
+      res.render("addaddress.ejs",{user:userData}) 
+  } catch (error) {
+      console.error(error)
+  }
+}
+
+// adding address...........................................................................................................
+
+const addAddress = async(req,res) => {
+  try {
+    const userId = req.session.data._id;
+    const address = new Address({
+      addressname:req.body.addressname,
+      name:req.body.name,
+      streetaddress:req.body.streetaddress,
+      city:req.body.city,
+      state:req.body.state,
+      country:req.body.country,
+      pincode:req.body.pincode,
+      phone:req.body.phone,
+      alterphone:req.body.alterphone
+    })
 
 
+    // adding address.....................................................................................
 
+
+    const addressData = await address.save();
+    if(addressData){
+      const updated = await User.updateOne({_id:userId},{$addToSet:{address:addressData._id}})
+      res.redirect('/gadgetly/myaccount')
+    }else{
+      res.render('addaddress.ejs',{message:"Error in address adding"})
+    }
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+
+// loading Edit Address page...............................................................................
+
+const loadEditAddress = async(req,res) => {
+  try {
+    const id = req.query.id;
+    const userId = req.session.data._id;
+    const userData = await User.findOne({_id:userId})
+    const addressData = await Address.findOne({_id:id})
+    res.render('editAddress.ejs',{address:addressData,user:userData})
+  } catch (error) {
+      console.error(error.message)
+  }
+}
+
+
+// Editting Address...........................................................................
+
+const editAddress = async(req,res) => {
+  try {
+    const id = req.query.id;
+    const updatad = await Address.updateOne({_id:id},{
+      addressname:req.body.addressname,
+      name:req.body.name,
+      streetaddress:req.body.streetaddress,
+      city:req.body.city,
+      state:req.body.state,
+      country:req.body.country,
+      pincode:req.body.pincode,
+      phone:req.body.phone,
+      alterphone:req.body.alterphone
+    })
+    res.redirect('/gadgetly/myaccount')
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+
+// deleting Address..................................................................................
+
+const deleteAddress = async(req,res) =>{
+  try {
+    const userId = req.session.data._id;
+    const id = req.query.id ;
+    const updated = await User.updateOne({_id:userId},{$pull:{address:id}})
+    const deleted = await Address.deleteOne({_id:id})
+    res.redirect('/gadgetly/myaccount')
+  } catch (error) {
+    console.error(error.message)
+  }
+}
+
+
+// making default Address...................................................................................
+
+const defaultAddress = async(req,res) => {
+  try {
+      const id = req.query.id ;
+      const userId = req.session.data._id;
+      const userData = await User.findOne({_id:userId})
+      const userAddress = userData.address
+      const remove = await Address.updateMany({_id:{$in:userAddress}},{$set:{is_Default:false}})
+      const updated = await Address.updateOne({_id:id},{$set :{is_Default:true}})
+      res.redirect('/gadgetly/myaccount')
+  } catch (error) {
+      console.error(error.message)
+  }
+}
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -367,5 +509,13 @@ module.exports = {
   loadProductDetail,
   loadWishlist,
   addToWishlist,
-  removeFromWishlist
+  removeFromWishlist,
+  loadProfile,
+  editProfile,
+  loadAddAddress,
+  addAddress,
+  loadEditAddress,
+  editAddress,
+  deleteAddress,
+  defaultAddress
 }

@@ -39,6 +39,12 @@ const userSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         required: true
       }
+    ],
+    address:[
+      {
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+      }
     ]
       
     
