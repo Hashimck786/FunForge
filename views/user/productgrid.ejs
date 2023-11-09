@@ -185,7 +185,7 @@
                                         <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
                                     </ul>
                                 </li>
-                                <% if(user){ %>
+                                <% if(typeof user != "undefined"){ %>
                                     <li><i class="fi-rs-user"></i><a href="/gadgetly/logout">Log out</a></li>
                                 <% }else{ %>
                                     <li><i class="fi-rs-user"></i><a href="/gadgetly/login">Log In</a></li>
@@ -231,7 +231,7 @@
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="shop-cart.html">
+                                    <a class="mini-cart-icon" href="/gadgetly/cart">
                                         <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
                                         <span class="pro-count blue">2</span>
                                     </a>
@@ -921,7 +921,7 @@
                                                     <span class="old-price"> <%= product[i].productPrice %></span>
                                                 </div>
                                                 <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="/gadgetly/addtocart/?id=<%= product[i]._id %>"><i class="fi-rs-shopping-bag-add"></i></a>
                                                 </div>
                                             </div>
                                         </div>

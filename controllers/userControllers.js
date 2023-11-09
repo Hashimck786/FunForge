@@ -2,9 +2,11 @@
 const User = require('../models/userModel')
 const Product = require('../models/prodectModel')
 const Address = require('../models/addressModel')
+const Cart = require('../models/cartModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
+
 
 
 // password bcrypting.......................
@@ -491,6 +493,83 @@ const defaultAddress = async(req,res) => {
       console.error(error.message)
   }
 }
+
+
+// showing cart.......................................................................................................
+
+const loadCart = async(req,res) => {
+  try {
+      const userId = req.session.data._id;
+      const cart =await  Cart.findOne({userId:userId}).populate('products.productId')
+      
+      
+      res.render('cart.ejs',{cart:cart})
+  } catch (error) {
+      console.error(error.message)
+  }
+}
+
+// Adding product To Cart..........................................................................................
+
+const addToCart = async(req,res) =>{
+  try {
+      const userId = req.session.data._id;
+      const productId = req.query.id;
+      const productData = await Product.findOne({_id:productId});
+      let cart = await Cart.findOne({userId:userId});
+
+      if(!cart){
+        cart = new Cart({
+          userId:userId,
+          product:[]
+        })
+        await cart.save();
+
+      }
+        // find Index iterates through all the product and returns the index of the product that equals to the productId we are given
+      const existingProductIndex = cart.products.findIndex(product => product.productId.toString() === productId)
+          
+
+      if(existingProductIndex == -1) {
+          cart.products.push({productId:productId,quantity:1})
+
+          
+      }else{
+        cart.products[existingProductIndex].quantity += 1
+
+      } 
+
+      const cartData =  await cart.save()
+
+      if(cartData){
+        res.redirect('/gadgetly/shop')
+      }else{
+        res.redirect('/gadgetly/shop')
+      }
+      
+  } catch (error) {
+      console.error(error.message)
+  }
+}
+
+// removing product from Cart....................................................................................
+
+
+const removeFromCart = async(req,res) => {
+  try {
+      console.log("arrived at removal")
+      const userId = req.session.data._id;
+      const productId = req.query.id;
+      const cart =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
+      console.log(cart)
+
+      res.redirect('/gadgetly/cart')
+
+  } catch (error) {
+      console.error(error.message)
+  }
+}
+
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -517,5 +596,8 @@ module.exports = {
   loadEditAddress,
   editAddress,
   deleteAddress,
-  defaultAddress
+  defaultAddress,
+  loadCart,
+  addToCart,
+  removeFromCart
 }

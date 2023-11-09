@@ -49,4 +49,8 @@ userRoute.post('/editaddress',userController.editAddress)
 userRoute.get('/deleteaddress',userController.deleteAddress)
 userRoute.get('/defaultaddress',userController.defaultAddress)
 
+userRoute.get('/cart',userController.loadCart);
+userRoute.get('/addtocart',userController.addToCart);
+userRoute.get('/removefromcart',userController.removeFromCart)
+
 module.exports = userRoute;
