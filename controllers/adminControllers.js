@@ -402,6 +402,7 @@ const createCategory = async(req,res) => {
 const categoryList = async(req,res) => {
   const id = req.query.id;
   const updated = await Category.updateOne({_id:id},{$set : {is_listed:1}});
+  const updateproduct = await Product.updateMany({categoryId:id},{$set : {is_listed:1}})
   res.redirect('/gadgetly/admin/categories')
 }
 
@@ -410,6 +411,7 @@ const categoryList = async(req,res) => {
 const categoryUnlist = async(req,res) => {
   const id = req.query.id;
   const updated = await Category.updateOne({_id:id},{$set : {is_listed:0}});
+  const updateproduct = await Product.updateMany({categoryId:id},{$set : {is_listed:0}})
   res.redirect('/gadgetly/admin/categories')
 }
 
