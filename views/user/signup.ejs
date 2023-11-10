@@ -459,7 +459,8 @@
                                         </p>
                                         <form method="post" action="/gadgetly/signup">
                                             <div class="form-group">
-                                                <input type="text" required="true" name="username" placeholder="Username">
+                                                <input type="text" required="true" name="username" placeholder="Username"  id="username"  oninput="validateUsername()">
+                                                <span class="text-danger" id="errorusername"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.username) { %>
                                                         <span class="text-danger"><%=error.username.msg%></span>
@@ -469,7 +470,8 @@
 
                                             </div>
                                             <div class="form-group">
-                                                <input type="text" required="true" name="email" placeholder="Email">
+                                                <input type="text" required="true" name="email" id="email" placeholder="Email" oninput="validateEmail()">
+                                                <span class="text-danger" id="erroremail"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.email) { %>
                                                         <span class="text-danger"><%=error.email.msg%></span>
@@ -477,7 +479,8 @@
                                                <% } %>
                                             </div>
                                             <div class="form-group">
-                                                <input type="number" required="true" name="mobile" placeholder="Mobile Number">
+                                                <input type="number" required="true" name="mobile" id="mobile" placeholder="Mobile Number" oninput="validateMobile()">
+                                                <span class="text-danger" id="errormobile"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.mobile) { %>
                                                         <span class="text-danger"><%=error.mobile.msg%></span>
@@ -485,12 +488,17 @@
                                                <% } %>
                                             </div>
                                             <div class="form-group">
-                                                <input required="true" type="password" name="password" placeholder="Password">
+                                                <input required="true" type="password" name="password" id="password" placeholder="Password" oninput="validatePassword()">
+                                                <span class="text-danger" id="errorpassword"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.password) { %>
                                                         <span class="text-danger"><%=error.password.msg%></span>
                                                     <%}   %> 
                                                <% } %>
+                                            </div>
+                                            <div class="form-group">
+                                                <input required="true" type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" oninput="validateConfirmPassword()">
+                                                <span class="text-danger" id="errorConfirmPassword"></span>
                                             </div>
                                             <!-- <div class="form-group">
                                                 <input required="true" type="password" name="password" placeholder="Confirm password">
@@ -508,6 +516,10 @@
                                                 <button type="submit" class="btn btn-fill-out btn-block hover-up" name="login">Submit &amp; Register</button>
                                             </div>
                                         </form>
+                                        <% if(typeof message != "undefined"){ %>
+                                            <div class="text-center text-danger"><%=message %></div>
+                                        <% } %>
+
                                         <div class="divider-text-center mt-15 mb-15">
                                             <span> or</span>
                                         </div>
@@ -673,6 +685,88 @@
     <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
+    <script>
+    function validateUsername() {
+        var username = document.getElementById("username").value;
+        var errorUsername = document.getElementById("errorusername");
+        errorUsername.innerHTML = "";
+
+        if (username.trim() === "") {
+            errorUsername.innerHTML = "Username is required";
+        } else if (username.length < 3 || username.length > 20) {
+            errorUsername.innerHTML = "Username must be between 3 and 20 characters";
+        }
+    }
+
+    function validateEmail() {
+        var email = document.getElementById("email").value;
+        var erroremail = document.getElementById('erroremail');
+        erroremail.innerHTML = "";
+
+        if(email.trim() === ""){
+            erroremail.innerHTML = "Email is required"
+        }
+    }
+
+    function validateMobile() {
+        var mobile = document.getElementById('mobile').value;
+        var errormobile = document.getElementById('errormobile');
+        erroremail.innerHTML = "";
+
+        if(mobile.trim() === ""){
+            errormobile.innerHTML = "mobile is required";
+        }else if(mobile.length !== 10){
+            errormobile.innerHTML = "mobile must be 10 digits"
+        }else {
+            errormobile.innerHTML = ""
+        }
+    }
+
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+        var errorpassword = document.getElementById("errorpassword");
+        errorpassword.innerHTML = "";
+
+        if (password.trim() === "") {
+            errorpassword.innerHTML = "Password is required";
+        } else if (password.length < 8) {
+            errorpassword.innerHTML = "Password must be at least 8 characters";
+        }
+
+    }
+
+    function validateConfirmPassword() {
+        var password = document.getElementById('password').value;
+        var confirmPassword = document.getElementById('confirmPassword').value;
+        var errorConfirmPassword = document.getElementById('errorConfirmPassword');
+        errorConfirmPassword.innerHTML = "";
+
+        if(confirmPassword.trim() === ""){
+            errorConfirmPassword.innerHTML = "confirm password required";
+        }else if (confirmPassword != password){
+            errorConfirmPassword.innerHTML = "passwords doesnot match"
+        }else{
+            errorConfirmPassword.innerHTML = ""
+        }
+    }
+
+    // function validateForm(){
+    //     console.log("validate form called")
+    //     validateUsername();
+    //     validateEmail();
+    //     validateMobile();
+    //     validatePassword();
+    //     validateConfirmPassword();
+        
+
+    //     if(document.querySelectorAll('.text-danger').lenght>0){
+    //         console.log("false passed")
+    //         return false;
+    //     }
+    //     console.log("true passed");
+    //     return true;
+    // }
+    </script>
 </body>
 
 

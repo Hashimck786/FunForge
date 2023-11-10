@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt')
 const nodemailer = require('nodemailer')
 const Admin = require('../models/adminModel')
 const User = require('../models/userModel');
-const Product = require('../models/prodectModel')
+const Product = require('../models/productModel')
 const Category = require('../models/categoryModel')
 
 
@@ -244,7 +244,10 @@ const loadAddProduct = async(req,res) => {
 
 const addProduct = async(req,res) => {
   try {
-
+    const existingProduct = await Product.findOne({productName:req.body.product_name});
+    if(existingProduct){
+      return res.render('addProduct',{message:"product name exists pls try another name"})
+    }
     const images = req.files.map(file=>file.filename);
 
     if(images.length<1 || images.length>5){
@@ -364,10 +367,20 @@ const loadCategories = async(req,res) => {
 
 const createCategory = async(req,res) => {
   try {
+
     const name = req.body.category_name;
     const slug = req.body.category_slug;
     const parent = req.body.category_parent;
     const description = req.body.category_description;
+    
+    const categoriesData = await Category.find({})
+    
+    const existingCategory = await Category.findOne({categoryName:name});
+    if(existingCategory){
+      return res.render("categories",{message:"name exists pls try another name" ,category:categoriesData})
+    }
+
+
 
     const category = new Category({
       categoryName:name,

@@ -725,12 +725,13 @@
                                                 <td class="text-center" data-title="Stock">
                                                     <div class="detail-qty border radius  m-auto">
                                                         <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                        <span class="qty-val">1</span>
+                                                        <span class="qty-val" ><%= product.quantity %></span>
                                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                                     </div>
                                                 </td>
-                                                <td class="text-right" data-title="Cart">
-                                                    <span>$65.00 </span>
+                                                <td class="text-right" data-title="Cart" >
+                                                    <% var sum = product.quantity *product.productId.salePrice; %>
+                                                    <span><%= sum %></span>
                                                 </td>
                                                 <td class="action" data-title="Remove"><a href="/gadgetly/removefromcart/?id=<%=product.productId._id %>" class="text-muted"><i class="fi-rs-trash"></i></a></td>
                                             </tr>

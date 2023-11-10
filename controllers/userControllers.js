@@ -1,6 +1,6 @@
 
 const User = require('../models/userModel')
-const Product = require('../models/prodectModel')
+const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const bcrypt = require('bcrypt')
@@ -156,7 +156,12 @@ const signupSubmission = async(req,res) => {
     return res.render('signup.ejs',{error:errors.mapped()})
   }
   try {
+    const emailexists = await User.findOne({email:req.body.email});
+    if(emailexists){
+      return res.render('signup',{message:"Email already exists"})
+    }
     const sPassword = await securePassword(req.body.password)
+    
     const user = new User({
       name : req.body.username,
       mobile : req.body.mobile,
@@ -367,6 +372,17 @@ const loadProfile = async(req,res) => {
 
 const editProfile = async(req,res) => {
   try {
+
+    
+    // existing mail checking now commended because it want the user and address with it when rendering ....ask someone??????
+
+
+
+    // const existingemail = await User.findOne({email:req.body.email})
+    // if(existingemail){
+    //   return res.render('userProfile',{message:"email already exists"})
+    // }
+
     const id = req.query.id;
     const updated = await User.updateOne({_id:id},{
       name:req.body.name,
@@ -532,11 +548,12 @@ const addToCart = async(req,res) =>{
 
       if(existingProductIndex == -1) {
           cart.products.push({productId:productId,quantity:1})
+          await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
 
           
       }else{
         cart.products[existingProductIndex].quantity += 1
-
+        await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
       } 
 
       const cartData =  await cart.save()
@@ -561,7 +578,6 @@ const removeFromCart = async(req,res) => {
       const userId = req.session.data._id;
       const productId = req.query.id;
       const cart =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
-      console.log(cart)
 
       res.redirect('/gadgetly/cart')
 

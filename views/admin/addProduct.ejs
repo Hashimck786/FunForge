@@ -203,31 +203,37 @@
                 <div class="col-lg-6">
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h4>Basic</h4>
+                            <h4>Here you can add product</h4>
                         </div>
                         <div class="card-body">
                             <form method="post" action="/gadgetly/admin/addproduct" enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name">
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name" oninput="validateProductName()">
+                                    <span id="errorProductName" class="text-danger"></span>
+                                    <% if(typeof message!= "undefined" ){ %>
+                                        <span id="errorProductName" class="text-danger"><%= message %></span> 
+                                    <% } %>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Full description</label>
-                                    <textarea placeholder="Type here" class="form-control" rows="4" name="product_description"></textarea>
+                                    <textarea placeholder="Type here" class="form-control"id="product_description" rows="4" name="product_description"></textarea>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control" name="product_price">
+                                                <input placeholder="$" type="text" class="form-control" id="product_price" name="product_price" oninput="validateProductPrice()">
+                                                <span id="errorProductPrice" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control" name="product_sprice">
+                                            <input placeholder="$" type="text" class="form-control" id="product_sprice" name="product_sprice" oninput="validateProductSprice()">
+                                            <span id="errorProductSprice" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -245,12 +251,14 @@
                                     </div>
                                 </div>
                                 <div class="mb-4">
-                                    <label class="form-label">Tax rate</label>
-                                    <input type="text" placeholder="%" class="form-control" id="product_name" name="product_stock">
+                                    <label class="form-label">Stock</label>
+                                    <input type="text" placeholder="%" class="form-control" id="product_stock" name="product_stock" oninput="validateProductStock()">
+                                    <span id="errorProductStock" class="text-danger"></span>
                                 </div>
                                 <div class="input-upload">
                                     <img src="/admin-assets/imgs/theme/upload.svg" alt=""  >
-                                    <input class="form-control" type="file" name="image" multiple accept="image/*">
+                                    <input class="form-control" required="true" type="file" name="image" multiple accept="image/*" id="image" oninput="validateProductImage()">
+                                    <span id="errorProductImage" class="text-danger"></span>
                                 </div>
                                 <!-- <label class="form-check mb-4">
                                     <input class="form-check-input" type="checkbox" value="">
@@ -366,6 +374,61 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
+    <script>
+        function validateProductName(){
+            var productname = document.getElementById('product_name').value;
+            var errorProductName = document.getElementById('errorProductName');
+            errorProductName.innerHTML = ""
+
+            if(productname.trim() === ""){
+                errorProductName.innerHTML = "product name required"
+            }else if(productname.length<3 || productname.length>15){
+                errorProductName.innerHTML = "product name must be between 3 and 15 characters"
+            }
+        }
+
+        function validateProductPrice(){
+            var productPrice =  document.getElementById('product_price').value;
+            var errorProductPrice = document.getElementById('errorProductPrice');
+            errorProductPrice.innerHTML = ""
+
+            if(productPrice.trim() === ""){
+                errorProductPrice.innerHTML = "product price required"
+            }
+
+        }
+
+        function validateProductSprice(){
+            var productsprice = document.getElementById('product_sprice').value;
+            var errorProductSprice = document.getElementById('errorProductSprice');
+            errorProductSprice.innerHTML = ""
+
+            if(productsprice.trim() === ""){
+                errorProductSprice.innerHTML = "product sale price required"
+            }
+        }
+
+        function validateProductStock(){
+            var productStock = document.getElementById('product_stock').value;
+            var errorProductStock = document.getElementById('errorProductStock');
+            errorProductStock.innerHTML = ""
+
+
+            if(productStock.trim() === ""){
+                errorProductStock.innerHTML = "product stock required"
+            }
+        }
+
+        function validateProductImage(){
+            var productImage = document.getElementById('image').value;
+            var errorProductImage = document.getElementById('errorProductImage');
+            errorProductImage.innerHTML = ""
+
+            if(productImage.trim() === ""){
+                errorProductImage.innerHTML = "product image required"
+            }
+        }
+    </script>
 </body>
 
 
