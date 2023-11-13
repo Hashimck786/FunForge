@@ -610,8 +610,11 @@ const removeFromCart = async(req,res) => {
 const loadCheckout = async(req,res) => {
   try {
       const userId = req.session.data._id;
+      const user = await User.findOne({_id:userId});
       const cart = await Cart.findOne({userId:userId}).populate('products.productId')
-      res.render('checkout',{cart:cart})
+      const defaultAddress = await Address.find({_id:{$in:user.address},is_Default:true})
+      console.log(defaultAddress[0])
+      res.render('checkout.ejs',{cart:cart,address:defaultAddress[0]})
   } catch (error) {
       console.error(error.message);
   }
