@@ -263,11 +263,11 @@
                                                 <i class="material-icons md-edit"></i> Edit
                                             </a>
                                             <%if(product[i].is_listed ==0 ){ %>
-                                                <a href="/gadgetly/admin/list?id=<%=product[i]._id %>" class="btn btn-sm font-sm btn-light rounded" style="background-color: green;">
+                                                <a href="/gadgetly/admin/list?id=<%=product[i]._id %>" class="btn btn-sm font-sm btn-light rounded" id="listBtn" style="background-color: green;" onclick="updateStatus()">
                                                     <i class="material-icons md-delete_forever"></i> List
                                                 </a>
                                             <% }else{ %>
-                                                <a href="/gadgetly/admin/unlist?id=<%=product[i]._id %>"  class="btn btn-sm font-sm btn-light rounded" style="background-color: red;">
+                                                <a href="/gadgetly/admin/unlist?id=<%=product[i]._id %>"  class="btn btn-sm font-sm btn-light rounded" id="UnlistBtn" style="background-color: red;">
                                                     <i class="material-icons md-delete_forever"></i> Unlist
                                                 </a>
                                            <% } %>
@@ -625,24 +625,11 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
-    <!-- <script>
-        function updateProductStatus(productId,action){
-            fetch(`/gadgetly/admin/${action}/?id=${productId}`,{
-                method:'GET',
-                headers:{
-                    'Content-Type': 'application/json',
+    <script>
+        
+    </script>
 
-                },
 
-            }).then(res => res.json())
-            .then(data=> {
-                console.log("actin successful")
-            })
-            .catch(error=>{
-                console.error(error.message)
-            })
-        }
-    </script> -->
 </body>
 
 

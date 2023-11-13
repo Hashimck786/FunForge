@@ -517,6 +517,10 @@ const loadCart = async(req,res) => {
   try {
       const userId = req.session.data._id;
       const cart =await  Cart.findOne({userId:userId}).populate('products.productId')
+
+      
+      cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
+      await cart.save()
       
       
       res.render('cart.ejs',{cart:cart})
@@ -556,6 +560,12 @@ const addToCart = async(req,res) =>{
         await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
       } 
 
+      
+
+      const productIndex = await cart.products.findIndex(product => product.productId.toString() === productId)
+      cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
+
+
       const cartData =  await cart.save()
 
       if(cartData){
@@ -577,12 +587,33 @@ const removeFromCart = async(req,res) => {
       console.log("arrived at removal")
       const userId = req.session.data._id;
       const productId = req.query.id;
-      const cart =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
+      let cart = await Cart.findOne({userId:userId});
+
+      const productIndex = await cart.products.findIndex(product => product.productId.toString() === productId)
+      cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
+      await cart.save()
+      
+      const removed =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
+
 
       res.redirect('/gadgetly/cart')
 
   } catch (error) {
       console.error(error.message)
+  }
+}
+
+
+// loading checkout page...............................................................................
+
+
+const loadCheckout = async(req,res) => {
+  try {
+      const userId = req.session.data._id;
+      const cart = await Cart.findOne({userId:userId}).populate('products.productId')
+      res.render('checkout',{cart:cart})
+  } catch (error) {
+      console.error(error.message);
   }
 }
 
@@ -615,5 +646,6 @@ module.exports = {
   defaultAddress,
   loadCart,
   addToCart,
-  removeFromCart
+  removeFromCart,
+  loadCheckout
 }
