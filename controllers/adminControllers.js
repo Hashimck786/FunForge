@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer')
 const Admin = require('../models/adminModel')
 const User = require('../models/userModel');
 const Product = require('../models/productModel')
+const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel')
 
 
@@ -452,6 +453,29 @@ const loadCategoryEdit = async(req,res) => {
   }
 }
 
+// loading userOrders......................................................................
+
+const userOrders = async(req,res) => {
+  try {
+    const ordersData = await Order.find({}).populate('userId');
+    res.render('userorders',{orders:ordersData})
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+// deliver Order................................................................
+
+const deliverOrder = async(req,res) => {
+  try {
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{$set : {orderStatus:"delivered",deliveryStatus:"delivered"}})
+    res.redirect('/gadgetly/admin/userorders')
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
  module.exports = {
   loadAdminHome,
   loadAdminLogin,
@@ -476,7 +500,9 @@ const loadCategoryEdit = async(req,res) => {
   categoryUnlist,
   categoryList,
   loadCategoryEdit,
-  categoryEdit
+  categoryEdit,
+  userOrders,
+  deliverOrder
 
  };
 

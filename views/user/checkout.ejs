@@ -763,43 +763,43 @@
                         </div>
                         <% if(address){ %>
                                   
-                            <form method="post" action="/gadgetly/editaddress/?id=<%= address._id %>">
+                            <form method="post">
                                 <div class="row">
                                     <div class="form-group col-md-12">
                                         <label>AddressName <span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="addressname" type="text" value="<%= address.addressname %>">
+                                        <input required="" class="form-control square" name="addressname" type="text" value="<%= address.addressname %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>name <span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="name" type="text"  value="<%= address.name %>">
+                                        <input required="" class="form-control square" name="name" type="text"  value="<%= address.name %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>country <span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="country" type="text"  value="<%= address.country %>">
+                                        <input required="" class="form-control square" name="country" type="text"  value="<%= address.country %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>streetaddress<span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="streetaddress" type="text"  value="<%= address.streetaddress %>">
+                                        <input required="" class="form-control square" name="streetaddress" type="text"  value="<%= address.streetaddress %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>city <span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="city" type="text" value="<%= address.city %>">
+                                        <input required="" class="form-control square" name="city" type="text" value="<%= address.city %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>state <span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="state" type="text"  value="<%= address.state %>">
+                                        <input required="" class="form-control square" name="state" type="text"  value="<%= address.state %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>Pincode<span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="pincode" type="number"  value="<%= address.pincode %>">
+                                        <input required="" class="form-control square" name="pincode" type="number"  value="<%= address.pincode %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>Mobile Number <span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="phone" type="number" value="<%= address.phone %>">
+                                        <input required="" class="form-control square" name="phone" type="number" value="<%= address.phone %>" readonly>
                                     </div>
                                     <div class="form-group col-md-12">
                                         <label>Alter Number<span class="required">*</span></label>
-                                        <input required="" class="form-control square" name="alterphone" type="number"  value="<%= address.alterphone %>">
+                                        <input required="" class="form-control square" name="alterphone" type="number"  value="<%= address.alterphone %>" readonly>
                                     </div>
                                 </div>
                             </form>
@@ -902,7 +902,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#" class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                            <a href="/gadgetly/placeorder?" class="btn btn-fill-out btn-block mt-30">Place Order</a>
                         </div>
                     </div>
                 </div>

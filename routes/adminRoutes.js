@@ -69,5 +69,8 @@ adminRoute.get('/category_unlist',auth.isLogin,adminController.categoryUnlist);
 adminRoute.get('/category_edit',auth.isLogin,adminController.loadCategoryEdit);
 adminRoute.post('/category_edit',auth.isLogin,adminController.categoryEdit);
 
+adminRoute.get('/userorders',auth.isLogin,adminController.userOrders);
+adminRoute.get('/deliver',auth.isLogin,adminController.deliverOrder)
+
 
 module.exports = adminRoute;

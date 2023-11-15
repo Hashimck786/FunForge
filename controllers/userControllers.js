@@ -3,6 +3,7 @@ const User = require('../models/userModel')
 const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
+const Order = require('../models/orderModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -362,7 +363,8 @@ const loadProfile = async(req,res) => {
     const userData = await User.findOne({_id:userId})
     const userAddress = userData.address;
     const addressData = await Address.find({_id:{$in:userAddress}})
-    res.render('userProfile.ejs',{user:userData,address:addressData})
+    const orders = await Order.find({userId:userId})
+    res.render('userProfile.ejs',{user:userData,address:addressData,orders:orders})
   } catch (error) {
     console.error(error.message)
   }
@@ -613,13 +615,90 @@ const loadCheckout = async(req,res) => {
       const user = await User.findOne({_id:userId});
       const cart = await Cart.findOne({userId:userId}).populate('products.productId')
       const defaultAddress = await Address.find({_id:{$in:user.address},is_Default:true})
-      console.log(defaultAddress[0])
       res.render('checkout.ejs',{cart:cart,address:defaultAddress[0]})
   } catch (error) {
       console.error(error.message);
   }
 }
 
+
+// placing order...................................................................................................
+const placeOrder = async(req,res) =>{
+  try {
+    const userId = req.session.data._id;
+    const user = await User.findOne({_id:userId});
+    const date = Date.now();
+    const cart = await Cart.findOne({userId:userId})
+    const orderedProducts = cart.products
+    const orderedProductDetails = [];
+
+    for( const product of orderedProducts){
+      const productDetails = await Product.findById(product.productId);
+
+      if(productDetails){
+        const orderedProductDetail = {
+          productId:productDetails._id,
+          productName:productDetails.productName,
+          productPrice:productDetails.salePrice,
+          productDescription:productDetails.productDescription,
+          productImage:productDetails.image[0],
+          quantity:product.quantity,
+          total:product.total
+        }
+
+        orderedProductDetails.push(orderedProductDetail);
+      }
+    }
+
+
+
+    const addressArray = await Address.find({_id:{$in:user.address},is_Default:true});
+    const address = addressArray[0]
+    
+    
+
+    const order = new Order({
+      userId:userId,
+      date:date,
+      orderValue:cart.cartSubTotal,
+      paymentMethod:"COD",
+      orderStatus:"placed",
+      products:orderedProductDetails,
+      addressDetails:{
+        name:address.name,
+        postcode:address.pincode,
+        country:address.country,
+        state:address.state,
+        city:address.city,
+        streetaddress:address.streetaddress,
+        phone:address.phone
+      }
+    })
+
+    const orderData = await order.save();
+
+    // const deleted = await Cart.deleteOne({userId:userId})
+
+    // passing the orderid to ordersummary page
+    res.render('ordersummary',{orderId:orderData._id})
+} catch (error) {
+    console.error(error.message)
+}
+}
+
+
+// loading order details................................................................
+
+
+const orderDetails = async(req,res) => {
+  try {
+      const orderId = req.query.orderId;
+      const orderData = await Order.findOne({_id:orderId})
+      res.render('orderdetails',{orderData:orderData})
+  } catch (error) {
+      console.error(error.message);
+  }
+}
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -650,5 +729,7 @@ module.exports = {
   loadCart,
   addToCart,
   removeFromCart,
-  loadCheckout
+  loadCheckout,
+  placeOrder,
+  orderDetails
 }

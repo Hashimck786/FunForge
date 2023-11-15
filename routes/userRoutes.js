@@ -55,5 +55,10 @@ userRoute.get('/addtocart',userAuth.isLogin,userController.addToCart);
 userRoute.get('/removefromcart',userAuth.isLogin,userController.removeFromCart)
 
 userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
+userRoute.get('/placeorder',userAuth.isLogin,userController.placeOrder)
+userRoute.get('/orderdetails',userAuth.isLogin,userController.orderDetails)
+
+
+
 
 module.exports = userRoute;

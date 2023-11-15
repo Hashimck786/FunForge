@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:04 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Evara - eCommerce HTML Template</title>
@@ -17,17 +17,21 @@
     <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="/assets/css/main.css">
+    <!--leaflet map-->
+    <link rel="stylesheet" href="../../../../unpkg.com/leaflet%401.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="../../../../unpkg.com/leaflet%401.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
     <style>
-        .default-badge {
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    background-color: #007bff;
-                    color: #fff;
-                    padding: 5px 10px;
-                    border-radius: 5px;
-                    font-size: 12px;
-                    font-weight: bold;
+        /* added by hsm to add the cart icon in ordersummary page */
+        .center-buttons {
+            text-align: center;
+            margin-top: 20px; /* Adjust the margin-top as needed */
+        }
+
+        .cart-icon {
+            text-align: center;
+            color: #007bff; /* Blue color for the cart icon */
+            font-size: 75px; /* Adjust the font size as needed */
+            margin-top: 20px; /* Adjust the margin-top as needed */
         }
     </style>
 </head>
@@ -67,12 +71,7 @@
                                         <li><a href="#"><img src="/assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
                                     </ul>
                                 </li>
-                                <% if(user){ %>
-                                    <li><i class="fi-rs-user"></i><a href="/gadgetly/logout">Log out</a></li>
-                                <% }else{ %>
-                                    <li><i class="fi-rs-user"></i><a href="/gadgetly/login">Log In</a></li>
-                                    <li><i class="fi-rs-user"></i><a href="/gadgetly/signup">Sign Up</a></li>
-                                <% } %>
+                                <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li>
                             </ul>
                         </div>
                     </div>
@@ -450,233 +449,18 @@
         </div>
     </div>
     <main class="main">
-        <!-- <div class="page-header breadcrumb-wrap">
-            <div class="container">
-                <div class="breadcrumb">
-                    <a href="index.html" rel="nofollow">Home</a>
-                    <span></span> Pages
-                    <span></span> Account
-                </div>
-            </div>
-        </div> -->
-        <section class="pt-40    pb-150">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-10 m-auto">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="dashboard-menu">
-                                    <ul class="nav flex-column" role="tablist">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard" role="tab" aria-controls="dashboard" aria-selected="false"><i class="fi-rs-settings-sliders mr-10"></i>Dashboard</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="orders-tab" data-bs-toggle="tab" href="#orders" role="tab" aria-controls="orders" aria-selected="false"><i class="fi-rs-shopping-bag mr-10"></i>Orders</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="track-orders-tab" data-bs-toggle="tab" href="#track-orders" role="tab" aria-controls="track-orders" aria-selected="false"><i class="fi-rs-shopping-cart-check mr-10"></i>Track Your Order</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="address-tab" data-bs-toggle="tab" href="#address" role="tab" aria-controls="address" aria-selected="true"><i class="fi-rs-marker mr-10"></i>My Address</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="/gadgetly/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="tab-content dashboard-content">
-                                    <div class="tab-pane fade active show" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Hello Rosie! </h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Your Orders</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Order</th>
-                                                                <th>Date</th>
-                                                                <th>Status</th>
-                                                                <th>Total</th>
-                                                                <th>Actions</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                          <%  if(typeof orders != "undefined" && orders.length>0){
-                                                                orders.forEach((order,index)=>{  %>
-
-                                                                    <tr>
-                                                                        <td><%= index+1 %></td>
-                                                                        <td><%= order.date %></td>
-                                                                        <td><%= order.deliveryStatus %></td>
-                                                                        <td><%=order.orderValue %></td>
-                                                                        <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" class="btn-small d-block">View</a></td>
-                                                                    </tr>
-                                                            <%    })
-                                                            }else{ %>
-                                                                <tr>
-                                                                    <td colspan="4">No Orders Yet</td>
-                                                                </tr>
-                                                           <% } %>
-
-                         
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5 class="mb-0">Orders tracking</h5>
-                                            </div>
-                                            <div class="card-body contact-from-area">
-                                                <p>To track your order please enter your OrderID in the box below and press "Track" button. This was given to you on your receipt and in the confirmation email you should have received.</p>
-                                                <div class="row">
-                                                    <div class="col-lg-8">
-                                                        <form class="contact-form-style mt-30 mb-50" action="#" method="post">
-                                                            <div class="input-style mb-20">
-                                                                <label>Order ID</label>
-                                                                <input name="order-id" placeholder="Found in your order confirmation email" type="text" class="square">
-                                                            </div>
-                                                            <div class="input-style mb-20">
-                                                                <label>Billing email</label>
-                                                                <input name="billing-email" placeholder="Email you used during checkout" type="email" class="square">
-                                                            </div>
-                                                            <button class="submit submit-auto-width" type="submit">Track</button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
-                                        <div class="row">
-                                            <% if(typeof address != "undefined && address.length>0"){
-                                                for(let i=0; i<address.length; i++){ %>
-                                                    <div class="col-lg-6">
-                                                        <div class="card mb-3 mb-lg-0">
-                                                            <div class="card-header">
-                                                                <%if(address[i].is_Default==true){ %>
-                                                                    <span class="default-badge">Default</span>
-                                                                    <h5 class="mb-0"><%= address[i].addressname %></h5>
-                                                                    
-                                                                <% }else{ %>
-                                                                    <h5 class="mb-0"><%= address[i].addressname %></h5>
-                                                                <% } %>
-                                                                
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <address><%= address[i].streetaddress %><br><%= address[i].city %><br><%= address[i].state %><br><%= address[i].country %><br><%= address[i].pincode %><br><%= address[i].phone%><br><%= address[i].alterphone %></address>
-                                                                <p>New York</p>
-                                                                <a style="background-color: blue;" href="/gadgetly/editaddress/?id=<%= address[i]._id %>" class="btn btn-warning btn-sm" role="button">Edit</a>
-                                                                <a style="background-color: red;" href="/gadgetly/deleteaddress/?id=<%= address[i]._id %>" class="btn btn-danger btn-sm" role="button">Delete</a>
-                                                                <% if(address[i].is_Default == false){ %>
-                                                                <a style="background-color: green;" href="/gadgetly/defaultaddress/?id=<%= address[i]._id %>" class="btn btn-danger btn-sm" role="button">Make Default</a>
-                                                                <% } %>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                              <%  }
-                                            }else{  %>
-                                                <h3>please click to add address</h3>
-                                             <% } %>
-
-                                            <!-- <div class="col-lg-6">
-                                                <div class="card">
-                                                    <div class="card-header">
-                                                        <h5 class="mb-0">Shipping Address</h5>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <address>4299 Express Lane<br>
-                                                            Sarasota, <br>FL 34249 USA <br>Phone: 1.941.227.4444</address>
-                                                        <p>Sarasota</p>
-                                                        <a href="#" class="btn-small">Edit</a>
-                                                    </div>
-                                                </div>
-                                            </div> -->
-                                        </div>
-                                        <a href="/gadgetly/addaddress"><button class="btn btn-fill-out submit">Add address</button></a>
-                                    </div>
-                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h5>Account Details</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
-                                                <% if(user){ %>
-                                                <form method="post" action="/gadgetly/editProfile/?id=<%=user._id %>">
-                                                    <div class="row">
-                                                        <div class="form-group col-md-12">
-                                                            <label>USername <span class="required">*</span></label>
-                                                            <input required="true" class="form-control square"  id="username" name="name" type="text" value="<%= user.name %>" oninput="validateUsername()">
-                                                            <span id="errorusername" class="text-danger"></span>
-                                                        </div>
-                                                        <!-- <div class="form-group col-md-6">
-                                                            <label>Last Name <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="phone">
-                                                        </div> -->
-                                                        <div class="form-group col-md-12">
-                                                            <label>Mobile Number <span class="required">*</span></label>
-                                                            <input required="true" class="form-control square" name="mobile" id="mobile" type="number" value="<%= user.mobile %>" oninput="validateMobile()">
-                                                            <span id="errormobile" class="text-danger"></span>
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Email Address <span class="required">*</span></label>
-                                                            <input required="true" class="form-control square" name="email" id="email" type="email" value="<%= user.email %>" oninput="validateEmail()">
-                                                            <span id="erroremail" class="text-danger"></span>
-                                                        </div>
-                                                        <!-- <div class="form-group col-md-12">
-                                                            <label>Current Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="password" type="password">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>New Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="npassword" type="password">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                            <label>Confirm Password <span class="required">*</span></label>
-                                                            <input required="" class="form-control square" name="cpassword" type="password">
-                                                        </div> -->
-                                                        <div class="col-md-12">
-                                                            <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            <% if(typeof message != "undefined"){ %>
-                                                <div class="text-center text-danger"><%= message %></div>
-                                            <% } %>
-                                            <% }else{  %>
-                                                <h4>account not found</h4>
-                                                <% }  %>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="cart-icon pt-100 pb-100">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <h2 class="text-warning text-center"> Thank You ! </h2>
+        <h4 class="text-center">Order Successful</h2>
+        <div class="cart-action text-center pt-100 pb-100">
+           <% if(typeof orderId != "undefined &&orderId"){ %>
+            <a class="btn  mr-10 mb-sm-15" href="/gadgetly/orderdetails/?orderId=<%=orderId %>"><i class="fi-rs-shuffle mr-10"></i>View OrderDetails</a>  
+           <% } %>
+           
+            <a class="btn " href="/gadgetly/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+        </div>
     </main>
     <footer class="main">
         <section class="newsletter p-30 text-white wow fadeIn animated">
@@ -805,7 +589,7 @@
         </div>
     </div>
     <!-- Vendor JS-->
-    <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
     <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
@@ -824,64 +608,12 @@
     <script src="/assets/js/plugins/scrollup.js"></script>
     <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
     <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="/assets/js/plugins/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script> <!-- FontAwesome JS  newly added cart button by hashim -->
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
-    <script>
-        function validateUsername() {
-            var username = document.getElementById("username").value;
-            var errorUsername = document.getElementById("errorusername");
-            errorUsername.innerHTML = "";
-    
-            if (username.trim() === "") {
-                errorUsername.innerHTML = "Username is required";
-            } else if (username.length < 3 || username.length > 20) {
-                errorUsername.innerHTML = "Username must be between 3 and 20 characters";
-            }
-        }
-    
-        function validateEmail() {
-            var email = document.getElementById("email").value;
-            var erroremail = document.getElementById('erroremail');
-            erroremail.innerHTML = "";
-    
-            if(email.trim() === ""){
-                erroremail.innerHTML = "Email is required"
-            }
-        }
-    
-        function validateMobile() {
-            var mobile = document.getElementById('mobile').value;
-            var errormobile = document.getElementById('errormobile');
-            errormobile.innerHTML = "";
-    
-            if(mobile.trim() === ""){
-                errormobile.innerHTML = "mobile is required";
-            }else if(mobile.length !== 10){
-                errormobile.innerHTML = "mobile must be 10 digits"
-            }
-            else{
-                errormobile.innerHTML = ""
-            }
-        }
-    
-        // function validateForm() {
-        //     console.log("validate form called")
-        //     validateEmail();
-        //     validateMobile();
-        //     validateUsername();
-
-
-        //     if (document.querySelectorAll('.text-danger').length > 0) {
-        //         console.log('false passed')
-        //     return false;
-        // }
-        //     console.log('returning true')
-        //     return true;
-
-        // }
-        </script>
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:27:15 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:26:06 GMT -->
 </html>
