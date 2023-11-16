@@ -133,7 +133,7 @@
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                     <div class="product-extra-link2">
-                                        <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                        <button type="submit" class="button button-add-to-cart ">Add to cart</button>
                                         <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                     </div>
@@ -942,9 +942,10 @@
                                                 <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                                 <span class="qty-val">1</span>
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                            </div>
+                                            </div>      
+                                            <% console.log(product) %>
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                <button type="submit" class="button button-add-to-cart cart-btn" productId="<%= product._id %>">Add to cart</button>
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
@@ -1533,9 +1534,38 @@
     <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
     <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
     <script src="/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- sweet alert cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/shop.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("dom loaded")
+            const addToCartButtons = document.querySelectorAll('.cart-btn');
+            console.log("cart button accesssed")
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', async function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('productId');
+                    console.log('productId', productId);
+                    const response = await fetch(`/gadgetly/addtocart/?id=${productId}`, {
+                        method: 'GET'
+                    });
+                    const productData = await response.json();
+                    console.log('productdata', productData);
+                    if (productData.success) {
+                        console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Added to Cart',
+                            text: 'The product has been added to the cart'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 

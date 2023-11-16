@@ -211,7 +211,7 @@
                             <h4>Here you can add product</h4>
                         </div>
                         <div class="card-body">
-                            <form method="post" action="/gadgetly/admin/addproduct" enctype="multipart/form-data">
+                            <form method="post" action="/gadgetly/admin/addproduct" enctype="multipart/form-data" class="add-product">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name" oninput="validateProductName()">
@@ -433,6 +433,22 @@
                 errorProductImage.innerHTML = "product image required"
             }
         }
+
+
+        // document.addEventListener('DOMContentLoaded',function(){
+        //     const productSubmitButton = doucument.querySelectorAll('.add-product');
+        //     productSubmitButton.addEventListener('submit',async function(event){
+        //         event.preventDefault();
+        //         validateProductName();
+        //         validateProductPrice();
+        //         validateProductSprice();
+        //         validateProductStock();
+        //         validateProductImage();
+        //         document.querySelectorAll('.text-danger').innerHtml
+        //         if()
+
+        //     })
+        // })
     </script>
 </body>
 

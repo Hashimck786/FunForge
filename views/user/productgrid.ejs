@@ -899,7 +899,7 @@
                                                 <div class="product-action-1">
                                                     <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
                                                     <i class="fi-rs-search"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/gadgetly/addwishlist?id=<%=product[i]._id %>"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up wish-btn" productId="<%=product[i]._id %>" href="/gadgetly/addwishlist?id=<%=product[i]._id %>"><i class="fi-rs-heart"></i></a>
                                                     <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
@@ -921,7 +921,7 @@
                                                     <span class="old-price"> <%= product[i].productPrice %></span>
                                                 </div>
                                                 <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="/gadgetly/addtocart/?id=<%= product[i]._id %>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <a aria-label="Add To Cart" class="action-btn hover-up  cart-btn" href="/gadgetly/addtocart/?id=<%= product[i]._id %>"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -1647,6 +1647,7 @@
         </div>
     </div>
     <!-- Vendor JS-->
+
     <script src="/assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="/assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
@@ -1667,9 +1668,75 @@
     <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
     <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
     <script src="/assets/js/plugins/jquery.elevatezoom.js"></script>
+    <!-- sweet alert cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/shop.js"></script>
+    <!-- add to cart using fetch with sweet alert.. -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("dom loaded")
+            const addToCartButtons = document.querySelectorAll('.cart-btn');
+            console.log("cart button accesssed")
+            addToCartButtons.forEach(function (button) {
+                button.addEventListener('click', async function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('productId');
+                    console.log('productId', productId);
+                    const response = await fetch(`/gadgetly/addtocart/?id=${productId}`, {
+                        method: 'GET'
+                    });
+                    const productData = await response.json();
+                    console.log('productdata', productData);
+                    if (productData.success) {
+                        console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Added to Cart',
+                            text: 'The product has been added to the cart'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!-- add to wish list with sweet alert -->
+    <script>
+         document.addEventListener('DOMContentLoaded', function () {
+            console.log("dom loaded")
+            const addToWishlistButtons = document.querySelectorAll('.wish-btn');
+            console.log("cart button accesssed")
+            addToWishlistButtons.forEach(function (button) {
+                button.addEventListener('click', async function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('productId');
+                    console.log('productId', productId);
+                    const response = await fetch(`/gadgetly/addwishlist/?id=${productId}`, {
+                        method: 'GET'
+                    });
+                    const productData = await response.json();
+                    console.log('productdata', productData);
+                    if (productData.success) {
+                        console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Added to Wishlist',
+                            text: 'The product has been added to wishlist'
+                        });
+                    }else{
+                        swal.fire({
+                            icon: 'failed',
+                            title: 'failed to Add to Wishlist',
+                            text: 'The product hasnot been added to wishlist'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    
 </body>
 
 

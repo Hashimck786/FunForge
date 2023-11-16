@@ -276,11 +276,11 @@
                                                 </td>
                                                 <td>
                                                     <%if(category[i].is_listed ==0 ){ %>
-                                                        <a href="/gadgetly/admin/category_list?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded" style="background-color: green;">
+                                                        <a href="/gadgetly/admin/category_list?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded list-btn" categoryId="<%=category[i]._id %>" style="background-color: green;">
                                                             <i class="material-icons md-delete_forever"></i> List
                                                         </a>
                                                     <% }else{ %>
-                                                        <a href="/gadgetly/admin/category_unlist?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded" style="background-color: red;">
+                                                        <a href="/gadgetly/admin/category_unlist?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded unlist-btn"  categoryId="<%=category[i]._id %>"  style="background-color: red;">
                                                             <i class="material-icons md-delete_forever"></i> Unlist
                                                         </a>
                                                    <% } %>
@@ -498,6 +498,8 @@
     <script src="/admin-assets/js/vendors/select2.min.js"></script>
     <script src="/admin-assets/js/vendors/perfect-scrollbar.js"></script>
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- sweet alert cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
     <script>
@@ -524,6 +526,61 @@
                 errorCategorySlug.innerHTML = "category slug required"
             }
         }
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        console.log("dom loaded")
+        const listbuttons = document.querySelectorAll('.list-btn');
+        console.log("cart button accesssed")
+        listbuttons.forEach(function (button) {
+        button.addEventListener('click', async function (event) {
+            event.preventDefault();
+            const categoryId = this.getAttribute('categoryId');
+            console.log('categoryId', categoryId);
+            const response = await fetch(`/gadgetly/admin/category_list/?id=${categoryId}`, {
+                method: 'GET'
+            });
+            const categoryData = await response.json();
+            console.log('categoryData', categoryData);
+            if (categoryData.success) {
+                console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                swal.fire({
+                    icon: 'success',
+                    title: 'Listed Category',
+                    text: 'category has been listed'
+                });
+            }
+        });
+    });
+    }); 
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        console.log("dom loaded")
+        const unlistButtons = document.querySelectorAll('.unlist-btn');
+        console.log("cart button accesssed")
+        unlistButtons.forEach(function (button) {
+        button.addEventListener('click', async function (event) {
+            event.preventDefault();
+            const categoryId = this.getAttribute('categoryId');
+            console.log('categoryId', categoryId);
+            const response = await fetch(`/gadgetly/admin/category_unlist/?id=${categoryId}`, {
+                method: 'GET'
+            });
+            const categoryData = await response.json();
+            console.log('categoryData', categoryData);
+            if (categoryData.success) {
+                console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                swal.fire({
+                    icon: 'success',
+                    title: 'Unlisted Category',
+                    text: 'category has been unlisted'
+                });
+            }
+        });
+    });
+    }); 
     </script>
 </body>
 

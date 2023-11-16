@@ -200,7 +200,10 @@ const blockUser = async(req,res) => {
   try {
     const id= req.query.id;
     await User.updateOne({_id:id},{$set :{ is_block:1}})
-    res.redirect('/gadgetly/admin/userlist')
+    res.json({
+      success:true
+    })
+    // res.redirect('/gadgetly/admin/userlist')
   } catch (error) {
     console.log(error.message)
   }
@@ -211,7 +214,10 @@ const unblockUser = async(req,res) => {
   try {
     const id= req.query.id;
     await User.updateOne({_id:id},{$set :{ is_block:0}})
-    res.redirect('/gadgetly/admin/userlist')
+    res.json({
+      success:true
+    })
+    // res.redirect('/gadgetly/admin/userlist')
   } catch (error) {
     console.log(error.message)
   }
@@ -281,7 +287,10 @@ const listProduct = async(req,res) => {
   try {
     const product_id = req.query.id;
     const updated = await Product.updateOne({_id:product_id},{$set : {is_listed:1}});
-    res.redirect('/gadgetly/admin/productList')
+    res.json({
+      success:true
+    })
+    // res.redirect('/gadgetly/admin/productList')
 
   } catch (error) {
     console.log(error.message)
@@ -294,7 +303,10 @@ const unlistProduct = async(req,res) => {
   try {
     const product_id = req.query.id;
     const updated = await Product.updateOne({_id:product_id},{$set : {is_listed:0}})
-    res.redirect('/gadgetly/admin/productList')
+    // res.redirect('/gadgetly/admin/productList')
+    res.json({
+      success:true
+    })
   } catch (error) {
     console.log(error.message)
   }
@@ -404,7 +416,10 @@ const categoryList = async(req,res) => {
   const id = req.query.id;
   const updated = await Category.updateOne({_id:id},{$set : {is_listed:1}});
   const updateproduct = await Product.updateMany({categoryId:id},{$set : {is_listed:1}})
-  res.redirect('/gadgetly/admin/categories')
+  // res.redirect('/gadgetly/admin/categories')
+  res.json({
+    success:true
+  })
 }
 
 // category unlisting ................................................................
@@ -413,7 +428,10 @@ const categoryUnlist = async(req,res) => {
   const id = req.query.id;
   const updated = await Category.updateOne({_id:id},{$set : {is_listed:0}});
   const updateproduct = await Product.updateMany({categoryId:id},{$set : {is_listed:0}})
-  res.redirect('/gadgetly/admin/categories')
+  // res.redirect('/gadgetly/admin/categories')
+  res.json({
+    success:true
+  })
 }
 
 

@@ -333,8 +333,17 @@ const addToWishlist = async(req,res) => {
     const userData = req.session.data;
     const userId = userData._id;
     const productId = req.query.id;
-    const updated = await User.updateOne({_id:userId},{$addToSet:{wishlist:productId}})
-    res.redirect('/gadgetly/shop')
+    const updated = await User.findOneAndUpdate({_id:userId},{$addToSet:{wishlist:productId}},{new:true})
+
+    if(updated){
+      res.json({
+        success:true
+      })
+    }else{
+      res.json({
+        success:false
+      })
+    }
     
   } catch (error) {
       console.error(error.message);
@@ -571,9 +580,15 @@ const addToCart = async(req,res) =>{
       const cartData =  await cart.save()
 
       if(cartData){
-        res.redirect('/gadgetly/shop')
+        // res.redirect('/gadgetly/shop')
+        res.json({
+          success:true
+        })
       }else{
-        res.redirect('/gadgetly/shop')
+        // res.redirect('/gadgetly/shop')
+        res.json({
+          success:false
+        })
       }
       
   } catch (error) {
@@ -591,14 +606,24 @@ const removeFromCart = async(req,res) => {
       const productId = req.query.id;
       let cart = await Cart.findOne({userId:userId});
 
-      const productIndex = await cart.products.findIndex(product => product.productId.toString() === productId)
-      cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
-      await cart.save()
+      const productIndex = await  cart.products.findIndex(product => product.productId.toString() === productId)
+        cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
+        await cart.save()
+
+
       
       const removed =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
 
+      if(removed){
+        res.json({
+          success:true
+        })
+      }else{
+        res.json({
+          success:false
+        })
+      }
 
-      res.redirect('/gadgetly/cart')
 
   } catch (error) {
       console.error(error.message)

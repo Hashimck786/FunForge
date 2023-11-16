@@ -267,9 +267,9 @@
 
                           <td class="text-end">
                     <% if(users[i].is_block == 0) {   %>
-                        <a  class="btn btn-md rounded font-sm "  style="background-color: red;" href='/gadgetly/admin/block?id=<%= users[i]._id %>'  >Block</a>
+                        <a  class="btn btn-md rounded font-sm block-btn"  style="background-color: red;" href='/gadgetly/admin/block?id=<%= users[i]._id %>' userId="<%= users[i]._id %>" >Block</a>
                     <% }else{    %>
-                        <a  class="btn btn-md rounded font-sm "  style="background-color: rgb(10, 149, 8);" href='/gadgetly/admin/unblock?id=<%= users[i]._id %>'  >Unblock</a>
+                        <a  class="btn btn-md rounded font-sm  unblock-btn"  style="background-color: rgb(10, 149, 8);" href='/gadgetly/admin/unblock?id=<%= users[i]._id %>' userId="<%= users[i]._id %>"  >Unblock</a>
                     <% } %>  
                               
                               <div class="dropdown">
@@ -329,8 +329,65 @@
 <script src="/admin-assets/js/vendors/select2.min.js"></script>
 <script src="/admin-assets/js/vendors/perfect-scrollbar.js"></script>
 <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
+<!-- sweet alert cdn -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Main Script -->
 <script src="/admin-assets/js/main.js" type="text/javascript"></script>
+<script>
+            document.addEventListener('DOMContentLoaded', function () {
+            console.log("dom loaded")
+            const blockButtons = document.querySelectorAll('.block-btn');
+            console.log("cart button accesssed")
+            blockButtons.forEach(function (button) {
+                button.addEventListener('click', async function (event) {
+                    event.preventDefault();
+                    const userId = this.getAttribute('userId');
+                    console.log('userId', userId);
+                    const response = await fetch(`/gadgetly/admin/block/?id=${userId}`, {
+                        method: 'GET'
+                    });
+                    const userData = await response.json();
+                    console.log('userData', userData);
+                    if (userData.success) {
+                        console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Blocked User',
+                            text: 'User has been blocked'
+                        });
+                    }
+                });
+            });
+        });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    console.log("dom loaded")
+    const unblockButtons = document.querySelectorAll('.unblock-btn');
+    console.log("cart button accesssed")
+    unblockButtons.forEach(function (button) {
+        button.addEventListener('click', async function (event) {
+            event.preventDefault();
+            const userId = this.getAttribute('userId');
+            console.log('userId', userId);
+            const response = await fetch(`/gadgetly/admin/unblock/?id=${userId}`, {
+                method: 'GET'
+            });
+            const userData = await response.json();
+            console.log('userData', userData);
+            if (userData.success) {
+                console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                swal.fire({
+                    icon: 'success',
+                    title: 'Unblocked User',
+                    text: 'User has been unblocked'
+                });
+            }
+        });
+    });
+});
+</script>
 </body>
 
 

@@ -268,11 +268,11 @@
                                                 <i class="material-icons md-edit"></i> Edit
                                             </a>
                                             <%if(product[i].is_listed ==0 ){ %>
-                                                <a href="/gadgetly/admin/list?id=<%=product[i]._id %>" class="btn btn-sm font-sm btn-light rounded" id="listBtn" style="background-color: green;" onclick="updateStatus()">
+                                                <a href="/gadgetly/admin/list?id=<%=product[i]._id %>" class="btn btn-sm font-sm btn-light rounded  list-btn"  productId="<%=product[i]._id %>" style="background-color: green;">
                                                     <i class="material-icons md-delete_forever"></i> List
                                                 </a>
                                             <% }else{ %>
-                                                <a href="/gadgetly/admin/unlist?id=<%=product[i]._id %>"  class="btn btn-sm font-sm btn-light rounded" id="UnlistBtn" style="background-color: red;">
+                                                <a href="/gadgetly/admin/unlist?id=<%=product[i]._id %>"  class="btn btn-sm font-sm btn-light rounded unlist-btn" productId="<%=product[i]._id %>"  style="background-color: red;">
                                                     <i class="material-icons md-delete_forever"></i> Unlist
                                                 </a>
                                            <% } %>
@@ -628,11 +628,65 @@
     <script src="/admin-assets/js/vendors/select2.min.js"></script>
     <script src="/admin-assets/js/vendors/perfect-scrollbar.js"></script>
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
+    <!-- sweet alert cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
     <script>
-        
+        document.addEventListener('DOMContentLoaded', function () {
+        console.log("dom loaded")
+        const listbuttons = document.querySelectorAll('.list-btn');
+        console.log("cart button accesssed")
+        listbuttons.forEach(function (button) {
+        button.addEventListener('click', async function (event) {
+            event.preventDefault();
+            const productId = this.getAttribute('productId');
+            console.log('productId', productId);
+            const response = await fetch(`/gadgetly/admin/list/?id=${productId}`, {
+                method: 'GET'
+            });
+            const productData = await response.json();
+            console.log('productData', productData);
+            if (productData.success) {
+                console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                swal.fire({
+                    icon: 'success',
+                    title: 'listed Product',
+                    text: 'product has been listed'
+                });
+            }
+        });
+    });
+}); 
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    console.log("dom loaded")
+    const unlistButtons = document.querySelectorAll('.unlist-btn');
+    console.log("cart button accesssed")
+    unlistButtons.forEach(function (button) {
+    button.addEventListener('click', async function (event) {
+        event.preventDefault();
+        const productId = this.getAttribute('productId');
+        console.log('productId', productId);
+        const response = await fetch(`/gadgetly/admin/unlist/?id=${productId}`, {
+            method: 'GET'
+        });
+        const productData = await response.json();
+        console.log('productData', productData);
+        if (productData.success) {
+            console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+            swal.fire({
+                icon: 'success',
+                title: 'unlisted Product',
+                text: 'product has been unlisted'
+            });
+        }
+    });
+});
+}); 
+</script>
 
 
 </body>
