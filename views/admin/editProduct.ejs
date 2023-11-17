@@ -213,7 +213,7 @@
                         </div>
                         <div class="card-body">
 
-                            <form method="post" action="/gadgetly/admin/edit?id=<%= product._id %>" enctype="multipart/form-data">
+                            <form method="post" action="/gadgetly/admin/edit?id=<%= product._id %>" enctype="multipart/form-data" id='ProductForm'>
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name" value="<%=product.productName %>" oninput="validateProductName()">
@@ -454,6 +454,42 @@
             }
         }
     </script>
+        <script>
+            document.addEventListener('DOMContentLoaded',function(){
+                productForm = document.getElementById('ProductForm')
+                productForm.addEventListener('submit',(event)=>{
+                    console.log("productform validartin hitted")
+                   const productName = document.getElementById('product_name').value.trim();
+                    if(productName === ""){
+                        document.getElementById('errorProductName').innerHTML="product name required";
+                        event.preventDefault();
+                    }else{
+                        document.getElementById('errorProductName').innerHTML=""
+                    }
+                    const productPrice = document.getElementById('product_price').value.trim();
+                    if(productPrice === ""){
+                        document.getElementById('errorProductPrice').innerHTML="product Price required"
+                        event.preventDefault();
+                    }else{
+                        document.getElementById('errorProductPrice').innerHTML=""
+                    }
+                    const productSPrice =document.getElementById('product_sprice').value.trim();
+                    if(productSPrice === ""){
+                        document.getElementById('errorProductSprice').innerHTML="product sale price required"
+                        event.preventDefault();
+                    }else{
+                        document.getElementById('errorProductSprice').innerHTML="";
+                    }
+                    const productStock = document.getElementById('product_stock').value.trim();
+                    if(productStock === ""){
+                        document.getElementById('errorProductStock').innerHTML="product Stock required";
+                        event.preventDefault();
+                    }else{
+                        document.getElementById('errorProductStock').innerHTML=""
+                    }
+                })
+            })
+        </script>
 </body>
 
 

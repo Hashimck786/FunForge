@@ -209,7 +209,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form method="post" action="/gadgetly/admin/category_edit?id=<%= category._id %>">
+                            <form method="post" action="/gadgetly/admin/category_edit?id=<%= category._id %>" id="categoryForm">
                                 <div class="mb-4">
                                     <label for="category_name" class="form-label">Name</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="category_name" name="category_name"  value="<%=category.categoryName%>" oninput="validateCategoryName()"/>
@@ -297,6 +297,29 @@
                 }
             }
         </script>
+            <script>
+                document.addEventListener('DOMContentLoaded',function(){
+                    const categoryForm = document.getElementById('categoryForm')
+                    categoryForm.addEventListener('submit',(event)=>{
+                        const categoryName = document.getElementById('category_name').value.trim();
+                        if(categoryName === ""){
+                            document.getElementById('errorCategoryName').innerHTML="category name required";
+                            event.preventDefault();
+                        }else{
+                            document.getElementById('errorCategoryName').innerHTML="";
+        
+                        }
+                        const categorySlug = document.getElementById('category_slug').value.trim();
+                        if(categorySlug === ""){
+                            document.getElementById('errorCategorySlug').innerHTML = "categorySlug required";
+                            event.preventDefault();
+                        }else{
+                            document.getElementById('errorCategorySlug').innerHTML = "";
+                        }
+        
+                    })
+                })
+            </script>
     </body>
     
     

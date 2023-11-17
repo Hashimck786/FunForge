@@ -457,7 +457,7 @@
                                         <p class="mb-50 font-sm">
                                             Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy
                                         </p>
-                                        <form method="post" action="/gadgetly/signup" id="signupForm" onsubmit="return validateForm()">
+                                        <form method="post" action="/gadgetly/signup" id="signupForm">
                                             <div class="form-group">
                                                 <input type="text" required="true" name="username" placeholder="Username"  id="username"  oninput="validateUsername()">
                                                 <span class="text-warning" id="errorusername"></span>
@@ -693,13 +693,9 @@
     
             if (username.trim() === "") {
                 errorUsername.innerHTML = "Username is required";
-                return false;
             } else if (username.length < 3 || username.length > 20) {
                 errorUsername.innerHTML = "Username must be between 3 and 20 characters";
-                return false;
             }
-    
-            return true;
         }
     
         function validateEmail() {
@@ -709,10 +705,7 @@
     
             if (email.trim() === "") {
                 erroremail.innerHTML = "Email is required";
-                return false;
             }
-    
-            return true;
         }
     
         function validateMobile() {
@@ -722,13 +715,9 @@
     
             if (mobile.trim() === "") {
                 errormobile.innerHTML = "Mobile is required";
-                return false;
             } else if (mobile.length !== 10) {
                 errormobile.innerHTML = "Mobile must be 10 digits";
-                return false;
             }
-    
-            return true;
         }
     
         function validatePassword() {
@@ -738,13 +727,10 @@
     
             if (password.trim() === "") {
                 errorpassword.innerHTML = "Password is required";
-                return false;
             } else if (password.length < 8) {
                 errorpassword.innerHTML = "Password must be at least 8 characters";
-                return false;
+
             }
-    
-            return true;
         }
     
         function validateConfirmPassword() {
@@ -755,33 +741,75 @@
     
             if (confirmPassword.trim() === "") {
                 errorConfirmPassword.innerHTML = "Confirm password required";
-                return false;
             } else if (confirmPassword !== password) {
                 errorConfirmPassword.innerHTML = "Passwords do not match";
-                return false;
-            }
-    
-            return true;
-        }
-    
-        function validateForm() {
-            console.log("submit hitting");
-    
-            var isUsernameValid = validateUsername();
-            var isEmailValid = validateEmail();
-            var isMobileValid = validateMobile();
-            var isPasswordValid = validatePassword();
-            var isConfirmPasswordValid = validateConfirmPassword();
-    
-            if (isUsernameValid && isEmailValid && isMobileValid && isPasswordValid && isConfirmPasswordValid) {
-                console.log("Frontend validation success");
-                return true;
-            } else {
-                console.log("Frontend validation failed");
-                return false;
             }
         }
+    
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('signupForm');
+    
+            form.addEventListener('submit', function (event) {
+                // Validate username
+                
+                const username = document.getElementById('username').value.trim();
+                if (username === '') {
+                    document.getElementById('errorusername').innerText = 'Username is required';
+                    event.preventDefault();
+                } else {
+                    document.getElementById('errorusername').innerText = '';
+                }
+    
+                // Validate email
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (email === '' || !emailRegex.test(email)) {
+                    document.getElementById('erroremail').innerText = 'Enter a valid email address';
+                    event.preventDefault();
+                } else {
+                    document.getElementById('erroremail').innerText = '';
+                }
+    
+                // Validate mobile number
+                const mobile = document.getElementById('mobile').value.trim();
+                const mobileRegex = /^[0-9]{10}$/;
+                if (mobile === '' || !mobileRegex.test(mobile)) {
+                    document.getElementById('errormobile').innerText = 'Enter a valid 10-digit mobile number';
+                    event.preventDefault();
+                } else {
+                    document.getElementById('errormobile').innerText = '';
+                }
+    
+                // Validate password
+                const password = document.getElementById('password').value;
+                if (password === '') {
+                    document.getElementById('errorpassword').innerText = 'Password is required';
+                    event.preventDefault();
+                } else {
+                    document.getElementById('errorpassword').innerText = '';
+                }
+    
+                // Validate confirm password
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                if (confirmPassword === '' || confirmPassword !== password) {
+                    document.getElementById('errorConfirmPassword').innerText = 'Passwords do not match ';
+                    event.preventDefault();
+                } else {
+                    document.getElementById('errorConfirmPassword').innerText = '';
+                }
+    
+                // Validate terms and policy checkbox
+                const checkbox = document.getElementById('exampleCheckbox12');
+                if (!checkbox.checked) {
+                    alert('Please agree to terms & policy');
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+    
     
 </body>
 

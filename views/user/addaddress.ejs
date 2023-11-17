@@ -458,43 +458,52 @@
                               </div>
                               <div class="card-body">
                                   <% if(user){ %>
-                                  <form method="post" action="/gadgetly/addaddress">
+                                  <form method="post" action="/gadgetly/addaddress" id="addressForm">
                                       <div class="row">
                                           <div class="form-group col-md-12">
                                               <label>AddressName <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="addressname" type="text">
+                                              <input required="" class="form-control square" name="addressname" type="text" id="addressName">
+                                              <span id="errorAddressName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>name <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="name" type="text">
+                                              <input required="" class="form-control square" name="name" type="text" id="name">
+                                              <span id="errorName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>country <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="country" type="text">
+                                              <input required="" class="form-control square" name="country" type="text" id="country">
+                                              <span id="errorCountry"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>streetaddress<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="streetaddress" type="text">
+                                              <input required="" class="form-control square" name="streetaddress" type="text" id="streetAddress">
+                                              <span id="errorStreetAddress"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>city <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="city" type="text">
+                                              <input required="" class="form-control square" name="city" type="text" id="city">
+                                              <span id="errorCity"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>state <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="state" type="text">
+                                              <input required="" class="form-control square" name="state" type="text" id="state">
+                                              <span id="errorState"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Pincode<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="pincode" type="number">
+                                              <input required="" class="form-control square" name="pincode" type="number" id="pincode">
+                                              <span id="errorPincode"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Mobile Number <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="phone" type="number">
+                                              <input required="" class="form-control square" name="phone" type="number" id="mobileNumber">
+                                              <span id="errorMobileNumber"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Alter Number<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="alterphone" type="number">
+                                              <input required="" class="form-control square" name="alterphone" type="number" id="alterNumber">
+                                              <span id="errorAlterNumber"></span>
                                           </div>
 
                                           <div class="col-md-12">
@@ -670,6 +679,78 @@
     <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
+    <!-- frontend validation for address onsubmit  -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const addressForm = document.getElementById('addressForm');
+            addressForm.addEventListener('submit',(event)=>{
+                const addressName = document.getElementById('addressName').value.trim();
+                if(addressName === ""){
+                    document.getElementById('errorAddressName').innerHTML = "addressname required";
+                    event.preventDefault()
+                }else{
+                    document.getElementById('errorAddressName').innerHTML = "";
+                }
+                const name = document.getElementById('name').value.trim();
+                if(name === ""){
+                    document.getElementById('errorName').innerHTML = "name is required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorName').innerHTML = "";
+                }
+                const  country = document.getElementById('country').value.trim();
+                if(country === ""){
+                    document.getElementById('errorCountry').innerHTML = "country required"
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorCountry').innerHTML = ""
+                }
+                const streetAddress = document.getElementById('streetAddress').value.trim();
+                if(streetAddress === ""){
+                    document.getElementById('errorStreetAddress').innerHTML = "streetaddress required"
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorStreetAddress').innerHTML = ""
+                }
+                const state = document.getElementById('state').value.trim();
+                if(state === ""){
+                    document.getElementById('errorState').innerHTML = "state required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorState').innerHTML = "";
+                }
+                const city = document.getElementById('city').value.trim();
+                if(city === ""){
+                    document.getElementById('errorCity').innerHTML = "city required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorCity').innerHTML = "";
+                }
+                const pincode = document.getElementById('pincode').value.trim();
+                if(pincode ===  ""){
+                    document.getElementById('errorPincode').innerHTML = "pincode required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorPincode').innerHTML = "";
+                }
+                const mobileNumber = document.getElementById('mobileNumber').value.trim();
+                if(mobileNumber === ""){
+                    document.getElementById('errorMobileNumber').innerHTML = "mobilenumber required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorMobileNumber').innerHTML = "";
+                }
+                const alterNumber = document.getElementById('alterNumber').value.trim();
+                if(alterNumber === ""){
+                    document.getElementById('errorAlterNumber').innerHTML = "alterNumber required"
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorAlterNumber').innerHTML = ""
+                }
+            })
+        })
+    </script>
 </body>
 
 
