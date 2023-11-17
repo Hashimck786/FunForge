@@ -457,10 +457,10 @@
                                         <p class="mb-50 font-sm">
                                             Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our privacy policy
                                         </p>
-                                        <form method="post" action="/gadgetly/signup">
+                                        <form method="post" action="/gadgetly/signup" id="signupForm" onsubmit="return validateForm()">
                                             <div class="form-group">
                                                 <input type="text" required="true" name="username" placeholder="Username"  id="username"  oninput="validateUsername()">
-                                                <span class="text-danger" id="errorusername"></span>
+                                                <span class="text-warning" id="errorusername"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.username) { %>
                                                         <span class="text-danger"><%=error.username.msg%></span>
@@ -471,7 +471,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <input type="text" required="true" name="email" id="email" placeholder="Email" oninput="validateEmail()">
-                                                <span class="text-danger" id="erroremail"></span>
+                                                <span class="text-warning" id="erroremail"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.email) { %>
                                                         <span class="text-danger"><%=error.email.msg%></span>
@@ -480,7 +480,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <input type="number" required="true" name="mobile" id="mobile" placeholder="Mobile Number" oninput="validateMobile()">
-                                                <span class="text-danger" id="errormobile"></span>
+                                                <span class="text-warning" id="errormobile"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.mobile) { %>
                                                         <span class="text-danger"><%=error.mobile.msg%></span>
@@ -489,7 +489,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <input required="true" type="password" name="password" id="password" placeholder="Password" oninput="validatePassword()">
-                                                <span class="text-danger" id="errorpassword"></span>
+                                                <span class="text-warning" id="errorpassword"></span>
                                                 <% if(typeof error !== 'undefined') { %>
                                                     <%if (error && error.password) { %>
                                                         <span class="text-danger"><%=error.password.msg%></span>
@@ -498,7 +498,7 @@
                                             </div>
                                             <div class="form-group">
                                                 <input required="true" type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" oninput="validateConfirmPassword()">
-                                                <span class="text-danger" id="errorConfirmPassword"></span>
+                                                <span class="text-warning" id="errorConfirmPassword"></span>
                                             </div>
                                             <!-- <div class="form-group">
                                                 <input required="true" type="password" name="password" placeholder="Confirm password">
@@ -749,23 +749,32 @@
             errorConfirmPassword.innerHTML = ""
         }
     }
+ 
+//  function validateForm() {
+//         console.log("submit hitting")
+//     validateUsername();
+//     validateEmail();
+//     validateMobile();
+//     validatePassword();
+//     validateConfirmPassword();
 
-    // function validateForm(){
-    //     console.log("validate form called")
-    //     validateUsername();
-    //     validateEmail();
-    //     validateMobile();
-    //     validatePassword();
-    //     validateConfirmPassword();
-        
+//     // Add additional validation logic if needed
 
-    //     if(document.querySelectorAll('.text-danger').lenght>0){
-    //         console.log("false passed")
-    //         return false;
-    //     }
-    //     console.log("true passed");
-    //     return true;
-    // }
+//     // Return false to prevent form submission if any validation fails
+//     if(document.querySelectorAll('.text-warning').length){
+//         console.log("frontend validation success")
+//         return true;
+//     }else{
+//         console.log("frontend validation failed")
+//         console.log( document.querySelectorAll('.text-warning').length)
+//         return false;
+//     }
+    
+
+// }
+
+
+
     </script>
 </body>
 

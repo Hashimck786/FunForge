@@ -725,9 +725,9 @@
                                                     <span class="color3 font-weight-bold">In Stock</span>
                                                 </td>
                                                 <td class="text-right" data-title="Cart">
-                                                    <button class="btn btn-sm"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
+                                                    <button class="btn btn-sm cart-btn" productId="<%= product[i]._id %>"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                                 </td>
-                                                <td class="action" data-title="Remove"><a href="/gadgetly/removewishlist?id=<%= product[i]._id %>"><i class="fi-rs-trash"></i></a></td>
+                                                <td class="action " data-title="Remove"><a href="/gadgetly/removewishlist?id=<%= product[i]._id %>" productId="<%= product[i]._id %>" class="rmv-btn"><i class="fi-rs-trash"></i></a></td>
                                             </tr>
                                        <% }
                                     }else{ %>
@@ -935,9 +935,74 @@
     <script src="/assets/js/plugins/isotope.js"></script>
     <script src="/assets/js/plugins/scrollup.js"></script>
     <script src="/assets/js/plugins/jquery.vticker-min.js"></script>
+    <!-- sweet alert cdn -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/shop.js"></script>
+
+
+    <!-- remove from wishlist using fetch-->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("dom loaded")
+            const removeFromCartButton = document.querySelectorAll('.rmv-btn');
+            console.log("cart button accesssed")
+            removeFromCartButton.forEach(function (button) {
+                button.addEventListener('click', async function (event) {
+                    event.preventDefault();
+                    const productId = this.getAttribute('productId');
+                    console.log('productId', productId);
+                    const response = await fetch(`/gadgetly/removewishlist/?id=${productId}`, {
+                        method: 'GET'
+                    });
+                    const productData = await response.json();
+                    console.log('productdata', productData);
+                    if (productData.success) {
+                        console.log("success"); 
+                        // removes the closest ancestor when we hit on remove without refreshing
+                        const tableRow = this.closest('tr');
+                        tableRow.parentNode.removeChild(tableRow);  
+
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Removed From Wishlist',
+                            text: 'The product has been removed from the wishlist'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+        <!-- add to cart using fetch with sweet alert.. -->
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                console.log("dom loaded")
+                const addToCartButtons = document.querySelectorAll('.cart-btn');
+                console.log("cart button accesssed")
+                addToCartButtons.forEach(function (button) {
+                    button.addEventListener('click', async function (event) {
+                        event.preventDefault();
+                        const productId = this.getAttribute('productId');
+                        console.log('productId', productId);
+                        const response = await fetch(`/gadgetly/addtocart/?id=${productId}`, {
+                            method: 'GET'
+                        });
+                        const productData = await response.json();
+                        console.log('productdata', productData);
+                        if (productData.success) {
+                            console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                            swal.fire({
+                                icon: 'success',
+                                title: 'Added to Cart',
+                                text: 'The product has been added to the cart'
+                            });
+                        }
+                    });
+                });
+            });
+        </script>
 </body>
 
 

@@ -128,8 +128,13 @@ const loginSubmission= async(req,res) => {
       const passwordverified = await bcrypt.compare(password,userData.password);
       if(passwordverified){
         if(userData.is_verified==1){
-          req.session.data = userData;
-          res.redirect('/gadgetly')
+          if(userData.is_block==0){
+            req.session.data = userData;
+            res.redirect('/gadgetly')
+          }else{
+            res.render('login.ejs',{message:"You are blocked by the admin"})
+          }
+
         }else{
           res.render('login.ejs',{message:"Please verify your email by clicking the link sent to your email."})
         }
@@ -358,7 +363,10 @@ const removeFromWishlist = async(req,res) => {
     const userId = userData._id;
     const productId = req.query.id;
     const updated = await User.updateOne({_id:userId},{$pull:{wishlist:productId}})
-    res.redirect('/gadgetly/wishlist')
+    res.json({
+      success:true
+    })
+    // res.redirect('/gadgetly/wishlist')
   } catch (error) {
       console.error(error.message)
   }
@@ -630,6 +638,30 @@ const removeFromCart = async(req,res) => {
   }
 }
 
+// updating product Quantity in Cart page................................................................
+
+const updateQuantity = async(req,res)=>{
+  const productId = req.query.productId;
+  const newQuantity = req.query.quantity;
+  const userId = req.session.data._id;
+  const cart = await Cart.findOne({userId:userId});
+  const productData = await Product.findOne({_id:productId})
+  const productIndex = cart.products.findIndex(product=>product.productId.toString()===productId)
+  cart.products[productIndex].quantity = newQuantity
+  cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
+  cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
+  await cart.save()
+
+  res.json({
+    success:true,
+    total:cart.products[productIndex].total,
+    subtotal:cart.cartSubTotal,
+    grandtotal:cart.cartSubTotal
+  })
+
+
+}
+
 
 // loading checkout page...............................................................................
 
@@ -756,5 +788,6 @@ module.exports = {
   removeFromCart,
   loadCheckout,
   placeOrder,
-  orderDetails
+  orderDetails,
+  updateQuantity
 }

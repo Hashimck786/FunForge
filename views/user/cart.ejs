@@ -723,14 +723,15 @@
                                                 </td>
                                                 <td class="price" data-title="Price"><span><%= product.productId.salePrice %></span></td>
                                                 <td class="text-center" data-title="Stock">
-                                                    <div class="detail-qty border radius  m-auto">
-                                                        <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                        <span class="qty-val" ><%= product.quantity %></span>
-                                                        <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                                    </div>
+                                                    <!-- <div class="detail-qty border radius m-auto"> -->
+                                                        <!-- <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> -->
+                                                        <input type="number"  productId="<%=product.productId._id %>" class="qty-val quantity-input" value="<%= product.quantity %>" />
+                                                        <!-- <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> -->
+                                                    <!-- </div> -->
+                                                    
                                                 </td>
                                                 <td class="text-right" data-title="Cart" >
-                                                    <span><%= product.total %></span>
+                                                    <span id="total"><%= product.total %></span>
                                                 </td>
                                                 <td class="action" data-title="Remove"><a href="/gadgetly/removefromcart/?id=<%=product.productId._id %>" class="text-muted rmv-btn" productId="<%=product.productId._id %>"><i class="fi-rs-trash"></i></a></td>
                                             </tr>
@@ -1121,7 +1122,7 @@
                                             <tbody>
                                                 <tr>
                                                     <td class="cart_total_label">Cart Subtotal</td>
-                                                    <td class="cart_total_amount"><span class="font-lg fw-900 text-brand"><%= cart.cartSubTotal %></span></td>
+                                                    <td class="cart_total_amount"><span class="font-lg fw-900 text-brand "  id="subtotal"><%= cart.cartSubTotal %></span></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="cart_total_label">Shipping</td>
@@ -1129,7 +1130,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="cart_total_label">Total</td>
-                                                    <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand"><%= cart.cartSubTotal %></span></strong></td>
+                                                    <td class="cart_total_amount"><strong><span class="font-xl fw-900 text-brand subtotal" id="grandtotal" ><%= cart.cartSubTotal %></span></strong></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -1309,7 +1310,11 @@
                     const productData = await response.json();
                     console.log('productdata', productData);
                     if (productData.success) {
-                        console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                        console.log("success"); 
+                        // removes the closest ancestor when we hit on remove without refreshing
+                        const tableRow = this.closest('tr');
+                        tableRow.parentNode.removeChild(tableRow);  
+
                         swal.fire({
                             icon: 'success',
                             title: 'Removed From Cart',
@@ -1319,6 +1324,43 @@
                 });
             });
         });
+    </script>
+    <!-- quantity management -->
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            console.log('dom content loaded in quantity manager')
+            document.querySelectorAll('.quantity-input').forEach(input=>{
+                console.log('quantityinput')
+                input.addEventListener('change',async(event)=>{
+                console.log("change event hitted")
+                const productId = event.target.getAttribute('productId');
+                console.log('productId',productId)
+                const newQuantity = parseInt(event.target.value)
+                console.log('newQuantity',newQuantity)
+                const response = await fetch(`/gadgetly/updatequantity/?productId=${productId}&quantity=${newQuantity}`,{
+                    method:'POST'
+                })
+
+                const responseData = await response.json();
+
+                console.log(event);
+                console.log('hj', event.target.closest('tr').childNodes[9].childNodes[1]);
+                if(responseData.total){
+                    
+                    event.target.closest('tr').childNodes[9].childNodes[1].textContent = `${responseData.total}`
+                }
+                if(responseData.subtotal){
+                    document.getElementById('subtotal').textContent = `${responseData.subtotal}`
+                }
+                if(responseData.grandtotal){
+                    document.getElementById('grandtotal').textContent = `${responseData.grandtotal}`
+                }
+
+                
+            })
+        })
+        })
+       
     </script>
 </body>
 

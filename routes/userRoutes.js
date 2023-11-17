@@ -52,7 +52,8 @@ userRoute.get('/defaultaddress',userAuth.isLogin,userController.defaultAddress)
 
 userRoute.get('/cart',userAuth.isLogin,userController.loadCart);
 userRoute.get('/addtocart',userAuth.isLogin,userController.addToCart);
-userRoute.get('/removefromcart',userAuth.isLogin,userController.removeFromCart)
+userRoute.get('/removefromcart',userAuth.isLogin,userController.removeFromCart);
+userRoute.post('/updatequantity',userAuth.isLogin,userController.updateQuantity)
 
 userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
 userRoute.get('/placeorder',userAuth.isLogin,userController.placeOrder)
