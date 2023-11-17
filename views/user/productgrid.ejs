@@ -1689,13 +1689,19 @@
                     });
                     const productData = await response.json();
                     console.log('productdata', productData);
-                    if (productData.success) {
-                        console.log("success");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+                    if (productData.success) {                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
                         swal.fire({
                             icon: 'success',
                             title: 'Added to Cart',
                             text: 'The product has been added to the cart'
                         });
+                    }
+                    if (productData.outofstock){
+                        swal.fire({
+                            icon: 'error',
+                            title:'Out of Stock',
+                            text:'The product is Out of Stock'
+                        })
                     }
                 });
             });

@@ -565,39 +565,50 @@ const addToCart = async(req,res) =>{
         await cart.save();
 
       }
+
+
+      if(productData.Stock>0){
         // find Index iterates through all the product and returns the index of the product that equals to the productId we are given
-      const existingProductIndex = cart.products.findIndex(product => product.productId.toString() === productId)
+        const existingProductIndex = cart.products.findIndex(product => product.productId.toString() === productId)
           
 
-      if(existingProductIndex == -1) {
-          cart.products.push({productId:productId,quantity:1})
+        if(existingProductIndex == -1) {
+          
+            cart.products.push({productId:productId,quantity:1})
+            await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
+  
+            
+        }else{
+          cart.products[existingProductIndex].quantity += 1
           await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
-
-          
+        } 
+  
+        
+  
+        const productIndex = cart.products.findIndex(product => product.productId.toString() === productId)
+        cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
+  
+  
+        const cartData =  await cart.save()
+  
+        if(cartData){
+          // res.redirect('/gadgetly/shop')
+          res.json({
+            success:true
+          })
+        }else{
+          // res.redirect('/gadgetly/shop')
+          res.json({
+            success:false
+          })
+        }
       }else{
-        cart.products[existingProductIndex].quantity += 1
-        await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
-      } 
-
-      
-
-      const productIndex = await cart.products.findIndex(product => product.productId.toString() === productId)
-      cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
-
-
-      const cartData =  await cart.save()
-
-      if(cartData){
-        // res.redirect('/gadgetly/shop')
+        console.log("out of stock backend json sending")
         res.json({
-          success:true
-        })
-      }else{
-        // res.redirect('/gadgetly/shop')
-        res.json({
-          success:false
+          outofstock:true
         })
       }
+
       
   } catch (error) {
       console.error(error.message)
@@ -612,17 +623,21 @@ const removeFromCart = async(req,res) => {
       console.log("arrived at removal")
       const userId = req.session.data._id;
       const productId = req.query.id;
+      let productData = await Product.findOne({_id:productId})
       let cart = await Cart.findOne({userId:userId});
 
-      const productIndex = await  cart.products.findIndex(product => product.productId.toString() === productId)
+      const productIndex = cart.products.findIndex(product => product.productId.toString() === productId)
         cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
         await cart.save()
 
 
-      
+      const oldQuantity = cart.products[productIndex].quantity;
       const removed =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
 
       if(removed){
+        // performed quantity updation.................................
+        const updatedQuantity = productData.Stock + oldQuantity ;
+        const stockIncrease = await Product.updateOne({_id:productId},{$set : {Stock:updatedQuantity}})
         res.json({
           success:true
         })
@@ -647,10 +662,25 @@ const updateQuantity = async(req,res)=>{
   const cart = await Cart.findOne({userId:userId});
   const productData = await Product.findOne({_id:productId})
   const productIndex = cart.products.findIndex(product=>product.productId.toString()===productId)
+
+
+
+
+
+  const quantityDifference = newQuantity - cart.products[productIndex].quantity;
+
+  if(quantityDifference > productData.Stock){
+    return res.json({
+      outofstock:true
+    })
+  }
+  const newStock = productData.Stock - quantityDifference;
+  const updateStock = await Product.updateOne({_id:productId},{$set : {Stock: newStock}})
+  
   cart.products[productIndex].quantity = newQuantity
   cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
   cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-  await cart.save()
+  await cart.save();
 
   res.json({
     success:true,
@@ -658,6 +688,10 @@ const updateQuantity = async(req,res)=>{
     subtotal:cart.cartSubTotal,
     grandtotal:cart.cartSubTotal
   })
+  
+
+
+
 
 
 }

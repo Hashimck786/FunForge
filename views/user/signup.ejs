@@ -686,96 +686,103 @@
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
     <script>
-    function validateUsername() {
-        var username = document.getElementById("username").value;
-        var errorUsername = document.getElementById("errorusername");
-        errorUsername.innerHTML = "";
-
-        if (username.trim() === "") {
-            errorUsername.innerHTML = "Username is required";
-        } else if (username.length < 3 || username.length > 20) {
-            errorUsername.innerHTML = "Username must be between 3 and 20 characters";
-        }
-    }
-
-    function validateEmail() {
-        var email = document.getElementById("email").value;
-        var erroremail = document.getElementById('erroremail');
-        erroremail.innerHTML = "";
-
-        if(email.trim() === ""){
-            erroremail.innerHTML = "Email is required"
-        }
-    }
-
-    function validateMobile() {
-        var mobile = document.getElementById('mobile').value;
-        var errormobile = document.getElementById('errormobile');
-        erroremail.innerHTML = "";
-
-        if(mobile.trim() === ""){
-            errormobile.innerHTML = "mobile is required";
-        }else if(mobile.length !== 10){
-            errormobile.innerHTML = "mobile must be 10 digits"
-        }else {
-            errormobile.innerHTML = ""
-        }
-    }
-
-    function validatePassword() {
-        var password = document.getElementById("password").value;
-        var errorpassword = document.getElementById("errorpassword");
-        errorpassword.innerHTML = "";
-
-        if (password.trim() === "") {
-            errorpassword.innerHTML = "Password is required";
-        } else if (password.length < 8) {
-            errorpassword.innerHTML = "Password must be at least 8 characters";
-        }
-
-    }
-
-    function validateConfirmPassword() {
-        var password = document.getElementById('password').value;
-        var confirmPassword = document.getElementById('confirmPassword').value;
-        var errorConfirmPassword = document.getElementById('errorConfirmPassword');
-        errorConfirmPassword.innerHTML = "";
-
-        if(confirmPassword.trim() === ""){
-            errorConfirmPassword.innerHTML = "confirm password required";
-        }else if (confirmPassword != password){
-            errorConfirmPassword.innerHTML = "passwords doesnot match"
-        }else{
-            errorConfirmPassword.innerHTML = ""
-        }
-    }
- 
-//  function validateForm() {
-//         console.log("submit hitting")
-//     validateUsername();
-//     validateEmail();
-//     validateMobile();
-//     validatePassword();
-//     validateConfirmPassword();
-
-//     // Add additional validation logic if needed
-
-//     // Return false to prevent form submission if any validation fails
-//     if(document.querySelectorAll('.text-warning').length){
-//         console.log("frontend validation success")
-//         return true;
-//     }else{
-//         console.log("frontend validation failed")
-//         console.log( document.querySelectorAll('.text-warning').length)
-//         return false;
-//     }
+        function validateUsername() {
+            var username = document.getElementById("username").value;
+            var errorUsername = document.getElementById("errorusername");
+            errorUsername.innerHTML = "";
     
-
-// }
-
-
-
+            if (username.trim() === "") {
+                errorUsername.innerHTML = "Username is required";
+                return false;
+            } else if (username.length < 3 || username.length > 20) {
+                errorUsername.innerHTML = "Username must be between 3 and 20 characters";
+                return false;
+            }
+    
+            return true;
+        }
+    
+        function validateEmail() {
+            var email = document.getElementById("email").value;
+            var erroremail = document.getElementById("erroremail");
+            erroremail.innerHTML = "";
+    
+            if (email.trim() === "") {
+                erroremail.innerHTML = "Email is required";
+                return false;
+            }
+    
+            return true;
+        }
+    
+        function validateMobile() {
+            var mobile = document.getElementById("mobile").value;
+            var errormobile = document.getElementById("errormobile");
+            errormobile.innerHTML = "";
+    
+            if (mobile.trim() === "") {
+                errormobile.innerHTML = "Mobile is required";
+                return false;
+            } else if (mobile.length !== 10) {
+                errormobile.innerHTML = "Mobile must be 10 digits";
+                return false;
+            }
+    
+            return true;
+        }
+    
+        function validatePassword() {
+            var password = document.getElementById("password").value;
+            var errorpassword = document.getElementById("errorpassword");
+            errorpassword.innerHTML = "";
+    
+            if (password.trim() === "") {
+                errorpassword.innerHTML = "Password is required";
+                return false;
+            } else if (password.length < 8) {
+                errorpassword.innerHTML = "Password must be at least 8 characters";
+                return false;
+            }
+    
+            return true;
+        }
+    
+        function validateConfirmPassword() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var errorConfirmPassword = document.getElementById("errorConfirmPassword");
+            errorConfirmPassword.innerHTML = "";
+    
+            if (confirmPassword.trim() === "") {
+                errorConfirmPassword.innerHTML = "Confirm password required";
+                return false;
+            } else if (confirmPassword !== password) {
+                errorConfirmPassword.innerHTML = "Passwords do not match";
+                return false;
+            }
+    
+            return true;
+        }
+    
+        function validateForm() {
+            console.log("submit hitting");
+    
+            var isUsernameValid = validateUsername();
+            var isEmailValid = validateEmail();
+            var isMobileValid = validateMobile();
+            var isPasswordValid = validatePassword();
+            var isConfirmPasswordValid = validateConfirmPassword();
+    
+            if (isUsernameValid && isEmailValid && isMobileValid && isPasswordValid && isConfirmPasswordValid) {
+                console.log("Frontend validation success");
+                return true;
+            } else {
+                console.log("Frontend validation failed");
+                return false;
+            }
+        }
     </script>
+    
 </body>
 
 

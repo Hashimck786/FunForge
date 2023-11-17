@@ -89,17 +89,17 @@
                         <div class="header-action-right">
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
-                                    <a href="shop-wishlist.html">
+                                    <a href='/gadgetly/wishlist'>
                                         <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
                                         <span class="pro-count blue">4</span>
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="shop-cart.html">
+                                    <a class="mini-cart-icon" href="/gadgetly/cart">
                                         <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
                                         <span class="pro-count blue">2</span>
                                     </a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
+                                    <!-- <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                         <ul>
                                             <li>
                                                 <div class="shopping-cart-img">
@@ -135,7 +135,7 @@
                                                 <a href="shop-checkout.html">Checkout</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -725,7 +725,7 @@
                                                 <td class="text-center" data-title="Stock">
                                                     <!-- <div class="detail-qty border radius m-auto"> -->
                                                         <!-- <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> -->
-                                                        <input type="number"  productId="<%=product.productId._id %>" class="qty-val quantity-input" value="<%= product.quantity %>" />
+                                                        <input type="number" min="1"  productId="<%=product.productId._id %>" class="qty-val quantity-input" value="<%= product.quantity %>" />
                                                         <!-- <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> -->
                                                     <!-- </div> -->
                                                     
@@ -1342,8 +1342,8 @@
                 })
 
                 const responseData = await response.json();
-
-                console.log(event);
+                if(responseData.success){
+                    console.log(event);
                 console.log('hj', event.target.closest('tr').childNodes[9].childNodes[1]);
                 if(responseData.total){
                     
@@ -1354,6 +1354,15 @@
                 }
                 if(responseData.grandtotal){
                     document.getElementById('grandtotal').textContent = `${responseData.grandtotal}`
+                }
+
+                }
+                if(responseData.outofstock){
+                    swal.fire({
+                        icon:'error',
+                        title:'Out of Stock',
+                        text:'The product is out of Stock'
+                    })
                 }
 
                 

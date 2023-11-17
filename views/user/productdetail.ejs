@@ -1562,6 +1562,13 @@
                             text: 'The product has been added to the cart'
                         });
                     }
+                    if (productData.outofstock) {
+                        swal.fire({
+                            icon: 'error',
+                            title: 'Out of Stock',
+                            text: 'The product is out of stock'
+                        })
+                    }
                 });
             });
         });
