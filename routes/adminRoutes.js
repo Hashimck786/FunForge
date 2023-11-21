@@ -38,7 +38,7 @@ adminRoute.use(express.urlencoded({extended:true}))
 
 const auth = require('../middlewares/adminAuth.js')
 
-const adminController = require('../controllers/adminControllers')
+const adminController = require('../controllers/adminController')
 
 adminRoute.get('/',auth.isLogout,adminController.loadAdminLogin);
 adminRoute.get('/login',auth.isLogout,adminController.loadAdminLogin);

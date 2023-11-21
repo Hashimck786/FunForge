@@ -459,43 +459,52 @@
                               <div class="card-body">
                                   <% if(user && address){ %>
                                   
-                                  <form method="post" action="/gadgetly/editaddress/?id=<%= address._id %>">
+                                  <form method="post" action="/gadgetly/editaddress/?id=<%= address._id %>" id="addressForm">
                                       <div class="row">
                                           <div class="form-group col-md-12">
                                               <label>AddressName <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="addressname" type="text" value="<%= address.addressname %>">
+                                              <input required="" class="form-control square" name="addressname" id="addressName" type="text" value="<%= address.addressname %>">
+                                              <span id="errorAddressName" class="text-danger"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>name <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="name" type="text"  value="<%= address.name %>">
+                                              <input required="" class="form-control square" name="name" type="text" id="name"  value="<%= address.name %>">
+                                              <span class="text-danger" id="errorName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>country <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="country" type="text"  value="<%= address.country %>">
+                                              <input required="" class="form-control square" name="country" type="text" id="country" value="<%= address.country %>">
+                                              <span class="text-danger" id="errorCountry"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>streetaddress<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="streetaddress" type="text"  value="<%= address.streetaddress %>">
+                                              <input required="" class="form-control square" name="streetaddress" type="text" id="streetAddress" value="<%= address.streetaddress %>">
+                                              <span class="text-danger" id="errorStreetAddress"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>city <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="city" type="text" value="<%= address.city %>">
+                                              <input required="" class="form-control square" name="city" type="text" id="city" value="<%= address.city %>">
+                                              <span class="text-danger" id="errorCity"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>state <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="state" type="text"  value="<%= address.state %>">
+                                              <input required="" class="form-control square" name="state" type="text" id="state"  value="<%= address.state %>">
+                                              <span class="text-danger" id="errorState"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Pincode<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="pincode" type="number"  value="<%= address.pincode %>">
+                                              <input required="" class="form-control square" name="pincode" type="number" id="pincode" value="<%= address.pincode %>">
+                                              <span class="text-danger" id="errorPincode"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Mobile Number <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="phone" type="number" value="<%= address.phone %>">
+                                              <input required="" class="form-control square" name="phone" type="number" id="mobileNumber" value="<%= address.phone %>">
+                                              <span class="text-danger" id="errorMobileNumber"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Alter Number<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="alterphone" type="number"  value="<%= address.alterphone %>">
+                                              <input required="" class="form-control square" name="alterphone" type="number" id="alterNumber"  value="<%= address.alterphone %>">
+                                              <span class="text-danger" id="errorAlterNumber"></span>
                                           </div>
 
                                           <div class="col-md-12">
@@ -671,6 +680,86 @@
     <script src="/assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
+
+    <!-- frontend validation for address onsubmit  -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const addressForm = document.getElementById('addressForm');
+            addressForm.addEventListener('submit',(event)=>{
+                const addressName = document.getElementById('addressName').value.trim();
+                if(addressName === ""){
+                    document.getElementById('errorAddressName').innerHTML = "addressname required";
+                    event.preventDefault()
+                }else{
+                    document.getElementById('errorAddressName').innerHTML = "";
+                }
+                const name = document.getElementById('name').value.trim();
+                if(name === ""){
+                    document.getElementById('errorName').innerHTML = "name is required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorName').innerHTML = "";
+                }
+                const  country = document.getElementById('country').value.trim();
+                if(country === ""){
+                    document.getElementById('errorCountry').innerHTML = "country required"
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorCountry').innerHTML = ""
+                }
+                const streetAddress = document.getElementById('streetAddress').value.trim();
+                if(streetAddress === ""){
+                    document.getElementById('errorStreetAddress').innerHTML = "streetaddress required"
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorStreetAddress').innerHTML = ""
+                }
+                const state = document.getElementById('state').value.trim();
+                if(state === ""){
+                    document.getElementById('errorState').innerHTML = "state required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorState').innerHTML = "";
+                }
+                const city = document.getElementById('city').value.trim();
+                if(city === ""){
+                    document.getElementById('errorCity').innerHTML = "city required";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorCity').innerHTML = "";
+                }
+                const pincode = document.getElementById('pincode').value.trim();
+                if(pincode ===  ""){
+                    document.getElementById('errorPincode').innerHTML = "pincode required";
+                    event.preventDefault();
+                }else if(pincode.length !== 6){
+                    document.getElementById('errorPincode').innerHTML = "pincode must be 6 digits";
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorPincode').innerHTML = "";
+                }
+                const mobileNumber = document.getElementById('mobileNumber').value.trim();
+                const mobileRegex = /^[0-9]{10}$/;
+                if(mobileNumber === "" || !mobileRegex.test(mobile)){
+                    document.getElementById('errorMobileNumber').innerHTML =  'Enter a valid 10-digit mobile number';
+                    event.preventDefault();
+                }else{
+                    document.getElementById('errorMobileNumber').innerHTML = "";
+                }
+                const alterNumber = document.getElementById('alterNumber').value.trim();
+                if(alterNumber === ""){
+                    document.getElementById('errorAlterNumber').innerHTML = "alterNumber required"
+                    event.preventDefault();
+                }else if(mobileNumber === alterNumber){
+                    document.getElementById('errorAlterNumber').innerHTML = "both number can't be same";
+                    event.preventDefault(); 
+                }else{
+                    document.getElementById('errorAlterNumber').innerHTML = ""
+                }
+            })
+        })
+    </script>    
 </body>
 
 

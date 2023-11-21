@@ -4,6 +4,7 @@ const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+const Category = require('../models/categoryModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -294,8 +295,23 @@ const loadContact = async(req,res) => {
  const loadProducts = async(req,res) => {
   try {
     userData=req.session.data;
-    const productData = await Product.find({is_listed:1});
-    res.render('productgrid.ejs',{product:productData,user:userData})
+    
+    const searchTerm = req.query.search || '';
+    const category = req.query.category || '';
+
+    const filter = {
+      is_listed:1
+    };
+    if(searchTerm){
+      filter.productName = {$regex:searchTerm,$options:'i'}
+    }
+    if(category){
+      filter.categoryId = category;
+    }
+
+    const productData = await Product.find(filter);
+    const categoryData = await Category.find({})
+    res.render('productgrid.ejs',{product:productData,user:userData,search:searchTerm,category:categoryData})
   } catch (error) {
     console.error(error.message)
   }

@@ -463,37 +463,37 @@
                                           <div class="form-group col-md-12">
                                               <label>AddressName <span class="required">*</span></label>
                                               <input required="" class="form-control square" name="addressname" type="text" id="addressName">
-                                              <span id="errorAddressName"></span>
+                                              <span class="text-danger" id="errorAddressName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>name <span class="required">*</span></label>
                                               <input required="" class="form-control square" name="name" type="text" id="name">
-                                              <span id="errorName"></span>
+                                              <span class="text-danger" id="errorName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>country <span class="required">*</span></label>
                                               <input required="" class="form-control square" name="country" type="text" id="country">
-                                              <span id="errorCountry"></span>
+                                              <span class="text-danger" id="errorCountry"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>streetaddress<span class="required">*</span></label>
                                               <input required="" class="form-control square" name="streetaddress" type="text" id="streetAddress">
-                                              <span id="errorStreetAddress"></span>
+                                              <span class="text-danger" id="errorStreetAddress"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>city <span class="required">*</span></label>
                                               <input required="" class="form-control square" name="city" type="text" id="city">
-                                              <span id="errorCity"></span>
+                                              <span class="text-danger" id="errorCity"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>state <span class="required">*</span></label>
                                               <input required="" class="form-control square" name="state" type="text" id="state">
-                                              <span id="errorState"></span>
+                                              <span class="text-danger" id="errorState"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Pincode<span class="required">*</span></label>
                                               <input required="" class="form-control square" name="pincode" type="number" id="pincode">
-                                              <span id="errorPincode"></span>
+                                              <span class="text-danger" id="errorPincode"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Mobile Number <span class="required">*</span></label>
@@ -503,7 +503,7 @@
                                           <div class="form-group col-md-12">
                                               <label>Alter Number<span class="required">*</span></label>
                                               <input required="" class="form-control square" name="alterphone" type="number" id="alterNumber">
-                                              <span id="errorAlterNumber"></span>
+                                              <span class="text-danger" id="errorAlterNumber"></span>
                                           </div>
 
                                           <div class="col-md-12">
@@ -731,12 +731,16 @@
                 if(pincode ===  ""){
                     document.getElementById('errorPincode').innerHTML = "pincode required";
                     event.preventDefault();
+                }else if(pincode.length !== 6){
+                    document.getElementById('errorPincode').innerHTML = "pincode must be 6 digits";
+                    event.preventDefault();
                 }else{
                     document.getElementById('errorPincode').innerHTML = "";
                 }
                 const mobileNumber = document.getElementById('mobileNumber').value.trim();
-                if(mobileNumber === ""){
-                    document.getElementById('errorMobileNumber').innerHTML = "mobilenumber required";
+                const mobileRegex = /^[0-9]{10}$/;
+                if(mobileNumber === "" || !mobileRegex.test(mobile)){
+                    document.getElementById('errorMobileNumber').innerHTML =  'Enter a valid 10-digit mobile number';
                     event.preventDefault();
                 }else{
                     document.getElementById('errorMobileNumber').innerHTML = "";
@@ -745,6 +749,9 @@
                 if(alterNumber === ""){
                     document.getElementById('errorAlterNumber').innerHTML = "alterNumber required"
                     event.preventDefault();
+                }else if(mobileNumber === alterNumber){
+                    document.getElementById('errorAlterNumber').innerHTML = "both number can't be same";
+                    event.preventDefault(); 
                 }else{
                     document.getElementById('errorAlterNumber').innerHTML = ""
                 }

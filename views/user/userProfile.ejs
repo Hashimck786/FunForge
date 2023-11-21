@@ -623,7 +623,8 @@
                                             <div class="card-body">
                                                 <p>Already have an account? <a href="page-login-register.html">Log in instead!</a></p>
                                                 <% if(user){ %>
-                                                <form method="post" action="/gadgetly/editProfile/?id=<%=user._id %>">
+                                                <form method="post" action="/gadgetly/editProfile/?id=<%=user._id %>" id="editProfileForm"
+                                                    >
                                                     <div class="row">
                                                         <div class="form-group col-md-12">
                                                             <label>USername <span class="required">*</span></label>
@@ -864,22 +865,45 @@
             }
         }
     
-        // function validateForm() {
-        //     console.log("validate form called")
-        //     validateEmail();
-        //     validateMobile();
-        //     validateUsername();
-
-
-        //     if (document.querySelectorAll('.text-danger').length > 0) {
-        //         console.log('false passed')
-        //     return false;
-        // }
-        //     console.log('returning true')
-        //     return true;
-
-        // }
         </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('editProfileForm');
+
+        form.addEventListener('submit', function (event) {
+            // Validate username
+            
+            const username = document.getElementById('username').value.trim();
+            if (username === '') {
+                document.getElementById('errorusername').innerText = 'Username is required';
+                event.preventDefault();
+            } else {
+                document.getElementById('errorusername').innerText = '';
+            }
+
+            // Validate email
+            const email = document.getElementById('email').value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === '' || !emailRegex.test(email)) {
+                document.getElementById('erroremail').innerText = 'Enter a valid email address';
+                event.preventDefault();
+            } else {
+                document.getElementById('erroremail').innerText = '';
+            }
+
+            // Validate mobile number
+            const mobile = document.getElementById('mobile').value.trim();
+            const mobileRegex = /^[0-9]{10}$/;
+            if (mobile === '' || !mobileRegex.test(mobile)) {
+                document.getElementById('errormobile').innerText = 'Enter a valid 10-digit mobile number';
+                event.preventDefault();
+            } else {
+                document.getElementById('errormobile').innerText = '';
+            }
+        });
+    });
+</script>
 </body>
 
 

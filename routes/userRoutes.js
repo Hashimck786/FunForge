@@ -15,7 +15,7 @@ userRoute.set('views','./views/user')
 userRoute.use(express.json());
 userRoute.use(express.urlencoded({extended:true}))
 const userAuth = require('../middlewares/userAuth.js')
-const userController = require('../controllers/userControllers')
+const userController = require('../controllers/userController')
 
 
 userRoute.get("/",userController.loadHome);
