@@ -56,7 +56,9 @@ userRoute.get('/removefromcart',userAuth.isLogin,userController.removeFromCart);
 userRoute.post('/updatequantity',userAuth.isLogin,userController.updateQuantity)
 
 userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
-userRoute.get('/placeorder',userAuth.isLogin,userController.placeOrder)
+userRoute.post('/placeorder',userAuth.isLogin,userController.placeOrder)
+userRoute.post('/verifypayment',userAuth.isLogin,userController.verifyPayment)
+userRoute.get('/ordersummary',userAuth.isLogin,userController.loadOrderSummary)
 userRoute.get('/orderdetails',userAuth.isLogin,userController.orderDetails)
 
 

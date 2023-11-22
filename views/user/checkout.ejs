@@ -880,29 +880,29 @@
                                 </div>
                                 <div class="payment_option">
                                     <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Cash on Delivery</label>
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="Cash On Delivery" value="Cash On Delivery">
+                                        <label class="form-check-label" for="Cash On Delivery" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Cash On Delivery</label>
                                         <div class="form-group collapse in" id="bankTranfer">
                                             <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
                                         </div>
                                     </div>
-                                    <!-- <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
-                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Online Payment</label>
+                                    <div class="custome-radio">
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="Online Payment" value="Online Payment">
+                                        <label class="form-check-label" for="Online Payment" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Online Payment</label>
                                         <div class="form-group collapse in" id="checkPayment">
                                             <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
                                         </div>
                                     </div>
                                     <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" checked="">
-                                        <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Wallet</label>
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="Wallet" value="Wallet">
+                                        <label class="form-check-label" for="Wallet" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Wallet</label>
                                         <div class="form-group collapse in" id="paypal">
                                             <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
-                            <a href="/gadgetly/placeorder?" class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                            <a href="/gadgetly/placeorder?"  id="placeorder" class="btn btn-fill-out btn-block mt-30">Place Order</a>
                         </div>
                     </div>
                 </div>
@@ -1057,6 +1057,90 @@
     <!-- Template  JS -->
     <script src="/assets/js/main.js"></script>
     <script src="/assets/js/shop.js"></script>
+    <!-- razor pay  -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    
+    <!-- place order and payment -->
+    <script>
+        document.addEventListener('DOMContentLoaded',function(){
+            const placeOrder = document.getElementById('placeorder');
+            placeOrder.addEventListener('click',async function(event){
+                event.preventDefault()
+                var selectedRadioButton = document.querySelector('input[name="payment_option"]:checked');
+                console.log(selectedRadioButton)
+                if (!selectedRadioButton) {
+                   alert("Please select a payment method");
+                   return;
+                }
+
+                var paymentMethod = selectedRadioButton.value;
+                console.log("payment:", paymentMethod);
+
+                const response = await fetch(`/gadgetly/placeorder?paymentmethod=${paymentMethod}`,{
+                    method:'POST'
+                })
+                const data = await response.json();
+
+                if(data.codSuccess){
+                    window.location.href = `/gadgetly/ordersummary?orderId=${data.orderId}`
+                }
+                if(data.order){
+
+                    var options = {
+                        "key": "rzp_test_dTVkgmpPZxBcHY", // Enter the Key ID generated from the Dashboard
+                        "amount": data.order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "currency": "INR",
+                        "name": "GADGETLY PVT LTD",
+                        "description": "Test Transaction",
+                        "image": "https://example.com/your_logo",
+                        "order_id": data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "handler": function (response){
+                            console.log(response)
+                            console.log(data.order)
+                            verifyPayment(response,data.order)
+                        },
+                        "prefill": {
+                            "name": "Gaurav Kumar",
+                            "email": "gaurav.kumar@example.com",
+                            "contact": "9000090000"
+                        },
+                        "notes": {
+                            "address": "Razorpay Corporate Office"
+                        },
+                        "theme": {
+                            "color": "#3399cc"
+                        }
+            };
+            var rzp1 = new window.Razorpay(options);
+            rzp1.open();
+                            }
+                            
+                        })
+                    })
+             async function verifyPayment (payment,order){
+                let data = {
+                    payment,
+                    order
+                }
+                console.log("entered verify payment function");
+                 const response = await fetch('/gadgetly/verifypayment',{
+                    method:'POST',
+                    headers: {
+                         'Content-Type': 'application/json',
+    
+                     },
+                     body: JSON.stringify(data),
+                })
+                const responseData = await response.json();
+                if(responseData.success){
+                    alert('payment successful');
+                    console.log('payment successful')
+                }else{
+                    alert('payment failed')
+                    console.log('payment failed')
+                }
+            }        
+    </script>
 </body>
 
 

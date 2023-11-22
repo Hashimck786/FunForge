@@ -513,6 +513,7 @@
                                                                 <th>Order</th>
                                                                 <th>Date</th>
                                                                 <th>Status</th>
+                                                                <th>paymentmethod</th>
                                                                 <th>Total</th>
                                                                 <th>Actions</th>
                                                             </tr>
@@ -525,6 +526,7 @@
                                                                         <td><%= index+1 %></td>
                                                                         <td><%= order.date %></td>
                                                                         <td><%= order.deliveryStatus %></td>
+                                                                        <td><%= order.paymentMethod %></td>
                                                                         <td><%=order.orderValue %></td>
                                                                         <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" class="btn-small d-block">View</a></td>
                                                                     </tr>

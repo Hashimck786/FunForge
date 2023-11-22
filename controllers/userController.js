@@ -8,6 +8,12 @@ const Category = require('../models/categoryModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
+const Razorpay = require('razorpay');
+
+var instance = new Razorpay({
+  key_id: 'rzp_test_dTVkgmpPZxBcHY',
+  key_secret: 'RxW23Efaou9qiPCgUxEoNxR0',
+});
 
 
 
@@ -738,61 +744,120 @@ const placeOrder = async(req,res) =>{
     const cart = await Cart.findOne({userId:userId})
     const orderedProducts = cart.products
     const orderedProductDetails = [];
+    const paymentMethod = req.query.paymentmethod;
+    let orderStatus = "pending";
 
-    for( const product of orderedProducts){
-      const productDetails = await Product.findById(product.productId);
-
-      if(productDetails){
-        const orderedProductDetail = {
-          productId:productDetails._id,
-          productName:productDetails.productName,
-          productPrice:productDetails.salePrice,
-          productDescription:productDetails.productDescription,
-          productImage:productDetails.image[0],
-          quantity:product.quantity,
-          total:product.total
-        }
-
-        orderedProductDetails.push(orderedProductDetail);
-      }
+    if(paymentMethod === 'Cash On Delivery'){
+      orderStatus = "placed"
     }
-
-
-
-    const addressArray = await Address.find({_id:{$in:user.address},is_Default:true});
-    const address = addressArray[0]
-    
-    
-
-    const order = new Order({
-      userId:userId,
-      date:date,
-      orderValue:cart.cartSubTotal,
-      paymentMethod:"COD",
-      orderStatus:"placed",
-      products:orderedProductDetails,
-      addressDetails:{
-        name:address.name,
-        postcode:address.pincode,
-        country:address.country,
-        state:address.state,
-        city:address.city,
-        streetaddress:address.streetaddress,
-        phone:address.phone
+      for( const product of orderedProducts){
+        const productDetails = await Product.findById(product.productId);
+  
+        if(productDetails){
+          const orderedProductDetail = {
+            productId:productDetails._id,
+            productName:productDetails.productName,
+            productPrice:productDetails.salePrice,
+            productDescription:productDetails.productDescription,
+            productImage:productDetails.image[0],
+            quantity:product.quantity,
+            total:product.total
+          }
+  
+          orderedProductDetails.push(orderedProductDetail);
+        }
       }
-    })
+  
+  
+  
+      const addressArray = await Address.find({_id:{$in:user.address},is_Default:true});
+      const address = addressArray[0]
+      
+      
+  
+      const order = new Order({
+        userId:userId,
+        date:date,
+        orderValue:cart.cartSubTotal,
+        paymentMethod:paymentMethod,
+        orderStatus:orderStatus,
+        products:orderedProductDetails,
+        addressDetails:{
+          name:address.name,
+          postcode:address.pincode,
+          country:address.country,
+          state:address.state,
+          city:address.city,
+          streetaddress:address.streetaddress,
+          phone:address.phone
+        }
+      })
+  
+      const orderData = await order.save();
+  
+      // const deleted = await Cart.deleteOne({userId:userId})
+  
+      // passing the orderid to ordersummary page
 
-    const orderData = await order.save();
+      if(paymentMethod === "Cash On Delivery"){
+        return res.json({
+          codSuccess:true,
+          orderId:orderData._id
+        })
+      }else{
+        var options = {
+          amount: orderData.orderValue*100,  // amount in the smallest currency unit
+          currency: "INR",
+          receipt: orderData._id
+        };
+        const order = instance.orders.create(options, function(err, order) {
+          console.log("new order;",order);
+          return res.json({
+            onlineSuccess:true,
+            order:order
+          })
+        });
 
-    // const deleted = await Cart.deleteOne({userId:userId})
+       
+      }
 
-    // passing the orderid to ordersummary page
-    res.render('ordersummary',{orderId:orderData._id})
+
+    
 } catch (error) {
     console.error(error.message)
 }
 }
 
+// load orderSummary ....................................................
+
+const loadOrderSummary = async(req,res) => {
+  try {
+      res.render('ordersummary',{orderId:req.query.orderId})
+  } catch (error) {
+      console.error(error.message)
+  }
+}
+
+// verifying payment................................................................
+
+const verifyPayment = async(req,res) => {
+  try {
+    const crypto = require('crypto');
+    let hmac = crypto.createHmac('sha256','RxW23Efaou9qiPCgUxEoNxR0')
+
+    hmac.update(req.body.payment.razorpay_order_id + '|' + req.body.payment.razorpay_payment_id);
+    hmac =hmac.digest('hex')
+    if(hmac == req.body.payment.razorpay_signature){
+      paymentStatusUpdate = await Order.updateOne({_id:req.body.order.receipt},{$set :{orderStatus:'placed',deliveryStatus:'placed'}})
+      return res.json({
+        success:true
+      })
+    }
+    console.log(req.body.payment.razorpay_payment_id)
+  } catch (error) {
+    console.error(error.message)
+  }
+}
 
 // loading order details................................................................
 
@@ -839,5 +904,7 @@ module.exports = {
   loadCheckout,
   placeOrder,
   orderDetails,
-  updateQuantity
+  updateQuantity,
+  loadOrderSummary,
+  verifyPayment
 }
