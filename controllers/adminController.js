@@ -176,8 +176,40 @@ const passwordUpdate = async(req,res) => {
 
 const loadUserList = async(req,res) => {
   try {
-    const usersData = await User.find();
-    res.render('usersList',{users:usersData})
+
+    var search = '';
+    if(req.query.search){
+      search = req.query.search
+    }
+
+    var page = 1;
+    if(req.query.page){
+      page = req.query.page
+    }
+
+    const limit = 8;
+
+    const usersData = await User.find({
+      $or:[
+        {name:{$regex:'.*' +search+'.*' , $options:'i'}},
+        {email:{$regex:'.*' +search+'.*', $options:'i'}},
+      ]
+    })
+    .limit(limit*1)
+    .skip((page-1)*limit)
+    .exec();
+    
+    const count = await User.find({
+      $or:[
+        {name:{$regex:'.*' +search+'.*' , $options:'i'}},
+        {email:{$regex:'.*' +search+'.*', $options:'i'}}
+      ]
+    }).countDocuments();
+    res.render('usersList',{
+      users:usersData,
+      totalPages:Math.ceil(count/limit),
+      searchTerm:search
+    })
   } catch (error) {
     console.log(error.message);
   }
@@ -227,8 +259,34 @@ const unblockUser = async(req,res) => {
 
 const loadProductList = async(req,res) => {
   try {
-    const products = await Product.find();
-    res.render('productList.ejs',{product:products})
+
+    var search = '';
+    if(req.query.search){
+      search = req.query.search
+    }
+
+    var page = 1;
+    if(req.query.page){
+      page = req.query.page
+    }
+
+    const limit = 5;
+
+    const productsData = await Product.find({
+      productName:{$regex:'.*' +search+'.*' , $options:'i'}
+    })
+    .limit(limit*1)
+    .skip((page-1)*limit)
+    .exec();
+    const count = await Product.find({
+      productName:{$regex:'.*' +search+'.*' , $options:'i'}
+    }).countDocuments();
+    res.render('productList.ejs',{
+      product:productsData,
+      totalPages:Math.ceil(count/limit),
+      searchTerm:search,
+      
+    })
   } catch (error) {
     console.log(error.message)
   }
@@ -475,8 +533,25 @@ const loadCategoryEdit = async(req,res) => {
 
 const userOrders = async(req,res) => {
   try {
-    const ordersData = await Order.find({}).populate('userId');
-    res.render('userorders',{orders:ordersData})
+    
+    var page = 1;
+    if(req.query.page){
+      page = req.query.page
+    }
+
+    const limit = 15;
+
+
+    const ordersData = await Order.find({})
+    .limit(limit*1)
+    .skip((page-1)*limit)
+    .populate('userId')
+    .exec();
+    const count = await Order.find({}).countDocuments();
+    res.render('userorders',{
+      orders:ordersData,
+      totalPages:Math.ceil(count/limit)
+    })
   } catch (error) {
     console.error(error)
   }

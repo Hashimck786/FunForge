@@ -304,6 +304,14 @@ const loadContact = async(req,res) => {
     
     const searchTerm = req.query.search || '';
     const category = req.query.category || '';
+    
+    var page = 1;
+    if(req.query.page){
+      page = req.query.page
+    }
+
+    const limit = 6;
+
 
     const filter = {
       is_listed:1
@@ -315,9 +323,21 @@ const loadContact = async(req,res) => {
       filter.categoryId = category;
     }
 
-    const productData = await Product.find(filter);
+    const productData = await Product.find(filter)
+    .limit(limit*1)
+    .skip((page-1) * limit)
+    .exec();
+    const count = await Product.find(filter)
+    .countDocuments();
     const categoryData = await Category.find({})
-    res.render('productgrid.ejs',{product:productData,user:userData,search:searchTerm,category:categoryData})
+    res.render('productgrid.ejs',{
+      product:productData,
+      user:userData,
+      search:searchTerm,
+      category:categoryData,
+      totalCount:Math.ceil(count/limit),
+      currentPage:page
+    })
   } catch (error) {
     console.error(error.message)
   }
@@ -329,7 +349,7 @@ const loadProductDetail = async(req,res) => {
   try {
     const id =req.query.id;
     userData=req.session.data;
-    const productData = await Product.findById({_id:id});
+    const productData = await Product.findById({_id:id})
     res.render('productdetail.ejs',{product:productData,user:userData})
   } catch (error) {
       console.error(error.message)
