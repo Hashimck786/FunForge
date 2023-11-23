@@ -336,7 +336,8 @@ const loadContact = async(req,res) => {
       search:searchTerm,
       category:categoryData,
       totalCount:Math.ceil(count/limit),
-      currentPage:page
+      currentPage:page,
+      productSearch:true
     })
   } catch (error) {
     console.error(error.message)
@@ -681,7 +682,9 @@ const removeFromCart = async(req,res) => {
         const updatedQuantity = productData.Stock + oldQuantity ;
         const stockIncrease = await Product.updateOne({_id:productId},{$set : {Stock:updatedQuantity}})
         res.json({
-          success:true
+          success:true,
+          subtotal:cart.cartSubTotal,
+          grandtotal:cart.cartSubTotal
         })
       }else{
         res.json({
