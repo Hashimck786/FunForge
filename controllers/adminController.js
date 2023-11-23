@@ -208,7 +208,8 @@ const loadUserList = async(req,res) => {
     res.render('usersList',{
       users:usersData,
       totalPages:Math.ceil(count/limit),
-      searchTerm:search
+      searchTerm:search,
+      Search:true
     })
   } catch (error) {
     console.log(error.message);
@@ -285,6 +286,7 @@ const loadProductList = async(req,res) => {
       product:productsData,
       totalPages:Math.ceil(count/limit),
       searchTerm:search,
+      Search:true
       
     })
   } catch (error) {
