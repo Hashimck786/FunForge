@@ -238,7 +238,9 @@
                                                                         <td><%= order.deliveryStatus %></td>
                                                                         <td><%= order.paymentMethod %></td>
                                                                         <td><%=order.orderValue %></td>
-                                                                        <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" class="btn-small d-block">View</a></td>
+                                                                        <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" class="btn-small d-block">View</a>
+                                                                        <br>
+                                                                        <a href="/gadgetly/orderDowloadPdf/?orderId=<%= order._id %>" class="btn-small d-block">Dowload receipt</a></td>
                                                                     </tr>
                                                             <%    })
                                                             }else{ %>

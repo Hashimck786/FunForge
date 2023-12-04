@@ -460,9 +460,15 @@
                 })
                 const responseData = await response.json();
                 if(responseData.success){
+                    window.location.href = `/gadgetly/ordersummary?orderId=${responseData.orderId}`
                     alert('payment successful');
                     console.log('payment successful')
                 }else{
+                    swal.fire({
+                        icon:'failed',
+                        title:'payment failed',
+                        text:'payment has been failed'
+                    })
                     alert('payment failed')
                     console.log('payment failed')
                 }

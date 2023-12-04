@@ -9,6 +9,10 @@ const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
 const Razorpay = require('razorpay');
+const ejs = require('ejs');
+const fs = require('fs');
+const pdf = require('html-pdf');
+const path = require('path');
 
 var instance = new Razorpay({
   key_id: 'rzp_test_dTVkgmpPZxBcHY',
@@ -804,6 +808,7 @@ const placeOrder = async(req,res) =>{
         orderValue:cart.cartSubTotal,
         paymentMethod:paymentMethod,
         orderStatus:orderStatus,
+        deliveryStatus:orderStatus,
         products:orderedProductDetails,
         addressDetails:{
           name:address.name,
@@ -871,9 +876,15 @@ const verifyPayment = async(req,res) => {
     hmac.update(req.body.payment.razorpay_order_id + '|' + req.body.payment.razorpay_payment_id);
     hmac =hmac.digest('hex')
     if(hmac == req.body.payment.razorpay_signature){
-      paymentStatusUpdate = await Order.updateOne({_id:req.body.order.receipt},{$set :{orderStatus:'placed',deliveryStatus:'placed'}})
+      let orderId = req.body.order.receipt;
+      paymentStatusUpdate = await Order.updateOne({_id:orderId},{$set :{orderStatus:'placed',deliveryStatus:'placed'}})
       return res.json({
-        success:true
+        success:true,
+        orderId:orderId
+      })
+    }else{
+      return res.json({
+        success:false,
       })
     }
     console.log(req.body.payment.razorpay_payment_id)
@@ -892,6 +903,49 @@ const orderDetails = async(req,res) => {
       res.render('orderdetails',{orderData:orderData})
   } catch (error) {
       console.error(error.message);
+  }
+}
+
+// order reciept dowloading............................................................................
+
+const orderDowloadPdf = async(req,res) => {
+  try {
+     const orderId = req.query.orderId;
+     const orderData = await Order.findOne({_id:orderId});
+     const data = {
+      orderData : orderData
+     }
+     const filePathName = path.resolve(__dirname,'../views/user/htmlToPdf.ejs');
+     const htmlString = fs.readFileSync(filePathName).toString();
+     const ejsData = ejs.render(htmlString,data);
+
+     let options = {
+      format : 'A4',
+      orientation:'portrait',
+      border:'10mm'
+     }
+
+     pdf.create(ejsData,options).toFile('order.pdf',(err,response)=>{
+      if(err){
+        console.error(err.message)
+      }
+      else{
+        const filePath = path.resolve(__dirname,'../order.pdf');
+        fs.readFile(filePath,(err,file)=>{
+          if(err){
+            return res.status(500).send("can't dowload pdf")
+          }else{
+            res.setHeader('Content-type','application/pdf');
+            res.setHeader('Content-Disposition','attachment;filename="order.pdf"');
+
+            res.send(file);
+
+          }
+        })
+      }
+     })
+  } catch (error) {
+     console.error(error.message)
   }
 }
 // exporting functions.................................
@@ -929,5 +983,6 @@ module.exports = {
   orderDetails,
   updateQuantity,
   loadOrderSummary,
-  verifyPayment
+  verifyPayment,
+  orderDowloadPdf
 }

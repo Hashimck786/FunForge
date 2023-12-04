@@ -1,0 +1,70 @@
+<main class="container mt-4">
+  <div class="card shadow-lg">
+    <header class="card-header bg-primary text-white text-center">
+      <h1 class="card-title mb-0">Order Summary</h1>
+    </header>
+  
+    <div class="card-body">
+      <section>
+        <h2 class="mb-3">Order Information</h2>
+        <div class="row mb-3">
+          <div class="col-sm-4"><strong>Order ID:</strong></div>
+          <div class="col-sm-8"><%= orderData._id %></div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-4"><strong>Order Date:</strong></div>
+          <div class="col-sm-8"><%= orderData.date %></div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-sm-4"><strong>Order Value:</strong></div>
+          <div class="col-sm-8">$<%= orderData.orderValue.toFixed(2) %></div>
+        </div>
+        <!-- Add more details as needed -->
+      </section>
+  
+      <section>
+          <h2 class="mb-3">Ordered Products</h2>
+          <ul class="list-group">
+            <% orderData.products.forEach(function(product) { %>
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <img src="http://localhost:3000//admin-assets/imgs/productImages/<%= product.productImage %>" class="img-sm img-thumbnail" alt="Item" style="height: 100px; width: 100px;">
+                  </div>
+                  <div class="col-sm-8">
+                    <p class="mb-1"><strong>Product ID:</strong> <%= product.productId %></p>
+                    <p class="mb-1"><strong>Product Name:</strong> <%= product.productName %></p>
+                    <p class="mb-1"><strong>Quantity:</strong> <%= product.quantity %></p>
+                    <p class="mb-1"><strong>Product Price:</strong> <%= product.productPrice %></p>
+                    <p class="mb-1"><strong>Total:</strong> <%= product.quantity %> x <%= product.productPrice %> = <%= product.total %></p>
+                    <!-- Add more product details as needed -->
+                  </div>
+                </div>
+              </li>
+            <% }); %>
+          </ul>
+        </section>
+        
+  
+      <section>
+        <h2 class="mb-3">Shipping Address</h2>
+        <ul class="list-group">
+            <li class="list-group-item">
+              <p class="mb-1"><strong>Name:</strong><%= orderData.addressDetails.name %></p>
+              <p class="mb-1"><strong>Postcode:</strong><%= orderData.addressDetails.postcode %></p>
+              <p class="mb-1"><strong>Phone:</strong><%= orderData.addressDetails.phone %></p>
+              <p class="mb-1"><strong>Streetaddress:</strong><%= orderData.addressDetails.streetaddress %></p>
+              <p class="mb-1"><strong>City:</strong><%= orderData.addressDetails.city %></p>
+              <p class="mb-1"><strong>State:</strong><%= orderData.addressDetails.state %></p>
+              <p class="mb-1"><strong>Country:</strong><%= orderData.addressDetails.country %></p>
+            </li>
+          
+        </ul>
+      </section>
+    </div>
+  
+    <footer class="card-footer text-muted text-center">
+      &copy; 2023 Your Company Name
+    </footer>
+  </div>
+</main>
