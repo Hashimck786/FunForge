@@ -1,0 +1,44 @@
+<table class="table align-middle table-nowrap mb-0">
+  <thead class="table-light">
+      <tr>
+          <th class="align-middle" scope="col">Order ID</th>
+          <th class="align-middle" scope="col">Billing Name</th>
+          <th class="align-middle" scope="col">Date</th>
+          <th class="align-middle" scope="col">Total</th>
+          <th class="align-middle" scope="col">Payment Status</th>
+          <th class="align-middle" scope="col">Payment Method</th>
+      </tr>
+  </thead>
+  <tbody>
+    <% let total;
+      if(typeof salesData != "undefined" && salesData.length>0){
+      
+       total = salesData.reduce((sum, order) => sum + order.orderValue, 0);
+      salesData.forEach((order,index)=>{  %>
+        <tr>
+          <td><%= index+1 %></td>
+          <td><%= order.userId.name %></td>
+          <td>
+              <%= order.date %>
+          </td>
+          <td>
+              <%= order.orderValue %>
+          </td>
+          <td>
+              <span class="badge badge-pill badge-soft-success"><%= order.orderStatus %></span>
+          </td>
+          <td>
+              <%= order.paymentMethod %>
+          </td>
+      </tr>
+     <%})
+    } else{ %>
+      <tr>
+        <td colspan="4">no orders yet...............</td>
+      </tr>
+    <% } %>
+    
+
+  </tbody>
+</table>
+<h3 style="color: brown;">TOTAL SALE VALUE = <%= total %></h3>

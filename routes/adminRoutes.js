@@ -71,6 +71,11 @@ adminRoute.post('/category_edit',auth.isLogin,adminController.categoryEdit);
 
 adminRoute.get('/userorders',auth.isLogin,adminController.userOrders);
 adminRoute.get('/deliver',auth.isLogin,adminController.deliverOrder)
-
+adminRoute.get('/salesreport',auth.isLogin,adminController.salesReport)
+adminRoute.get('/daily-sales',auth.isLogin,adminController.dailySales)
+adminRoute.get('/weekly-sales',auth.isLogin,adminController.weeklySales)
+adminRoute.get('/monthly-sales',auth.isLogin,adminController.monthlySales)
+adminRoute.get('/yearly-sales',auth.isLogin,adminController.yearlySales)
+adminRoute.get('/dowload-report',auth.isLogin,adminController.downloadReport)
 
 module.exports = adminRoute;

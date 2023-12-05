@@ -4,7 +4,11 @@ const Admin = require('../models/adminModel')
 const User = require('../models/userModel');
 const Product = require('../models/productModel')
 const Order = require('../models/orderModel')
-const Category = require('../models/categoryModel')
+const Category = require('../models/categoryModel');
+const ejs = require('ejs');
+const fs = require('fs');
+const pdf = require('html-pdf');
+const path = require('path');
 
 
 // password hashing(securing)......................................
@@ -36,7 +40,11 @@ const loadAdminLogin = async(req,res) => {
 
 const loadAdminHome = async(req,res)=>{
   try{
-    res.render('index.ejs')
+    const orderData = await Order.find({orderStatus:"delivered"});
+    const revenue = orderData.reduce((sum, order) => sum + order.orderValue, 0);
+    const orderCount = await Order.countDocuments();
+    const productCount = await Product.countDocuments();
+    res.render('index.ejs', { revenue, orderCount, productCount });
   }catch(error){
     res.send(error.message)
   }
@@ -571,6 +579,285 @@ const deliverOrder = async(req,res) => {
   }
 }
 
+
+// loading salesReport.................................................................
+
+const salesReport = async(req,res) => {
+  try {
+    const salesData = await Order.find({orderStatus:"delivered"})
+    res.render('salesReport',{salesData , message:"TotalSales",type:"total"})
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+// daily sales................................................................................
+
+const dailySales = async (req, res) => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  // Create a new date object for tomorrow
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  try {
+    
+    const salesData = await Order.find({
+      orderStatus:'delivered',
+      date: {
+        $gte: today,
+        $lt: tomorrow,
+      },
+    });
+
+    res.render('salesReport', { salesData, message:"DailySales",type:"daily" });
+  } catch (error) {
+    console.error('Error fetching sales data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// monthly sales .............................................................
+
+const monthlySales = async (req, res) => {
+  const today = new Date();
+
+  // Set the day of the month to the first day
+  today.setDate(1);
+
+  try {
+    const salesData = await Order.find({
+      orderStatus:'delivered',
+      date: {
+        $gte: today,
+        $lt: new Date(), // Represents the current date
+      },
+    });
+
+    res.render('salesReport', { salesData ,message:"MonthlySales",type:"month"});
+  } catch (error) {
+    console.error('Error fetching sales data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+// weekly sales report ..............................................................
+
+async function weeklySales(req, res) {
+  const today = new Date();
+
+  // Set the day of the week to Sunday (0 represents Sunday, 1 represents Monday, and so on)
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  try {
+    const salesData = await Order.find({
+      orderStatus: 'delivered',
+      date: {
+        $gte: startOfWeek,
+        $lt: today,
+      },
+    });
+
+    res.render('salesReport', { salesData,message:"WeeklySales",type:"week"});
+  } catch (error) {
+    console.error('Error fetching sales data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+//  yearly sales report...........................................................
+
+const yearlySales = async (req, res) => {
+  const today = new Date();
+
+  // Set the month and day to January 1st
+  const startOfYear = new Date(today);
+  startOfYear.setMonth(0,1)
+
+  try {
+    const salesData = await Order.find({
+      orderStatus:'delivered',
+      date: {
+        $gte:startOfYear ,
+        $lt: today, // Represents the current date
+      },
+    });
+
+    res.render('salesReport', { salesData,message:"YearlySales",type:"year" });
+  } catch (error) {
+    console.error('Error fetching sales data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+
+// dowloading Report ............................................................
+
+const downloadReport = async(req,res) => {
+  try {
+    const type = req.query.type;
+    let salesData ;
+    switch (type) {
+        case "week":
+          salesData = await weeklySalesData();
+            break;
+    
+        case "year":
+          salesData = await yearlySalesData();
+            break;
+    
+        case "daily":
+          salesData = await dailySalesData();
+            break;
+    
+        case "month":
+          salesData = await monthlySalesData();
+            break;
+        case "total":
+          salesData = await totalSalesData();
+            break;
+    
+        // default:
+        //   salesData = weeklySalesData();
+        //     break;
+    }
+    
+     const data = {
+      salesData : salesData
+     }
+     const filePathName = path.resolve(__dirname,'../views/admin/downloadReport.ejs');
+     const htmlString = fs.readFileSync(filePathName).toString();
+     const ejsData = ejs.render(htmlString,data);
+
+     let options = {
+      format : 'A4',
+      orientation:'portrait',
+      border:'10mm'
+     }
+
+     pdf.create(ejsData,options).toFile('report.pdf',(err,response)=>{
+      if(err){
+        console.error(err.message)
+      }
+      else{
+        const filePath = path.resolve(__dirname,'../report.pdf');
+        fs.readFile(filePath,(err,file)=>{
+          if(err){
+            return res.status(500).send("can't dowload pdf")
+          }else{
+            res.setHeader('Content-type','application/pdf');
+            res.setHeader('Content-Disposition','attachment;filename="report.pdf"');
+
+            res.send(file);
+
+          }
+        })
+      }
+     })
+  } catch (error) {
+     console.error(error.message)
+  }
+}
+
+// weeklySalesDatafunction >>>>>>>>>>>>>>>>>>>>>>>
+
+const weeklySalesData = async()=>{
+  const today = new Date();
+
+  // Set the day of the week to Sunday (0 represents Sunday, 1 represents Monday, and so on)
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - today.getDay());
+
+  try {
+    const salesData = await Order.find({
+      orderStatus: 'delivered',
+      date: {
+        $gte: startOfWeek,
+        $lt: today,
+      },
+    });
+
+    return salesData
+  }catch(error){
+    console.error(error.message);
+  }
+
+}
+
+const monthlySalesData = async()=>{
+  const today = new Date();
+
+  // Set the day of the month to the first day
+  today.setDate(1);
+
+  try {
+    const salesData = await Order.find({
+      orderStatus:'delivered',
+      date: {
+        $gte: today,
+        $lt: new Date(), // Represents the current date
+      },
+    });
+    return salesData
+  }catch(error){
+    console.error(error.message);
+  }
+}
+
+const yearlySalesData = async()=>{
+  const today = new Date();
+
+  // Set the month and day to January 1st
+  const startOfYear = new Date(today);
+  startOfYear.setMonth(0,1)
+
+  try {
+    const salesData = await Order.find({
+      orderStatus:'delivered',
+      date: {
+        $gte:startOfYear ,
+        $lt: today, // Represents the current date
+      },
+    });
+  }catch{
+    console.error(error.message)
+  }
+}
+
+
+const dailySalesData = async() => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Create a new date object for tomorrow
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+
+  try {
+    
+    const salesData = await Order.find({
+      orderStatus:'delivered',
+      date: {
+        $gte: today,
+        $lt: tomorrow,
+      },
+    });
+    return salesData;
+  }catch(error){
+    console.error(error.message)
+  }
+}
+
+
+ const totalSalesData = async() =>{
+  try {
+    const salesData = await Order.find({orderStatus:'delivered'});
+    return salesData;
+  } catch (error) {
+    error.message
+  }
+ }
  module.exports = {
   loadAdminHome,
   loadAdminLogin,
@@ -597,7 +884,12 @@ const deliverOrder = async(req,res) => {
   loadCategoryEdit,
   categoryEdit,
   userOrders,
-  deliverOrder
-
+  deliverOrder,
+  salesReport,
+  dailySales,
+  monthlySales,
+  weeklySales,
+  yearlySales,
+  downloadReport
  };
 
