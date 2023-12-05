@@ -820,6 +820,7 @@ const yearlySalesData = async()=>{
         $lt: today, // Represents the current date
       },
     });
+    return salesData
   }catch{
     console.error(error.message)
   }
@@ -858,6 +859,48 @@ const dailySalesData = async() => {
     error.message
   }
  }
+
+
+//  fetching sales Data to chart js...........................................................
+
+const fetchSalesData = async (req,res) => {
+  try {
+    const type = req.query.type;
+    let salesData ;
+    switch (type) {
+        case "week":
+          salesData = await weeklySalesData();
+            break;
+    
+        case "year":
+          salesData = await yearlySalesData();
+            break;
+    
+        case "daily":
+          salesData = await dailySalesData();
+            break;
+    
+        case "month":
+          salesData = await monthlySalesData();
+            break;
+        case "total":
+          salesData = await totalSalesData();
+            break;
+    
+        // default:
+        //   salesData = weeklySalesData();
+        //     break;
+    }
+    console.log("salesDatafetch",salesData)
+    totalSales = salesData.reduce((sum, order) => sum + order.orderValue, 0)
+    return res.json({
+      salesData:totalSales,
+      count:0
+    })
+  } catch (error) {
+     console.error(error.message)
+  }
+}
  module.exports = {
   loadAdminHome,
   loadAdminLogin,
@@ -890,6 +933,7 @@ const dailySalesData = async() => {
   monthlySales,
   weeklySales,
   yearlySales,
-  downloadReport
+  downloadReport,
+  fetchSalesData
  };
 

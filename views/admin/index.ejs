@@ -64,6 +64,18 @@
                     </div>
                 </div>
             </div>
+            <label for="charttype">Select Chart Type:</label>
+            <select id="charttype">
+                <option >choose date</option>
+                <option value="month">monthly</option>
+                <option value="year">yearly</option>
+                <option value="daily">daily</option>
+                <option value="total">total</option>
+                <option value="week">weekly</option>
+                <!-- Add more options as needed -->
+            </select>
+            <canvas id="salesChart" width="400" height="200"></canvas>
+
             <!-- <div class="row">
                 <div class="col-xl-8 col-lg-12">
                     <div class="card mb-4">
@@ -466,4 +478,53 @@
                 </nav>
             </div> -->
         </section> <!-- content-main end// -->
+             
 <%-include('../layout/adminfooter') %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  
+<script>
+    var salesData ;
+    var count ;
+    document.addEventListener('DOMContentLoaded',()=>{
+        console.log('entered dom')
+        const typeDropdown=document.getElementById('charttype');
+        typeDropdown.addEventListener('change',async()=>{
+            console.log('entered change')
+            const selectedType = typeDropdown.value;
+            const response = await fetch(`/gadgetly/admin/fetchSalesData/?type=${selectedType}`,{
+                method:'POST'
+            });
+            const data = await response.json();
+            console.log(data.salesData);
+            console.log(data.count)
+            if (data.salesData) {
+                salesData = data.salesData;
+
+                count = data.count
+            // Update chart data
+            salesChart.data.labels = ['Totalsale', 'count'];
+            salesChart.data.datasets[0].data = [salesData, count];
+            salesChart.update();
+            }
+
+        })
+    })
+    var ctx = document.getElementById('salesChart').getContext('2d');
+var salesChart = new Chart(ctx, {
+    type: 'bar', // or 'bar', 'pie', etc. depending on your needs
+    data: {
+        labels:['Totalsale','count'] , /* Your labels here, e.g., dates */
+        datasets: [{
+            label: 'Sales',
+            data:[salesData,count] ,
+            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Adjust color as needed
+            borderColor: 'rgba(75, 192, 192, 1)', // Adjust color as needed
+            borderWidth: 1
+        }]
+    },
+    options: {
+        // Add any additional options here, e.g., scales, tooltips, etc.
+    }
+});
+
+</script>
+
