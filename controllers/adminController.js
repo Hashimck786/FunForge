@@ -44,9 +44,9 @@ const loadAdminHome = async(req,res)=>{
     const revenue = orderData.reduce((sum, order) => sum + order.orderValue, 0);
     const orderCount = await Order.countDocuments();
     const productCount = await Product.countDocuments();
-    res.render('index.ejs', { revenue, orderCount, productCount });
+    res.render('index.ejs', { revenue, orderCount, productCount,});
   }catch(error){
-    res.send(error.message)
+    console.error(error.message)
   }
 }
 
@@ -891,7 +891,6 @@ const fetchSalesData = async (req,res) => {
         //   salesData = weeklySalesData();
         //     break;
     }
-    console.log("salesDatafetch",salesData)
     totalSales = salesData.reduce((sum, order) => sum + order.orderValue, 0)
     return res.json({
       salesData:totalSales,

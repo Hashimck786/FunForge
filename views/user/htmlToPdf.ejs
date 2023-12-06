@@ -1,70 +1,77 @@
-<main class="container mt-4">
-  <div class="card shadow-lg">
-    <header class="card-header bg-primary text-white text-center">
-      <h1 class="card-title mb-0">Order Summary</h1>
+<main style="margin-top: 4rem;" class="container">
+  <div style="box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);" class="card">
+    <header style="background-color: #007bff; color: #fff; text-align: center;" class="card-header">
+      <h1 style="font-size: 2.5rem;" class="display-4">INVOICE</h1>
     </header>
-  
+
     <div class="card-body">
-      <section>
-        <h2 class="mb-3">Order Information</h2>
-        <div class="row mb-3">
-          <div class="col-sm-4"><strong>Order ID:</strong></div>
-          <div class="col-sm-8"><%= orderData._id %></div>
+      <section style="border-bottom: 1px solid #dee2e6; padding-bottom: 1rem; margin-bottom: 1rem;">
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Order Information</h2>
+        <div style="margin-bottom: .75rem;" class="row">
+          <div style="flex: 0 0 33.333333%; max-width: 33.333333%; color: #6c757d;" class="col-md-4"><strong>Order ID:</strong></div>
+          <div style="color: #28a745; font-size: 1.25rem;" class="col-md-8"><%= orderData._id %></div>
         </div>
-        <div class="row mb-3">
-          <div class="col-sm-4"><strong>Order Date:</strong></div>
-          <div class="col-sm-8"><%= orderData.date %></div>
+        <div style="margin-bottom: .75rem;" class="row">
+          <div style="flex: 0 0 33.333333%; max-width: 33.333333%; color: #6c757d;" class="col-md-4"><strong>Order Date:</strong></div>
+          <div style="color: #28a745; font-size: 1.25rem;" class="col-md-8"><%= orderData.date %></div>
         </div>
-        <div class="row mb-3">
-          <div class="col-sm-4"><strong>Order Value:</strong></div>
-          <div class="col-sm-8">$<%= orderData.orderValue.toFixed(2) %></div>
+        <div class="row">
+          <div style="flex: 0 0 33.333333%; max-width: 33.333333%; color: #6c757d;" class="col-md-4"><strong>Order Value:</strong></div>
+          <div style="color: #28a745; font-size: 1.25rem;" class="col-md-8">$<%= orderData.orderValue.toFixed(2) %></div>
         </div>
-        <!-- Add more details as needed -->
       </section>
-  
+
+      <section style="border-bottom: 1px solid #dee2e6; padding-bottom: 1rem; margin-bottom: 1rem;">
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Ordered Products</h2>
+        <div class="table-responsive">
+          <table style="width: 100%;" class="table table-bordered table-striped">
+            <thead style="background-color: #f8f9fa;" class="thead-light">
+              <tr>
+                <th scope="col">Product Image</th>
+                <th scope="col">Product ID</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Product Price</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% orderData.products.forEach(function(product) { %>
+                <tr>
+                  <td>
+                    <img src="http://localhost:3000//admin-assets/imgs/productImages/<%= product.productImage %>" class="img-fluid img-thumbnail" alt="Item" style="max-height: 60px; max-width: 60px;">
+                  </td>
+                  <td style="color: #007bff;"><%= product.productId %></td>
+                  <td style="color: #007bff;"><%= product.productName %></td>
+                  <td style="color: #007bff;"><%= product.quantity %></td>
+                  <td style="color: #007bff;">$<%= product.productPrice %></td>
+                  <td style="color: #007bff;">$<%= product.quantity * product.productPrice %></td>
+                </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section>
-          <h2 class="mb-3">Ordered Products</h2>
-          <ul class="list-group">
-            <% orderData.products.forEach(function(product) { %>
-              <li class="list-group-item">
-                <div class="row">
-                  <div class="col-sm-4">
-                    <img src="http://localhost:3000//admin-assets/imgs/productImages/<%= product.productImage %>" class="img-sm img-thumbnail" alt="Item" style="height: 100px; width: 100px;">
-                  </div>
-                  <div class="col-sm-8">
-                    <p class="mb-1"><strong>Product ID:</strong> <%= product.productId %></p>
-                    <p class="mb-1"><strong>Product Name:</strong> <%= product.productName %></p>
-                    <p class="mb-1"><strong>Quantity:</strong> <%= product.quantity %></p>
-                    <p class="mb-1"><strong>Product Price:</strong> <%= product.productPrice %></p>
-                    <p class="mb-1"><strong>Total:</strong> <%= product.quantity %> x <%= product.productPrice %> = <%= product.total %></p>
-                    <!-- Add more product details as needed -->
-                  </div>
-                </div>
-              </li>
-            <% }); %>
-          </ul>
-        </section>
-        
-  
-      <section>
-        <h2 class="mb-3">Shipping Address</h2>
+        <h2 style="font-size: 2rem; margin-bottom: 1rem;">Shipping Address</h2>
         <ul class="list-group">
-            <li class="list-group-item">
-              <p class="mb-1"><strong>Name:</strong><%= orderData.addressDetails.name %></p>
-              <p class="mb-1"><strong>Postcode:</strong><%= orderData.addressDetails.postcode %></p>
-              <p class="mb-1"><strong>Phone:</strong><%= orderData.addressDetails.phone %></p>
-              <p class="mb-1"><strong>Streetaddress:</strong><%= orderData.addressDetails.streetaddress %></p>
-              <p class="mb-1"><strong>City:</strong><%= orderData.addressDetails.city %></p>
-              <p class="mb-1"><strong>State:</strong><%= orderData.addressDetails.state %></p>
-              <p class="mb-1"><strong>Country:</strong><%= orderData.addressDetails.country %></p>
-            </li>
-          
+          <li style="background-color: #ffc107;" class="list-group-item">
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>Name:</strong> <%= orderData.addressDetails.name %></p>
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>Postcode:</strong> <%= orderData.addressDetails.postcode %></p>
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>Phone:</strong> <%= orderData.addressDetails.phone %></p>
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>Street Address:</strong> <%= orderData.addressDetails.streetaddress %></p>
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>City:</strong> <%= orderData.addressDetails.city %></p>
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>State:</strong> <%= orderData.addressDetails.state %></p>
+            <p style="margin-bottom: .5rem; font-size: 1.25rem; color: #343a40;"><strong>Country:</strong> <%= orderData.addressDetails.country %></p>
+          </li>
         </ul>
       </section>
     </div>
-  
-    <footer class="card-footer text-muted text-center">
+
+    <footer style="color: #6c757d; text-align: center; background-color: #17a2b8;" class="card-footer">
       &copy; 2023 Your Company Name
     </footer>
   </div>
 </main>
+
