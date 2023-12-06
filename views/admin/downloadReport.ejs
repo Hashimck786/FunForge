@@ -1,44 +1,42 @@
-<table class="table align-middle table-nowrap mb-0">
-  <thead class="table-light">
+<table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #dee2e6; background-color: #fff;" class="table align-middle table-nowrap mb-0">
+  <thead style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
       <tr>
-          <th class="align-middle" scope="col">Order ID</th>
-          <th class="align-middle" scope="col">Billing Name</th>
-          <th class="align-middle" scope="col">Date</th>
-          <th class="align-middle" scope="col">Total</th>
-          <th class="align-middle" scope="col">Payment Status</th>
-          <th class="align-middle" scope="col">Payment Method</th>
+          <th style="padding: 10px; text-align: center;" class="align-middle" scope="col">Order ID</th>
+          <th style="padding: 10px; text-align: center;" class="align-middle" scope="col">Billing Name</th>
+          <th style="padding: 10px; text-align: center;" class="align-middle" scope="col">Date</th>
+          <th style="padding: 10px; text-align: center;" class="align-middle" scope="col">Total</th>
+          <th style="padding: 10px; text-align: center;" class="align-middle" scope="col">Payment Status</th>
+          <th style="padding: 10px; text-align: center;" class="align-middle" scope="col">Payment Method</th>
       </tr>
   </thead>
   <tbody>
     <% let total;
-      if(typeof salesData != "undefined" && salesData.length>0){
+      if(typeof salesData != "undefined" && salesData.length > 0){
       
        total = salesData.reduce((sum, order) => sum + order.orderValue, 0);
-      salesData.forEach((order,index)=>{  %>
+      salesData.forEach((order, index) => {  %>
         <tr>
-          <td><%= index+1 %></td>
-          <td><%= order.userId.name %></td>
-          <td>
+          <td style="padding: 10px; text-align: center; border: 1px solid #dee2e6;"><%= index+1 %></td>
+          <td style="padding: 10px; text-align: center; border: 1px solid #dee2e6;"><%= order.userId.name %></td>
+          <td style="padding: 10px; text-align: center; border: 1px solid #dee2e6;">
               <%= order.date %>
           </td>
-          <td>
+          <td style="padding: 10px; text-align: center; border: 1px solid #dee2e6;">
               <%= order.orderValue %>
           </td>
-          <td>
-              <span class="badge badge-pill badge-soft-success"><%= order.orderStatus %></span>
+          <td style="padding: 10px; text-align: center; border: 1px solid #dee2e6;">
+              <span style="padding: 5px; background-color:'#28a745'; border-radius: 5px; display: inline-block;"><%= order.orderStatus %></span>
           </td>
-          <td>
+          <td style="padding: 10px; text-align: center; border: 1px solid #dee2e6;">
               <%= order.paymentMethod %>
           </td>
       </tr>
      <%})
     } else{ %>
       <tr>
-        <td colspan="4">no orders yet...............</td>
+        <td colspan="6" style="text-align: center; padding: 10px; border: 1px solid #dee2e6;">no orders yet...............</td>
       </tr>
     <% } %>
-    
-
   </tbody>
 </table>
-<h3 style="color: brown;">TOTAL SALE VALUE = <%= total %></h3>
+<h3 style="color: brown; text-align: right; margin-right: 20px;">TOTAL SALE VALUE = <%= total %></h3>

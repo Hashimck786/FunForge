@@ -169,12 +169,12 @@
                 </div>
             </div>
         </div>
-        <section class="pt-150 pb-150">
+        <section class="pt-50 pb-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-10 m-auto">
-                        <div class="row">
-                          <div class="col-lg-5 centered-form">
+                    <div class="col-lg-10 offset-lg-1"> <!-- Center the column -->
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5 centered-form">
                                 <div class="login_wrap widget-taber-content p-30 background-white border-radius-10 mb-md-5 mb-lg-0 mb-sm-5">
                                     <div class="padding_eight_all bg-white">
                                         <div class="heading_s1">
@@ -188,12 +188,6 @@
                                                 <input required="" type="password" name="password" placeholder="Password">
                                             </div>
                                             <div class="login_footer form-group">
-                                                <div class="chek-form">
-                                                    <div class="custome-checkbox">
-                                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="">
-                                                        <label class="form-check-label" for="exampleCheckbox1"><span>Remember me</span></label>
-                                                    </div>
-                                                </div>
                                                 <a class="text-muted" href="/gadgetly/forget">Forgot password?</a>
                                             </div>
                                             <div class="form-group">
@@ -203,8 +197,7 @@
                                     </div>
                                     <% if(typeof message != "undefined"){ %>
                                         <p style="color: crimson;"><%= message %></p>
-        
-                                     <% }else{} %>
+                                    <% }else{} %>
                                 </div>
                             </div>
                         </div>
@@ -212,5 +205,7 @@
                 </div>
             </div>
         </section>
+        
+        
     </main>
     <%-include('../layout/footer') %>
