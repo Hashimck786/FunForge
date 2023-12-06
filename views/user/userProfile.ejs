@@ -226,6 +226,7 @@
                                                                 <th>paymentmethod</th>
                                                                 <th>Total</th>
                                                                 <th>Actions</th>
+                                                                <th>Cancel/Return</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -238,9 +239,14 @@
                                                                         <td><%= order.deliveryStatus %></td>
                                                                         <td><%= order.paymentMethod %></td>
                                                                         <td><%=order.orderValue %></td>
-                                                                        <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" class="btn-small d-block">View</a>
+                                                                        <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" style="background-color: rgb(15, 163, 22) ; color: white;" class="btn btn-small  d-block">View</a>
                                                                         <br>
-                                                                        <a href="/gadgetly/orderDowloadPdf/?orderId=<%= order._id %>" class="btn-small d-block">Dowload receipt</a></td>
+                                                                        <a href="/gadgetly/orderDowloadPdf/?orderId=<%= order._id %>"  style="background-color: rgb(219, 55, 18) ; color: white;" class="btn btn-small d-block">Dowload receipt</a></td>
+                                                                        <% if(order.deliveryStatus === "delivered"){ %>
+                                                                         <td><a href="#"  style="background-color: rgb(219, 18, 18) ; color: white;" class="btn btn-small d-block">Return</a></td>
+                                                                        <% }else{ %>
+                                                                         <td><a href="/gadgetly/cancelorder/?orderId=<%= order._id %>"  style="background-color: rgb(18, 175, 219) ; color: white;" class="btn btn-small d-block">Cancel</a></td>
+                                                                        <% } %>
                                                                     </tr>
                                                             <%    })
                                                             }else{ %>

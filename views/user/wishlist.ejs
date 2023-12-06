@@ -196,7 +196,11 @@
                                                 </td>
                                                 <td class="price" data-title="Price"><span><%=product[i].salePrice %></span></td>
                                                 <td class="text-center" data-title="Stock">
+                                                    <%if(product[i].Stock >0){ %>
                                                     <span class="color3 font-weight-bold">In Stock</span>
+                                                    <% }else{ %>
+                                                    <span class="color3 font-weight-bold">Out of Stock</span> 
+                                                    <% } %>
                                                 </td>
                                                 <td class="text-right" data-title="Cart">
                                                     <button class="btn btn-sm cart-btn" productId="<%= product[i]._id %>"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
@@ -206,7 +210,7 @@
                                        <% }
                                     }else{ %>
                                         <tr>
-                                            <td colspan="5">empty wishlist ..pls add to your wishlist</td>
+                                            <td colspan="6">empty wishlist ..pls add to your wishlist</td>
                                         </tr>
                                     <%} %>
                                     <!-- <tr>

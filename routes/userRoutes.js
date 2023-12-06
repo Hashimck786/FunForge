@@ -16,6 +16,8 @@ userRoute.use(express.json());
 userRoute.use(express.urlencoded({extended:true}))
 const userAuth = require('../middlewares/userAuth.js')
 const userController = require('../controllers/userController')
+const cartController = require('../controllers/cartController')
+const wishlistController = require('../controllers/wishlistController')
 
 
 userRoute.get("/",userController.loadHome);
@@ -38,9 +40,12 @@ userRoute.get('/verify',userController.verifyMail);
 
 userRoute.get('/shop',userController.loadProducts);
 userRoute.get('/productdetail',userController.loadProductDetail)
-userRoute.get('/wishlist',userAuth.isLogin,userController.loadWishlist)
-userRoute.get('/addwishlist',userAuth.isLogin,userController.addToWishlist)
-userRoute.get('/removewishlist',userAuth.isLogin,userController.removeFromWishlist)
+
+
+userRoute.get('/wishlist',userAuth.isLogin,wishlistController.loadWishlist)
+userRoute.get('/addwishlist',userAuth.isLogin,wishlistController.addToWishlist)
+userRoute.get('/removewishlist',userAuth.isLogin,wishlistController.removeFromWishlist)
+
 userRoute.get('/myaccount',userAuth.isLogin,userController.loadProfile)
 userRoute.post('/editProfile',userAuth.isLogin,userController.editProfile)
 userRoute.get('/addAddress',userAuth.isLogin,userController.loadAddAddress)
@@ -50,10 +55,10 @@ userRoute.post('/editaddress',userController.editAddress)
 userRoute.get('/deleteaddress',userAuth.isLogin,userController.deleteAddress)
 userRoute.get('/defaultaddress',userAuth.isLogin,userController.defaultAddress)
 
-userRoute.get('/cart',userAuth.isLogin,userController.loadCart);
-userRoute.get('/addtocart',userAuth.isLogin,userController.addToCart);
-userRoute.get('/removefromcart',userAuth.isLogin,userController.removeFromCart);
-userRoute.post('/updatequantity',userAuth.isLogin,userController.updateQuantity)
+userRoute.get('/cart',userAuth.isLogin,cartController.loadCart);
+userRoute.get('/addtocart',userAuth.isLogin,cartController.addToCart);
+userRoute.get('/removefromcart',userAuth.isLogin,cartController.removeFromCart);
+userRoute.post('/updatequantity',userAuth.isLogin,cartController.updateQuantity)
 
 userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
 userRoute.post('/placeorder',userAuth.isLogin,userController.placeOrder)
@@ -61,6 +66,7 @@ userRoute.post('/verifypayment',userAuth.isLogin,userController.verifyPayment)
 userRoute.get('/ordersummary',userAuth.isLogin,userController.loadOrderSummary)
 userRoute.get('/orderdetails',userAuth.isLogin,userController.orderDetails)
 userRoute.get('/orderDowloadPdf',userAuth.isLogin,userController.orderDowloadPdf)
+userRoute.get('/cancelorder',userAuth.isLogin,userController.cancelOrder)
 
 
 

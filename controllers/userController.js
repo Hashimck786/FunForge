@@ -948,6 +948,18 @@ const orderDowloadPdf = async(req,res) => {
      console.error(error.message)
   }
 }
+
+// requesting for cancel order..............................................................
+
+const cancelOrder = async(req,res)=>{
+  try {
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{cancellationStatus:'requested'})
+    return res.redirect('/gadgetly/myaccount')
+  } catch (error) {
+    console.error(error.message);
+  }
+}
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -984,5 +996,6 @@ module.exports = {
   updateQuantity,
   loadOrderSummary,
   verifyPayment,
-  orderDowloadPdf
+  orderDowloadPdf,
+  cancelOrder
 }
