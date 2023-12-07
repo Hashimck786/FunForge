@@ -40,7 +40,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="table-responsive">
-                        <table class="table align-middle table-nowrap mb-0">
+                        <table class="table table-bordered align-middle table-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <!-- <th scope="col" class="text-center">
@@ -72,7 +72,7 @@
                                     <td><a href="#" class="fw-bold"><%= index+1 %></a> </td>
                                     <td><%= order.userId.name %></td>
                                     <td>
-                                        <%= order.date %>
+                                        <%= new Date(order.date).toLocaleString('en-US',{timeZone: 'Asia/Kolkata'}) %>
                                     </td>
                                     <td>
                                         <%= order.orderValue %>
@@ -92,9 +92,16 @@
                                     <% }else{ %>
                                         <td></td>
                                     <% } %>
-                                    <td>
-                                        <a href="#" class="btn btn-xs"> View details</a>
-                                    </td>
+                                    <%if(order.cancellationStatus === "requested"){%>
+                                        <td>
+                                            <a href="/gadgetly/admin/viewdetail/?orderId=<%=order._id %>" style="background-color: crimson;" class="btn btn-xs"> Review details</a>
+                                        </td>
+                                    <%}else{%>
+                                        <td>
+                                            <a href="/gadgetly/admin/viewdetail/?orderId=<%=order._id %>" class="btn btn-xs"> View details</a>
+                                        </td>
+                                    <%}%>
+                                    
                                 </tr>
                                <%})
                               } else{ %>

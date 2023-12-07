@@ -224,6 +224,43 @@
               </ul>
             </section>
           </div>
+
+          <div class="container mt-5 mb-10 ">
+            <div class="card">
+              <div class="card-body bg-light">
+                <%if(orderData.deliveryStatus === "delivered"){ %>
+                    <form action="/gadgetly/returnorder/?orderId=<%=orderData._id%>" method="post">
+                        <div class="form-group">
+                          <label for="textArea">Reason for return</label>
+                          <textarea class="form-control" id="textArea" rows="4" cols="50"></textarea>
+                        </div>
+                
+                        <button type="submit" class="btn">Return</button>
+                      </form>
+                <%  }else if(orderData.deliveryStatus === "cancelled"){ %>
+                <h4 class="text-danger">Order has been cancelled!</h4>
+                <% }else{ %>
+                    <%if(orderData.cancellationStatus === "requested"){ %>
+                        <h4>Requested for Cancellation</h4>
+                        <p>if admin approves the cancellation the product will be cancelled</p>
+                    <% }else if(orderData.cancellationStatus === "denied"){ %> 
+                        <h4 class="text-warning">Order cancelling has been denied!!</h4>   
+                    <% }else {%>
+                        <form action="/gadgetly/cancelorder/?orderId=<%=orderData._id%>" method="post">
+                            <div class="form-group">
+                              <label for="textArea">Reason for cancellation</label>
+                              <textarea class="form-control" id="textArea" rows="4" cols="50"></textarea>
+                            </div>
+                    
+                            <button type="submit" class="btn ">Cancel Order</button>
+                          </form>
+                    <% }  %>
+                    
+                <% } %>
+
+              </div>
+            </div>
+          </div>
         
           <footer class="card-footer text-muted text-center">
             &copy; 2023 Your Company Name

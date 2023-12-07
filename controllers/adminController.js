@@ -580,6 +580,17 @@ const deliverOrder = async(req,res) => {
 }
 
 
+// view order details.....................................................................
+const viewOrderDetails = async(req,res) =>{
+  try {
+      const orderId = req.query.orderId;
+      const orderData = await Order.findOne({_id:orderId});
+      res.render('vieworderdetails',{orderData})
+  } catch (error) {
+      console.error(error.message);
+  }
+}
+
 // loading salesReport.................................................................
 
 const salesReport = async(req,res) => {
@@ -900,6 +911,29 @@ const fetchSalesData = async (req,res) => {
      console.error(error.message)
   }
 }
+
+
+// allow cancel ..........................................................
+
+const allowCancel = async(req,res)=>{
+  try{
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{$set:{deliveryStatus:"cancelled" ,cancellationStatus:"allowed"}});
+    res.redirect('/gadgetly/admin/userorders')
+  }catch(error){
+    console.error(error.message);
+  }
+}
+
+const denyCancel = async(req,res)=>{
+  try {
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{$set:{cancellationStatus:"denied"}});
+    res.redirect('/gadgetly/admin/userorders')
+  } catch (error) {
+      console.error(error.message)
+  }
+}
  module.exports = {
   loadAdminHome,
   loadAdminLogin,
@@ -933,6 +967,9 @@ const fetchSalesData = async (req,res) => {
   weeklySales,
   yearlySales,
   downloadReport,
-  fetchSalesData
+  fetchSalesData,
+  allowCancel,
+  denyCancel,
+  viewOrderDetails
  };
 
