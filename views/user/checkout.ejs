@@ -411,6 +411,16 @@
                 if(data.codSuccess){
                     window.location.href = `/gadgetly/ordersummary?orderId=${data.orderId}`
                 }
+                if(data.walletSuccess){
+                    window.location.href = `/gadgetly/ordersummary?orderId=${data.orderId}`
+                }
+                if(data.insufficientBalance){
+                    swal.fire({
+                        icon:'error',
+                        title:'INSUFFICIENT BALANCE',
+                        text:'Please recharge your wallet and try again!'
+                    })
+                }
                 if(data.order){
 
                     var options = {
@@ -465,7 +475,7 @@
                     console.log('payment successful')
                 }else{
                     swal.fire({
-                        icon:'failed',
+                        icon:'error',
                         title:'payment failed',
                         text:'payment has been failed'
                     })

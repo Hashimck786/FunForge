@@ -5,6 +5,7 @@ const User = require('../models/userModel');
 const Product = require('../models/productModel')
 const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel');
+const Wallet = require('../models/walletModel')
 const ejs = require('ejs');
 const fs = require('fs');
 const pdf = require('html-pdf');
@@ -918,7 +919,10 @@ const fetchSalesData = async (req,res) => {
 const allowCancel = async(req,res)=>{
   try{
     const orderId = req.query.orderId;
-    const updated = await Order.updateOne({_id:orderId},{$set:{deliveryStatus:"cancelled" ,cancellationStatus:"allowed"}});
+    const orderData = await Order.findOneAndUpdate({_id:orderId},{$set:{deliveryStatus:"cancelled" ,cancellationStatus:"allowed"}});
+    if(orderData.paymentMethod != "Cash On Delivery"){
+      const walletupdated = await Wallet.updateOne({user:orderData.userId},{$inc:{balance:orderData.orderValue}}) 
+    }
     res.redirect('/gadgetly/admin/userorders')
   }catch(error){
     console.error(error.message);
@@ -940,7 +944,8 @@ const denyCancel = async(req,res)=>{
 const allowReturn = async(req,res)=>{
   try {
     const orderId = req.query.orderId;
-    const updated = await Order.updateOne({_id:orderId},{$set:{deliveryStatus:"returned" ,cancellationStatus:"return allowed"}});
+    const orderData = await Order.findOneAndUpdate({_id:orderId},{$set:{deliveryStatus:"returned" ,cancellationStatus:"return allowed"}});
+    const walletupdated = await Wallet.updateOne({user:orderData.userId},{$inc:{balance:orderData.orderValue}})
     res.redirect('/gadgetly/admin/userorders')
   } catch (error) {
     console.error(error.message);

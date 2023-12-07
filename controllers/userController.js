@@ -5,6 +5,7 @@ const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel')
+const Wallet = require('../models/walletModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -767,6 +768,7 @@ const placeOrder = async(req,res) =>{
   try {
     const userId = req.session.data._id;
     const user = await User.findOne({_id:userId});
+    const wallet = await Wallet.findOne({user:userId})
     const date = Date.now();
     const cart = await Cart.findOne({userId:userId})
     const orderedProducts = cart.products
@@ -832,6 +834,19 @@ const placeOrder = async(req,res) =>{
           codSuccess:true,
           orderId:orderData._id
         })
+      }else if(paymentMethod === "Wallet"){
+        if(wallet.balance >= orderData.orderValue){
+           await Order.updateOne({_id:orderData._id},{$set:{deliveryStatus:"placed"}});
+           await Wallet.updateOne({user:userId},{$inc:{balance:-orderData.orderValue}});
+           res.json({
+             walletSuccess:true,
+             orderId:orderData._id
+           })
+        }else{
+          res.json({
+            insufficientBalance:true
+          })
+        }
       }else{
         var options = {
           amount: orderData.orderValue*100,  // amount in the smallest currency unit
@@ -972,6 +987,41 @@ const returnOrder = async (req,res)=>{
     console.error(error.message)
   }
 }
+
+
+// loading user wallet.......................................................
+
+const userWallet = async (req,res) => {
+  try {
+    const userId = req.session.data._id;
+    let wallet = await Wallet.findOne({user:userId});
+    if(!wallet){
+      wallet = new Wallet ({
+      user:userId,
+      transactions:[]
+    })
+    await wallet.save()
+  }
+
+  res.render('userwallet',{wallet})
+  } catch (error) {
+    console.error(error.message)
+  }
+  
+
+}
+
+// adding money to wallet.............................................................
+
+const AddMoneyToWallet = async(req,res) =>{
+
+  const userId = req.session.data._id;
+  const amount = req.body.rechargeAmount;
+  const updated = await Wallet.findOneAndUpdate({user:userId},{$inc:{balance:amount}},{new:true});
+  res.json({
+    updated
+  })
+}
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -1010,5 +1060,7 @@ module.exports = {
   verifyPayment,
   orderDowloadPdf,
   cancelOrder,
-  returnOrder
+  returnOrder,
+  userWallet,
+  AddMoneyToWallet
 }
