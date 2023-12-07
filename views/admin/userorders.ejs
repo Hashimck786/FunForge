@@ -53,7 +53,7 @@
                                     <th class="align-middle" scope="col">Billing Name</th>
                                     <th class="align-middle" scope="col">Date</th>
                                     <th class="align-middle" scope="col">Total</th>
-                                    <th class="align-middle" scope="col">Payment Status</th>
+                                    <th class="align-middle" scope="col">Order Status</th>
                                     <th class="align-middle" scope="col">Payment Method</th>
                                     <th class="align-middle" scope="col">Deliver</th>
                                     <th class="align-middle" scope="col">View Details</th>
@@ -78,7 +78,14 @@
                                         <%= order.orderValue %>
                                     </td>
                                     <td>
-                                        <span class="badge badge-pill badge-soft-success"><%= order.orderStatus %></span>
+                                        <%if(order.deliveryStatus === "returned" ||order.deliveryStatus === "cancelled"){%>
+                                            <span class="badge badge-pill badge-soft-danger"><%= order.deliveryStatus %></span>
+                                        <% }else if(order.deliveryStatus === "delivered"){ %>
+                                            <span class="badge badge-pill badge-soft-success"><%= order.deliveryStatus %></span>
+                                        <%}else{%>
+                                            <span class="badge badge-pill badge-soft-warning"><%= order.deliveryStatus %></span>
+                                        <% } %>
+                                        
                                     </td>
                                     <td>
                                       <!-- card icon in cod  doesn't need-->
@@ -92,7 +99,7 @@
                                     <% }else{ %>
                                         <td></td>
                                     <% } %>
-                                    <%if(order.cancellationStatus === "requested"){%>
+                                    <%if(order.cancellationStatus === "requested"  || order.cancellationStatus === "return requested"){%>
                                         <td>
                                             <a href="/gadgetly/admin/viewdetail/?orderId=<%=order._id %>" style="background-color: crimson;" class="btn btn-xs"> Review details</a>
                                         </td>

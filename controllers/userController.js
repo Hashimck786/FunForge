@@ -960,6 +960,18 @@ const cancelOrder = async(req,res)=>{
     console.error(error.message);
   }
 }
+
+// requesting for returning order............................................................
+
+const returnOrder = async (req,res)=>{
+  try {
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{cancellationStatus:'return requested'})
+    return res.redirect('/gadgetly/myaccount') 
+  } catch (error) {
+    console.error(error.message)
+  }
+}
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -997,5 +1009,6 @@ module.exports = {
   loadOrderSummary,
   verifyPayment,
   orderDowloadPdf,
-  cancelOrder
+  cancelOrder,
+  returnOrder
 }

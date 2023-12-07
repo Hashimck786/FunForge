@@ -924,7 +924,7 @@ const allowCancel = async(req,res)=>{
     console.error(error.message);
   }
 }
-
+// denieying cancel ..........................................................
 const denyCancel = async(req,res)=>{
   try {
     const orderId = req.query.orderId;
@@ -934,6 +934,29 @@ const denyCancel = async(req,res)=>{
       console.error(error.message)
   }
 }
+
+// allowing Return.................................................
+
+const allowReturn = async(req,res)=>{
+  try {
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{$set:{deliveryStatus:"returned" ,cancellationStatus:"return allowed"}});
+    res.redirect('/gadgetly/admin/userorders')
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+const denyReturn = async(req,res)=>{
+  try {
+    const orderId = req.query.orderId;
+    const updated = await Order.updateOne({_id:orderId},{$set:{cancellationStatus:"return denied"}});
+    res.redirect('/gadgetly/admin/userorders')
+  } catch (error) {
+     console.error(error.message)
+  }
+}
+
  module.exports = {
   loadAdminHome,
   loadAdminLogin,
@@ -970,6 +993,8 @@ const denyCancel = async(req,res)=>{
   fetchSalesData,
   allowCancel,
   denyCancel,
-  viewOrderDetails
+  viewOrderDetails,
+  allowReturn,
+  denyReturn
  };
 

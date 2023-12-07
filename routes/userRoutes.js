@@ -66,7 +66,10 @@ userRoute.post('/verifypayment',userAuth.isLogin,userController.verifyPayment)
 userRoute.get('/ordersummary',userAuth.isLogin,userController.loadOrderSummary)
 userRoute.get('/orderdetails',userAuth.isLogin,userController.orderDetails)
 userRoute.get('/orderDowloadPdf',userAuth.isLogin,userController.orderDowloadPdf)
+
 userRoute.post('/cancelorder',userAuth.isLogin,userController.cancelOrder)
+userRoute.post('/returnorder',userAuth.isLogin,userController.returnOrder)
+
 
 
 

@@ -87,4 +87,7 @@ adminRoute.post('/fetchSalesData',auth.isLogin,adminController.fetchSalesData)
 adminRoute.get('/allowcancel',auth.isLogin,adminController.allowCancel);
 adminRoute.get('/denycancel',auth.isLogin,adminController.denyCancel);
 
+adminRoute.get('/allowreturn',auth.isLogin,adminController.allowReturn);
+adminRoute.get('/denyreturn',auth.isLogin,adminController.denyReturn);
+
 module.exports = adminRoute;
