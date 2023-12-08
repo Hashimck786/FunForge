@@ -756,7 +756,7 @@ const loadCheckout = async(req,res) => {
       const user = await User.findOne({_id:userId});
       const cart = await Cart.findOne({userId:userId}).populate('products.productId')
       const defaultAddress = await Address.find({_id:{$in:user.address},is_Default:true})
-      res.render('checkout.ejs',{cart:cart,address:defaultAddress[0]})
+      res.render('checkout.ejs',{cart:cart,user:userId,address:defaultAddress[0]})
   } catch (error) {
       console.error(error.message);
   }
@@ -875,7 +875,8 @@ const placeOrder = async(req,res) =>{
 
 const loadOrderSummary = async(req,res) => {
   try {
-      res.render('ordersummary',{orderId:req.query.orderId})
+      const userId = req.session.data._id;
+      res.render('ordersummary',{orderId:req.query.orderId,user:userId})
   } catch (error) {
       console.error(error.message)
   }
@@ -902,7 +903,6 @@ const verifyPayment = async(req,res) => {
         success:false,
       })
     }
-    console.log(req.body.payment.razorpay_payment_id)
   } catch (error) {
     console.error(error.message)
   }
@@ -914,8 +914,9 @@ const verifyPayment = async(req,res) => {
 const orderDetails = async(req,res) => {
   try {
       const orderId = req.query.orderId;
+      const userId = req.session.data._id;
       const orderData = await Order.findOne({_id:orderId})
-      res.render('orderdetails',{orderData:orderData})
+      res.render('orderdetails',{orderData:orderData,user:userId})
   } catch (error) {
       console.error(error.message);
   }

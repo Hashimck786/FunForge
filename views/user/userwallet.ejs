@@ -20,7 +20,7 @@
           </div>
           <hr>
           <form class="text-center">
-            <button type="submit" class="btn btn-custom btn-lg">
+            <button type="submit" class="btn btn-primary btn-lg">
               <i class="fas fa-wallet me-2"></i> Recharge Wallet
           </button>         
           </form>
@@ -65,7 +65,7 @@
                   </thead>
                   <tbody>
                       <% if(typeof Debits != "undefined" && Debits.length > 0 ){
-                          Credits.forEach((debit)=>{ %>
+                          Debits.forEach((debit)=>{ %>
                               <tr>
                                   <td><%= new Date(debit.date).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) %></td>
                                   <td><%= debit.orderValue %></td>

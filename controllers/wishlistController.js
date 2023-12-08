@@ -5,12 +5,11 @@ const Product = require('../models/productModel')
 
 const loadWishlist = async(req,res) => {
   try {
-    const userData = req.session.data; 
-    const id =userData._id
-    const newuserData = await User.findOne({_id:id})
+    const userId = req.session.data._id; 
+    const newuserData = await User.findOne({_id:userId})
     const userwishlist = newuserData.wishlist;
     productData = await Product.find({_id:{$in :userwishlist}},{})
-    res.render('wishlist.ejs',{product:productData})
+    res.render('wishlist.ejs',{product:productData,user:userId})
   }catch(error){
     console.error(error.message)
   }

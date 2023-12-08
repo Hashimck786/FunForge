@@ -16,7 +16,7 @@ const loadCart = async(req,res) => {
       await cart.save()
       
       
-      res.render('cart.ejs',{cart:cart})
+      res.render('cart.ejs',{cart:cart,user:userId})
   } catch (error) {
       console.error(error.message)
   }
