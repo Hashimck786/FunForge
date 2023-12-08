@@ -15,6 +15,7 @@ userRoute.set('views','./views/user')
 userRoute.use(express.json());
 userRoute.use(express.urlencoded({extended:true}))
 const userAuth = require('../middlewares/userAuth.js')
+const userBlockMiddleware = require('../middlewares/userBlock.js')
 const userController = require('../controllers/userController')
 const cartController = require('../controllers/cartController')
 const wishlistController = require('../controllers/wishlistController')
@@ -29,7 +30,7 @@ userRoute.post('/signup',[
   body('password').isLength({min:8}).withMessage('enter minimum 8 characters')
 ],userController.signupSubmission)
 userRoute.get('/login',userAuth.isLogout,userController.loadLoginPage)
-userRoute.post('/login',userController.loginSubmission);
+userRoute.post('/login',userBlockMiddleware, userController.loginSubmission);
 userRoute.get('/logout',userController.logingOut)
 userRoute.get('/forget',userAuth.isLogout,userController.loadForget);
 userRoute.post('/forget',userController.sendOtp);

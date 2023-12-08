@@ -81,6 +81,7 @@ adminRoute.get('/daily-sales',auth.isLogin,adminController.dailySales)
 adminRoute.get('/weekly-sales',auth.isLogin,adminController.weeklySales)
 adminRoute.get('/monthly-sales',auth.isLogin,adminController.monthlySales)
 adminRoute.get('/yearly-sales',auth.isLogin,adminController.yearlySales)
+adminRoute.post('/custom-sales',auth.isLogin,adminController.customSales)
 adminRoute.get('/dowload-report',auth.isLogin,adminController.downloadReport)
 adminRoute.get('/dowload-excel',auth.isLogin,adminController.dowloadExcel)
 adminRoute.post('/fetchSalesData',auth.isLogin,adminController.fetchSalesData)
@@ -90,5 +91,7 @@ adminRoute.get('/denycancel',auth.isLogin,adminController.denyCancel);
 
 adminRoute.get('/allowreturn',auth.isLogin,adminController.allowReturn);
 adminRoute.get('/denyreturn',auth.isLogin,adminController.denyReturn);
+
+
 
 module.exports = adminRoute;

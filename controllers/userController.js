@@ -140,12 +140,14 @@ const loginSubmission= async(req,res) => {
       const passwordverified = await bcrypt.compare(password,userData.password);
       if(passwordverified){
         if(userData.is_verified==1){
-          if(userData.is_block==0){
-            req.session.data = userData;
-            res.redirect('/gadgetly')
-          }else{
-            res.render('login.ejs',{message:"You are blocked by the admin"})
-          }
+          req.session.data = userData;
+          res.redirect('/gadgetly')
+          // if(userData.is_block==0){
+            // req.session.data = userData;
+          //   res.redirect('/gadgetly')
+          // }else{
+          //   res.render('login.ejs',{message:"You are blocked by the admin"})
+          // }
 
         }else{
           res.render('login.ejs',{message:"Please verify your email by clicking the link sent to your email."})

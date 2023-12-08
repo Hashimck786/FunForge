@@ -705,7 +705,26 @@ const yearlySales = async (req, res) => {
   }
 };
 
+// custom sales............................................................
 
+const customSales = async(req,res)=>{
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+    try {
+      const salesData = await Order.find({
+        orderStatus:'delivered',
+        date: {
+          $gte:startDate ,
+          $lt: endDate, // Represents the current date
+        },
+      });
+  
+      res.render('salesReport', { salesData,message:"CustomSales",type:"custom" });
+    } catch (error) {
+      console.error('Error fetching sales data:', error);
+      res.status(500).send('Internal Server Error');
+    }
+}
 // dowloading Report ............................................................
 
 const downloadReport = async(req,res) => {
@@ -940,7 +959,24 @@ const dailySalesData = async() => {
     error.message
   }
  }
+ 
+ const customSalesData = async(req,res) =>{
+  const startDate = req.body.startDate;
+  const endDate = req.body.endDate;
+    try {
+      const salesData = await Order.find({
+        orderStatus:'delivered',
+        date: {
+          $gte:startDate ,
+          $lt: endDate, // Represents the current date
+        },
+      });
+      return salesData;
 
+    }catch(error){
+      console.error(error.message)
+    }
+  }
 
 //  fetching sales Data to chart js...........................................................
 
@@ -964,6 +1000,9 @@ const fetchSalesData = async (req,res) => {
         case "month":
           salesData = await monthlySalesData();
             break;
+        case "custom":
+          salesData = await customSalesData(); 
+            break;   
         case "total":
           salesData = await totalSalesData();
             break;
@@ -1063,6 +1102,7 @@ const denyReturn = async(req,res)=>{
   monthlySales,
   weeklySales,
   yearlySales,
+  customSales,
   downloadReport,
   dowloadExcel,
   fetchSalesData,
@@ -1072,4 +1112,3 @@ const denyReturn = async(req,res)=>{
   allowReturn,
   denyReturn
  };
-

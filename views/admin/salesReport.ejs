@@ -11,6 +11,17 @@
           <a href="/gadgetly/admin/monthly-sales"><button class="btn btn-primary">Monthly</button></a>
           <a href="/gadgetly/admin/yearly-sales"><button class="btn btn-primary">Yearly</button></a>
           <a href="/gadgetly/admin/salesreport"><button class="btn btn-primary">Total</button></a>
+          <div class="mt-20">
+            <form action="/gadgetly/admin/custom-sales" method="post">
+                <label for="startDate" class="text-danger">Start Date:</label>
+                <input type="date" id="startDate" name="startDate">
+            
+                <label for="endDate" class="text-danger">End Date:</label>
+                <input type="date" id="endDate" name="endDate">
+            
+                <button type="submit" >Submit</button>
+              </form>
+          </div>
        </div>
        <!-- New button fixed to the right end -->
        <div>
