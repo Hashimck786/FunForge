@@ -11,9 +11,11 @@ const loadCart = async(req,res) => {
       const userId = req.session.data._id;
       const cart =await  Cart.findOne({userId:userId}).populate('products.productId')
 
-      
-      cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-      await cart.save()
+      if(cart){
+        cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
+        await cart.save()
+      }
+
       
       
       res.render('cart.ejs',{cart:cart,user:userId})

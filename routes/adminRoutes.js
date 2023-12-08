@@ -82,6 +82,7 @@ adminRoute.get('/weekly-sales',auth.isLogin,adminController.weeklySales)
 adminRoute.get('/monthly-sales',auth.isLogin,adminController.monthlySales)
 adminRoute.get('/yearly-sales',auth.isLogin,adminController.yearlySales)
 adminRoute.get('/dowload-report',auth.isLogin,adminController.downloadReport)
+adminRoute.get('/dowload-excel',auth.isLogin,adminController.dowloadExcel)
 adminRoute.post('/fetchSalesData',auth.isLogin,adminController.fetchSalesData)
 
 adminRoute.get('/allowcancel',auth.isLogin,adminController.allowCancel);

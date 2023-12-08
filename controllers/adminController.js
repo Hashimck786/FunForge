@@ -10,6 +10,8 @@ const ejs = require('ejs');
 const fs = require('fs');
 const pdf = require('html-pdf');
 const path = require('path');
+const ExcelJS = require('exceljs');
+
 
 
 // password hashing(securing)......................................
@@ -771,7 +773,74 @@ const downloadReport = async(req,res) => {
      console.error(error.message)
   }
 }
+// dowload ExcelReport.........................................................
 
+const dowloadExcel = async(req,res) =>{
+  try{
+    const type = req.query.type;
+    let salesData ;
+    switch (type) {
+        case "week":
+          salesData = await weeklySalesData();
+            break;
+    
+        case "year":
+          salesData = await yearlySalesData();
+            break;
+    
+        case "daily":
+          salesData = await dailySalesData();
+            break;
+    
+        case "month":
+          salesData = await monthlySalesData();
+            break;
+        case "total":
+          salesData = await totalSalesData();
+            break;
+    
+        // default:
+        //   salesData = weeklySalesData();
+        //     break;
+    }
+
+    // Create a new Excel workbook and worksheet
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Sales Report');
+
+    // Add headers to the worksheet
+    worksheet.addRow(['Order ID', 'Billing Name', 'Date', 'Total', 'Payment Status', 'Payment Method']);
+
+    // Add data to the worksheet
+    salesData.forEach((order) => {
+      worksheet.addRow([
+        order._id,
+        order.userId,
+        order.date.toLocaleString(),
+        order.orderValue,
+        order.deliveryStatus,
+        order.paymentMethod,
+      ]);
+    });
+
+        // Generate a unique filename for the Excel file
+        const filename = `sales_report_${new Date().toISOString()}.xlsx`;
+
+        // Set the response headers to trigger a download in the browser
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`);
+
+        // Write the Excel file to the response stream
+        await workbook.xlsx.write(res);
+
+        // End the response
+        res.end();
+
+
+  }catch(error){
+    console.error(error.message);
+  }
+}
 // weeklySalesDatafunction >>>>>>>>>>>>>>>>>>>>>>>
 
 const weeklySalesData = async()=>{
@@ -783,7 +852,7 @@ const weeklySalesData = async()=>{
 
   try {
     const salesData = await Order.find({
-      orderStatus: 'delivered',
+      deliveryStatus: 'delivered',
       date: {
         $gte: startOfWeek,
         $lt: today,
@@ -805,7 +874,7 @@ const monthlySalesData = async()=>{
 
   try {
     const salesData = await Order.find({
-      orderStatus:'delivered',
+      deliveryStatus:'delivered',
       date: {
         $gte: today,
         $lt: new Date(), // Represents the current date
@@ -826,7 +895,7 @@ const yearlySalesData = async()=>{
 
   try {
     const salesData = await Order.find({
-      orderStatus:'delivered',
+      deliveryStatus:'delivered',
       date: {
         $gte:startOfYear ,
         $lt: today, // Represents the current date
@@ -850,7 +919,7 @@ const dailySalesData = async() => {
   try {
     
     const salesData = await Order.find({
-      orderStatus:'delivered',
+      deliveryStatus:'delivered',
       date: {
         $gte: today,
         $lt: tomorrow,
@@ -865,7 +934,7 @@ const dailySalesData = async() => {
 
  const totalSalesData = async() =>{
   try {
-    const salesData = await Order.find({orderStatus:'delivered'});
+    const salesData = await Order.find({deliveryStatus:'delivered'});
     return salesData;
   } catch (error) {
     error.message
@@ -995,6 +1064,7 @@ const denyReturn = async(req,res)=>{
   weeklySales,
   yearlySales,
   downloadReport,
+  dowloadExcel,
   fetchSalesData,
   allowCancel,
   denyCancel,

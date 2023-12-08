@@ -854,7 +854,6 @@ const placeOrder = async(req,res) =>{
           receipt: orderData._id
         };
         const order = instance.orders.create(options, function(err, order) {
-          console.log("new order;",order);
           return res.json({
             onlineSuccess:true,
             order:order
@@ -876,6 +875,7 @@ const placeOrder = async(req,res) =>{
 const loadOrderSummary = async(req,res) => {
   try {
       const userId = req.session.data._id;
+      const deleted = await Cart.deleteOne({userId:userId})
       res.render('ordersummary',{orderId:req.query.orderId,user:userId})
   } catch (error) {
       console.error(error.message)
