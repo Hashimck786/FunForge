@@ -994,6 +994,9 @@ const returnOrder = async (req,res)=>{
 const userWallet = async (req,res) => {
   try {
     const userId = req.session.data._id;
+    let Credits = await Order.find({userId:userId,paymentMethod:"Wallet",deliveryStatus:{$in:["returned","cancelled"]}})
+    let Debits = await Order.find({userId:userId,paymentMethod:"Wallet",deliveryStatus:"delivered"})
+
     let wallet = await Wallet.findOne({user:userId});
     if(!wallet){
       wallet = new Wallet ({
@@ -1003,7 +1006,7 @@ const userWallet = async (req,res) => {
     await wallet.save()
   }
 
-  res.render('userwallet',{wallet})
+  res.render('userwallet',{wallet,Credits,Debits})
   } catch (error) {
     console.error(error.message)
   }

@@ -3,7 +3,7 @@
 <div class="container mt-4 mb-50">
   <div class="row">
     <div class="col-md-8 offset-md-2">
-      <div class="card mt-30 mb-50">
+      <div class="card mt-10 mb-50">
         <div class="card-header bg-primary text-center">
           <h2 class="text-white">User Wallet</h2>
         </div>
@@ -20,9 +20,64 @@
           </div>
           <hr>
           <form class="text-center">
-            <button type="submit" class="btn btn-primary">Recharge Wallet</button>
+            <button type="submit" class="btn btn-custom btn-lg">
+              <i class="fas fa-wallet me-2"></i> Recharge Wallet
+          </button>         
           </form>
           <hr>
+          <div class="container mt-4">
+            <h3 class="text-center text-primary">Transactions</h3>
+            <hr>
+        
+            <!-- Credits Table -->
+            <div class="mb-4">
+                <h4 class="text-center text-success">Credits</h4>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Order Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(typeof Credits != "undefined" && Credits.length > 0 ){
+                            Credits.forEach((credit)=>{ %>
+                                <tr>
+                                    <td><%= new Date(credit.date).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) %></td>
+                                    <td><%= credit.orderValue %></td>
+                                </tr>
+                            <% });
+                        } %>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+        
+            <!-- Debits Table -->
+            <div class="mb-4">
+              <h4 class="text-center text-danger">Debits</h4>
+              <table class="table table-bordered">
+                  <thead>
+                      <tr>
+                          <th>Date</th>
+                          <th>Order Value</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <% if(typeof Debits != "undefined" && Debits.length > 0 ){
+                          Credits.forEach((debit)=>{ %>
+                              <tr>
+                                  <td><%= new Date(debit.date).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) %></td>
+                                  <td><%= debit.orderValue %></td>
+                              </tr>
+                          <% });
+                      } %>
+                  </tbody>
+              </table>
+          </div>
+        </div>
+        
+          
         </div>
       </div>
     </div>

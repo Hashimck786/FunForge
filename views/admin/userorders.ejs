@@ -92,7 +92,7 @@
                                         <!-- <i class="material-icons md-payment font-xxl text-muted mr-5"></i>  -->
                                         <%= order.paymentMethod %>
                                     </td>
-                                    <% if(order.orderStatus == "placed"){ %>
+                                    <% if(order.deliveryStatus == "placed"){ %>
                                     <td>
                                         <a href="/gadgetly/admin/deliver/?orderId=<%=order._id %>" class="btn btn-xs"> Deliver</a>
                                     </td>
