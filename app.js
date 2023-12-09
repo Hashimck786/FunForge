@@ -22,6 +22,11 @@ app.use('/gadgetly',userRoute);
 app.use('/gadgetly/admin',adminRoute);
 
 
+// error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
+});
 
 app.listen(3000,console.log("Server running successfully......"))
 

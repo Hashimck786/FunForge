@@ -75,4 +75,5 @@ userRoute.get('/wallet',userAuth.isLogin,userController.userWallet)
 userRoute.post('/add-money',userAuth.isLogin,userController.AddMoneyToWallet)
 
 
+
 module.exports = userRoute;

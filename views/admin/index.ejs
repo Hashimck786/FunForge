@@ -64,16 +64,35 @@
                     </div>
                 </div>
             </div>
-            <label for="charttype">Select Chart Type:</label>
-            <select id="charttype">
-                <option >choose date</option>
-                <option value="month">monthly</option>
-                <option value="year">yearly</option>
-                <option value="daily">daily</option>
-                <option value="total">total</option>
-                <option value="week">weekly</option>
-                <!-- Add more options as needed -->
-            </select>
+            <div class="container">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-md-3">
+                        <label for="charttype">Select Chart Type:</label>
+                        <select id="charttype" class="form-control">
+                            <option>choose date</option>
+                            <option value="month">monthly</option>
+                            <option value="year">yearly</option>
+                            <option value="daily">daily</option>
+                            <option value="total">total</option>
+                            <option value="week">weekly</option>
+                            <!-- Add more options as needed -->
+                        </select>
+                    </div>
+            
+                    <div class="col-md-6 d-inline-block">
+                        <form action="/gadgetly/admin/custom-sales" method="post">
+                                <label for="startDate" class="text-danger ">Start Date:</label>
+                                <input type="date" id="startDate" name="startDate" >
+                            
+                                <label for="endDate" class="text-danger">End Date:</label>
+                                <input type="date" id="endDate" name="endDate" >
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            
             <canvas id="salesChart" width="400" height="200"></canvas>
 
             <!-- <div class="row">

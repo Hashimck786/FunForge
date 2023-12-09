@@ -102,7 +102,10 @@ const sendOtpMail = async(name,email,id,otp) => {
 const loadHome = async (req,res) =>{
   try{
     userData=req.session.data;
-    res.render('index.ejs',{user:userData})
+    const productData = await Product.find().limit(8);
+    const categoryData= await Category.find();
+    console.log(productData,"product DAta")
+    res.render('index.ejs',{user:userData,products:productData,category:categoryData})
   }catch(error){
     res.send(error.message)
   }
@@ -311,6 +314,7 @@ const loadContact = async(req,res) => {
     
     const searchTerm = req.query.search || '';
     const category = req.query.category || '';
+    const sort = req.query.sort || 'default';
     
     var page = 1;
     if(req.query.page){
@@ -329,8 +333,17 @@ const loadContact = async(req,res) => {
     if(category){
       filter.categoryId = category;
     }
+    const sortOptions = {};
+
+    if (sort === 'lowToHigh') {
+      sortOptions.salePrice = 1;
+    } else if (sort === 'highToLow') {
+      sortOptions.salePrice = -1;
+    }
+
 
     const productData = await Product.find(filter)
+    .sort(sortOptions)
     .limit(limit*1)
     .skip((page-1) * limit)
     .exec();
@@ -341,7 +354,9 @@ const loadContact = async(req,res) => {
       product:productData,
       user:userData,
       search:searchTerm,
+      sort:sort,
       category:categoryData,
+      categorySearch:category,
       totalCount:Math.ceil(count/limit),
       currentPage:page,
       productSearch:true
@@ -1028,6 +1043,12 @@ const AddMoneyToWallet = async(req,res) =>{
     updated
   })
 }
+
+// error Page.......................................................................
+ 
+const errorPage = async(req,res)=>{
+  res.render('page-404')
+}
 // exporting functions.................................
 module.exports = {
   loadHome,
@@ -1068,5 +1089,6 @@ module.exports = {
   cancelOrder,
   returnOrder,
   userWallet,
-  AddMoneyToWallet
+  AddMoneyToWallet,
+  errorPage
 }
