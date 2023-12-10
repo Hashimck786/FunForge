@@ -1,7 +1,12 @@
-
+const User = require('../models/userModel')
 const isLogin = async (req,res,next) => {
   try {
-    if(req.session.data){}
+    if(req.session.data){
+      const userData = await User.findOne({_id:req.session.data._id});
+      if(userData.is_block){
+        return res.render('blockeduser.ejs')
+      }
+    }
   else{
     res.redirect('/gadgetly/login')
   }
