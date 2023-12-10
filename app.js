@@ -10,6 +10,9 @@ const nocache =require('nocache');
 app.use(nocache())
 app.use(express.static('public'))
 
+app.set('view engine','ejs')
+app.set('views','./views/user')
+
 const userRoute = require('./routes/userRoutes');
 const adminRoute = require('./routes/adminRoutes');
 
@@ -20,6 +23,12 @@ app.use('/gadgetly',userRoute);
 //for admin routes
 
 app.use('/gadgetly/admin',adminRoute);
+
+
+app.get('*',(req,res)=>{
+
+  res.render('page-404')
+})
 
 
 // error handling middleware

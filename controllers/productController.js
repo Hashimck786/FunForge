@@ -1,6 +1,7 @@
 const Product = require('../models/productModel')
 const Category = require('../models/categoryModel');
-
+const path = require('path');
+const sharp = require('sharp');
 
 // loading product List.....................................................
 
@@ -57,6 +58,8 @@ const loadAddProduct = async(req,res) => {
 
 const addProduct = async(req,res) => {
   try {
+
+   
     const existingProduct = await Product.findOne({productName:req.body.product_name});
     if(existingProduct){
       return res.render('addProduct',{message:"product name exists pls try another name"})
@@ -66,6 +69,39 @@ const addProduct = async(req,res) => {
     if(images.length<1 || images.length>5){
       return res.render('addProduct',{message:"please upload inbetween one to five files"})
     }
+    const cropOptions = {
+      left: 10,   // left offset
+      top: 20,    // top offset
+      width: 200, // width of the cropped area
+      height: 150 // height of the cropped area
+    };
+
+      // Resize and crop images using sharp
+      const croppedImages = await Promise.all(images.map(async (image) => {
+      const imagePath = path.join(__dirname, '../public/admin-assets/imgs/productImages', image);
+      const croppedImagePath = path.join(__dirname, '../public/admin-assets/imgs/productImages/', `cropped_${image}`);
+
+   await  sharp(imagePath)
+  .rotate()
+  .resize(200)
+  .jpeg({ mozjpeg: true })
+  .toFile(croppedImagePath)
+
+  return  `cropped_${image}`
+  
+  //    return await sharp(imagePath)
+  // .crop(cropOptions.width, cropOptions.height, cropOptions.left, cropOptions.top)
+  // .toFile(croppedImagePath)
+  // .then(info => {
+  //   console.log(info);
+  // })
+  // .catch(err => {
+  //   console.error(err);
+  // });
+    }));
+
+      console.log('Image Path:', croppedImages);
+    // console.log('Cropped Image Path:', croppedImagePath);
 
     const product =new Product ({
       productName : req.body.product_name,
