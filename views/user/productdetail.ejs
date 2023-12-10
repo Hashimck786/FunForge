@@ -174,48 +174,40 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="product-detail accordion-detail">
-                            <div class="row mb-50">
-                                <div class="col-md-6 col-sm-12 col-xs-12">
-                                    <div class="detail-gallery">
+                            <div class="row mb-50 ">
+                                <div class="col-md-6 col-sm-12 col-xs-12 " >
+                                    <div class="detail-gallery" >
                                         <span class="zoom-icon"><i class="fi-rs-search"></i></span>
                                         <!-- MAIN SLIDES -->
-                                        <div class="product-image-slider">
-                                            <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image">
+                                        <div class="product-image-slider" >
+                                            <figure class="border-radius-10"  >
+                                                <img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image" class="slider-image" >
                                             </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[1] %>" alt="product image">
+                                            <figure class="border-radius-10" >
+                                                <img src="/admin-assets/imgs/productImages/<%= product.image[1] %>" alt="product image" class="slider-image" >
                                             </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[2] %>" alt="product image">
+                                            <figure class="border-radius-10" >
+                                                <img src="/admin-assets/imgs/productImages/<%= product.image[2] %>" alt="product image" class="slider-image" >
                                             </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[3] %>" alt="product image">
+                                            <figure class="border-radius-10" >
+                                                <img src="/admin-assets/imgs/productImages/<%= product.image[3] %>" alt="product image" class="slider-image">
                                             </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[4] %>" alt="product image">
+                                            <figure class="border-radius-10" >
+                                                <img src="/admin-assets/imgs/productImages/<%= product.image[4] %>" alt="product image" class="slider-image" >
                                             </figure>
-                                            <!-- <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image">
-                                            </figure>
-                                            <figure class="border-radius-10">
-                                                <img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image">
-                                            </figure> -->
                                         </div>
                                         <!-- THUMBNAILS -->
                                         <%if(typeof product != "undefined "){ %>
                                         <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image"></div>
-                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[1] %>" alt="product image"></div>
-                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[2] %>" alt="product image"></div>
-                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[3] %>" alt="product image"></div>
-                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[4] %>" alt="product image"></div>
-                                            <!-- <div><img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image"></div>
-                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image"></div> -->
+                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[0] %>" alt="product image" class="minislider"></div>
+                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[1] %>" alt="product image" class="minislider"></div>
+                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[2] %>" alt="product image" class="minislider"></div>
+                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[3] %>" alt="product image" class="minislider"></div>
+                                            <div><img src="/admin-assets/imgs/productImages/<%= product.image[4] %>" alt="product image" class="minislider"></div>
                                         </div>
                                      <% }else{ %>
                                         <h4>Product image not available</h4>
-                                    <% } %>
+                                     <% } %>
                                     </div>
                                     <!-- End Gallery -->
                                 </div>
@@ -252,7 +244,7 @@
                                                 <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
                                             </ul>
                                         </div>
-                                        <div class="attr-detail attr-color mb-15">
+                                        <!-- <div class="attr-detail attr-color mb-15">
                                             <strong class="mr-10">Color</strong>
                                             <ul class="list-filter color-filter">
                                                 <li><a href="#" data-color="Red"><span class="product-color-red"></span></a></li>
@@ -263,8 +255,8 @@
                                                 <li><a href="#" data-color="Green"><span class="product-color-green"></span></a></li>
                                                 <li><a href="#" data-color="Purple"><span class="product-color-purple"></span></a></li>
                                             </ul>
-                                        </div>
-                                        <div class="attr-detail attr-size">
+                                        </div> -->
+                                        <!-- <div class="attr-detail attr-size">
                                             <strong class="mr-10">Size</strong>
                                             <ul class="list-filter size-filter font-small">
                                                 <li><a href="#">S</a></li>
@@ -273,19 +265,17 @@
                                                 <li><a href="#">XL</a></li>
                                                 <li><a href="#">XXL</a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
-                                            <div class="detail-qty border radius">
+                                            <!-- <div class="detail-qty border radius">
                                                 <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
                                                 <span class="qty-val">1</span>
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
-                                            </div>      
-                                            <% console.log(product) %>
+                                            </div>       -->
                                             <div class="product-extra-link2">
                                                 <button type="submit" class="button button-add-to-cart cart-btn" productId="<%= product._id %>">Add to cart</button>
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href=""><i class="fi-rs-heart"></i></a>
                                             </div>
                                         </div>
                                         <ul class="product-meta font-xs color-grey mt-50">
@@ -415,7 +405,7 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                                    <div class="social-icons single-share">
+                                    <!-- <div class="social-icons single-share">
                                         <ul class="text-grey-5 d-inline-block">
                                             <li><strong class="mr-10">Share this:</strong></li>
                                             <li class="social-facebook"><a href="#"><img src="/assets/imgs/theme/icons/icon-facebook.svg" alt=""></a></li>
@@ -423,10 +413,10 @@
                                             <li class="social-instagram"><a href="#"><img src="/assets/imgs/theme/icons/icon-instagram.svg" alt=""></a></li>
                                             <li class="social-linkedin"><a href="#"><img src="/assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
                                         </ul>
-                                    </div>
-                                    <h3 class="section-title style-1 mb-30 mt-30">Reviews (3)</h3>
+                                    </div> -->
+                                    <!-- <h3 class="section-title style-1 mb-30 mt-30">Reviews (3)</h3> -->
                                     <!--Comments-->
-                                    <div class="comments-area style-2">
+                                    <!-- <div class="comments-area style-2">
                                         <div class="row">
                                             <div class="col-lg-8">
                                                 <h4 class="mb-30">Customer questions & answers</h4>
@@ -452,9 +442,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <!--single-comment -->
-                                                    <div class="single-comment justify-content-between d-flex">
+                                                    <!-- <div class="single-comment justify-content-between d-flex">
                                                         <div class="user justify-content-between d-flex">
                                                             <div class="thumb text-center">
                                                                 <img src="/assets/imgs/page/avatar-7.jpg" alt="">
@@ -475,9 +465,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <!--single-comment -->
-                                                    <div class="single-comment justify-content-between d-flex">
+                                                    <!-- <div class="single-comment justify-content-between d-flex">
                                                         <div class="user justify-content-between d-flex">
                                                             <div class="thumb text-center">
                                                                 <img src="/assets/imgs/page/avatar-8.jpg" alt="">
@@ -498,9 +488,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <!--single-comment -->
-                                                </div>
+                                                <!-- </div>
                                             </div>
                                             <div class="col-lg-4">
                                                 <h4 class="mb-30">Customer reviews</h4>
@@ -534,9 +524,9 @@
                                                 <a href="#" class="font-xs text-muted">How are ratings calculated?</a>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <!--comment form-->
-                                    <div class="comment-form">
+                                    <!-- <div class="comment-form">
                                         <h4 class="mb-15">Add a review</h4>
                                         <div class="product-rate d-inline-block mb-30">
                                         </div>
@@ -572,10 +562,10 @@
                                                 </form>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
-                            <div class="row mt-60">
+                            <!-- <div class="row mt-60">
                                 <div class="col-12">
                                     <h3 class="section-title style-1 mb-30">Related products</h3>
                                 </div>
@@ -592,7 +582,7 @@
                                                     </div>
                                                     <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal
-"><i class="fi-rs-search"></i></a>
+                                                            "><i class="fi-rs-search"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
                                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
                                                     </div>
@@ -624,7 +614,7 @@
                                                     </div>
                                                     <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal
-"><i class="fi-rs-search"></i></a>
+                                                        "><i class="fi-rs-search"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
                                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
                                                     </div>
@@ -656,7 +646,7 @@
                                                     </div>
                                                     <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal
-"><i class="fi-rs-search"></i></a>
+                                                        "><i class="fi-rs-search"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
                                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
                                                     </div>
@@ -688,7 +678,7 @@
                                                     </div>
                                                     <div class="product-action-1">
                                                         <a aria-label="Quick view" class="action-btn small hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal
-"><i class="fi-rs-search"></i></a>
+                                                        "><i class="fi-rs-search"></i></a>
                                                         <a aria-label="Add To Wishlist" class="action-btn small hover-up" href="shop-wishlist.html" tabindex="0"><i class="fi-rs-heart"></i></a>
                                                         <a aria-label="Compare" class="action-btn small hover-up" href="shop-compare.html" tabindex="0"><i class="fi-rs-shuffle"></i></a>
                                                     </div>
@@ -711,14 +701,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
+                            </div> -->
+                            <!-- <div class="banner-img banner-big wow fadeIn f-none animated mt-50">
                                 <img class="border-radius-10" src="/assets/imgs/banner/banner-4.png" alt="">
                                 <div class="banner-text">
                                     <h4 class="mb-15 mt-40">Repair Services</h4>
                                     <h2 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h2>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

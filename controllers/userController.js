@@ -379,63 +379,6 @@ const loadProductDetail = async(req,res) => {
   }
 }
 
-// loading wishlist ..........................................................................................
-
-const loadWishlist = async(req,res) => {
-  try {
-    const userData = req.session.data; 
-    const id =userData._id
-    const newuserData = await User.findOne({_id:id})
-    const userwishlist = newuserData.wishlist;
-    productData = await Product.find({_id:{$in :userwishlist}},{})
-
-    res.render('wishlist.ejs',{product:productData})
-  }catch(error){
-    console.error(error.message)
-  }
-}
-
-// adding to wish list ...........................................................................................
-
-
-const addToWishlist = async(req,res) => {
-  try {
-    const userData = req.session.data;
-    const userId = userData._id;
-    const productId = req.query.id;
-    const updated = await User.findOneAndUpdate({_id:userId},{$addToSet:{wishlist:productId}},{new:true})
-
-    if(updated){
-      res.json({
-        success:true
-      })
-    }else{
-      res.json({
-        success:false
-      })
-    }
-    
-  } catch (error) {
-      console.error(error.message);
-  }
-}
-
-// removing from wish list ............................................................................................
-
-const removeFromWishlist = async(req,res) => {
-  try {
-    const userData = req.session.data;
-    const userId = userData._id;
-    const productId = req.query.id;
-    const updated = await User.updateOne({_id:userId},{$pull:{wishlist:productId}})
-    res.json({
-      success:true
-    })
-    // res.redirect('/gadgetly/wishlist')
-  } catch (error) {
-      console.error(error.message)
-  }
-}
 
 // loading user Profile....................................................................................................
 
@@ -595,173 +538,6 @@ const defaultAddress = async(req,res) => {
 }
 
 
-// showing cart.......................................................................................................
-
-const loadCart = async(req,res) => {
-  try {
-      const userId = req.session.data._id;
-      const cart =await  Cart.findOne({userId:userId}).populate('products.productId')
-
-      
-      cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-      await cart.save()
-      
-      
-      res.render('cart.ejs',{cart:cart})
-  } catch (error) {
-      console.error(error.message)
-  }
-}
-
-// Adding product To Cart..........................................................................................
-
-const addToCart = async(req,res) =>{
-  try {
-      const userId = req.session.data._id;
-      const productId = req.query.id;
-      const productData = await Product.findOne({_id:productId});
-      let cart = await Cart.findOne({userId:userId});
-
-      if(!cart){
-        cart = new Cart({
-          userId:userId,
-          product:[]
-        })
-        await cart.save();
-
-      }
-
-
-      if(productData.Stock>0){
-        // find Index iterates through all the product and returns the index of the product that equals to the productId we are given
-        const existingProductIndex = cart.products.findIndex(product => product.productId.toString() === productId)
-          
-
-        if(existingProductIndex == -1) {
-          
-            cart.products.push({productId:productId,quantity:1})
-            await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
-  
-            
-        }else{
-          cart.products[existingProductIndex].quantity += 1
-          await Product.updateOne({_id:productId},{$set:{Stock:productData.Stock -1 }})
-        } 
-  
-        
-  
-        const productIndex = cart.products.findIndex(product => product.productId.toString() === productId)
-        cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
-  
-  
-        const cartData =  await cart.save()
-  
-        if(cartData){
-          // res.redirect('/gadgetly/shop')
-          res.json({
-            success:true
-          })
-        }else{
-          // res.redirect('/gadgetly/shop')
-          res.json({
-            success:false
-          })
-        }
-      }else{
-        console.log("out of stock backend json sending")
-        res.json({
-          outofstock:true
-        })
-      }
-
-      
-  } catch (error) {
-      console.error(error.message)
-  }
-}
-
-// removing product from Cart....................................................................................
-
-
-const removeFromCart = async(req,res) => {
-  try {
-      console.log("arrived at removal")
-      const userId = req.session.data._id;
-      const productId = req.query.id;
-      let productData = await Product.findOne({_id:productId})
-      let cart = await Cart.findOne({userId:userId});
-
-      const productIndex = cart.products.findIndex(product => product.productId.toString() === productId)
-        cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
-        await cart.save()
-
-
-      const oldQuantity = cart.products[productIndex].quantity;
-      const removed =await Cart.findOneAndUpdate({userId:userId},{$pull:{products:{productId:productId}}},{new:true});
-
-      if(removed){
-        // performed quantity updation.................................
-        const updatedQuantity = productData.Stock + oldQuantity ;
-        const stockIncrease = await Product.updateOne({_id:productId},{$set : {Stock:updatedQuantity}})
-        res.json({
-          success:true,
-          subtotal:cart.cartSubTotal,
-          grandtotal:cart.cartSubTotal
-        })
-      }else{
-        res.json({
-          success:false
-        })
-      }
-
-
-  } catch (error) {
-      console.error(error.message)
-  }
-}
-
-// updating product Quantity in Cart page................................................................
-
-const updateQuantity = async(req,res)=>{
-  const productId = req.query.productId;
-  const newQuantity = req.query.quantity;
-  const userId = req.session.data._id;
-  const cart = await Cart.findOne({userId:userId});
-  const productData = await Product.findOne({_id:productId})
-  const productIndex = cart.products.findIndex(product=>product.productId.toString()===productId)
-
-
-
-
-
-  const quantityDifference = newQuantity - cart.products[productIndex].quantity;
-
-  if(quantityDifference > productData.Stock){
-    return res.json({
-      outofstock:true
-    })
-  }
-  const newStock = productData.Stock - quantityDifference;
-  const updateStock = await Product.updateOne({_id:productId},{$set : {Stock: newStock}})
-  
-  cart.products[productIndex].quantity = newQuantity
-  cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
-  cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-  await cart.save();
-
-  res.json({
-    success:true,
-    total:cart.products[productIndex].total,
-    subtotal:cart.cartSubTotal,
-    grandtotal:cart.cartSubTotal
-  })
-  
-
-
-
-
-
-}
 
 
 // loading checkout page...............................................................................
@@ -1044,12 +820,6 @@ const AddMoneyToWallet = async(req,res) =>{
   })
 }
 
-// error Page.......................................................................
- 
-const errorPage = async(req,res)=>{
-  res.render('page-404')
-}
-// exporting functions.................................
 module.exports = {
   loadHome,
   loadLoginPage,
@@ -1065,9 +835,6 @@ module.exports = {
   verifyMail,
   loadProducts,
   loadProductDetail,
-  loadWishlist,
-  addToWishlist,
-  removeFromWishlist,
   loadProfile,
   editProfile,
   loadAddAddress,
@@ -1076,13 +843,9 @@ module.exports = {
   editAddress,
   deleteAddress,
   defaultAddress,
-  loadCart,
-  addToCart,
-  removeFromCart,
   loadCheckout,
   placeOrder,
   orderDetails,
-  updateQuantity,
   loadOrderSummary,
   verifyPayment,
   orderDowloadPdf,
@@ -1090,5 +853,5 @@ module.exports = {
   returnOrder,
   userWallet,
   AddMoneyToWallet,
-  errorPage
+
 }
