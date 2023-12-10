@@ -668,6 +668,22 @@ const dowloadExcel = async(req,res) =>{
     console.error(error.message);
   }
 }
+
+
+const salesDataFunction = async(startDate,endDate) =>{
+  const salesData = await Order.aggregate([
+    {
+      $match: {
+        orderStatus: 'delivered',
+        date: {
+          $gte: new Date(startDate),
+          $lt: new Date(endDate),
+        },
+      },
+    },
+  ]);
+  return salesData
+}
 // weeklySalesDatafunction >>>>>>>>>>>>>>>>>>>>>>>
 
 const weeklySalesData = async()=>{
@@ -678,13 +694,7 @@ const weeklySalesData = async()=>{
   startOfWeek.setDate(today.getDate() - today.getDay());
 
   try {
-    const salesData = await Order.find({
-      deliveryStatus: 'delivered',
-      date: {
-        $gte: startOfWeek,
-        $lt: today,
-      },
-    });
+    const salesData = await salesDataFunction(startOfWeek,new Date())
 
     return salesData
   }catch(error){
@@ -698,15 +708,10 @@ const monthlySalesData = async()=>{
 
   // Set the day of the month to the first day
   today.setDate(1);
+  endDate = new Date()
 
   try {
-    const salesData = await Order.find({
-      deliveryStatus:'delivered',
-      date: {
-        $gte: today,
-        $lt: new Date(), // Represents the current date
-      },
-    });
+    const salesData = await salesDataFunction(today,endDate)
     return salesData
   }catch(error){
     console.error(error.message);
@@ -721,13 +726,7 @@ const yearlySalesData = async()=>{
   startOfYear.setMonth(0,1)
 
   try {
-    const salesData = await Order.find({
-      deliveryStatus:'delivered',
-      date: {
-        $gte:startOfYear ,
-        $lt: today, // Represents the current date
-      },
-    });
+    const salesData = await salesDataFunction(startOfYear,today)
     return salesData
   }catch{
     console.error(error.message)
@@ -745,13 +744,7 @@ const dailySalesData = async() => {
 
   try {
     
-    const salesData = await Order.find({
-      deliveryStatus:'delivered',
-      date: {
-        $gte: today,
-        $lt: tomorrow,
-      },
-    });
+    const salesData = await salesDataFunction(today,tomorrow)
     return salesData;
   }catch(error){
     console.error(error.message)
@@ -770,15 +763,8 @@ const dailySalesData = async() => {
  
  const customSalesData = async(startDate,endDate) =>{
     try {
-      const salesData = await Order.find({
-        orderStatus:'delivered',
-        date: {
-          $gte:startDate ,
-          $lt: endDate, // Represents the current date
-        },
-      });
-      return salesData;
-
+      const salesData = await salesDataFunction(startDate,endDate)
+      return salesData
     }catch(error){
       console.error(error.message)
     }
