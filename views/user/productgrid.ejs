@@ -234,7 +234,12 @@
                                                 <div class="product-action-1">
                                                     <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
                                                     <i class="fi-rs-search"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up wish-btn" productId="<%=product[i]._id %>" href="/gadgetly/addwishlist?id=<%=product[i]._id %>"><i class="fi-rs-heart"></i></a>
+                                                    <%if(typeof user != "undefined" && user){ %>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up wish-btn" productId="<%=product[i]._id %>" href="/gadgetly/addwishlist?id=<%=product[i]._id %>"><i class="fi-rs-heart"></i></a>
+                                                    <%}else{ %>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" productId="<%=product[i]._id %>" href="/gadgetly/login %>"><i class="fi-rs-heart"></i></a>
+                                                    <%} %>
+                                                    
                                                     <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                                 </div>
                                                 <div class="product-badges product-badges-position product-badges-mrg">
@@ -256,7 +261,12 @@
                                                     <span class="old-price"> <%= product[i].productPrice %></span>
                                                 </div>
                                                 <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up  cart-btn" href="/gadgetly/addtocart/?id=<%= product[i]._id %>"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <%if(typeof user != "undefined" && user){ %>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up  cart-btn" href="/gadgetly/addtocart/?id=<%= product[i]._id %>"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <% }else{  %>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up " href="/gadgetly/login"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <% } %>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -369,7 +379,7 @@
                             text: 'The product has been added to the cart'
                         });
                     }
-                    if (productData.outofstock){
+                    else if (productData.outofstock){
                         swal.fire({
                             icon: 'error',
                             title:'Out of Stock',

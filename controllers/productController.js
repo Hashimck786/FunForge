@@ -89,19 +89,10 @@ const addProduct = async(req,res) => {
 
   return  `cropped_${image}`
   
-  //    return await sharp(imagePath)
-  // .crop(cropOptions.width, cropOptions.height, cropOptions.left, cropOptions.top)
-  // .toFile(croppedImagePath)
-  // .then(info => {
-  //   console.log(info);
-  // })
-  // .catch(err => {
-  //   console.error(err);
-  // });
+
     }));
 
       console.log('Image Path:', croppedImages);
-    // console.log('Cropped Image Path:', croppedImagePath);
 
     const product =new Product ({
       productName : req.body.product_name,
