@@ -1039,9 +1039,7 @@ const dailySalesData = async() => {
   }
  }
  
- const customSalesData = async(req,res) =>{
-  const startDate = req.body.startDate;
-  const endDate = req.body.endDate;
+ const customSalesData = async(startDate,endDate) =>{
     try {
       const salesData = await Order.find({
         orderStatus:'delivered',
@@ -1062,6 +1060,8 @@ const dailySalesData = async() => {
 const fetchSalesData = async (req,res) => {
   try {
     const type = req.query.type;
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
     let salesData ;
     switch (type) {
         case "week":
@@ -1080,15 +1080,15 @@ const fetchSalesData = async (req,res) => {
           salesData = await monthlySalesData();
             break;
         case "custom":
-          salesData = await customSalesData(); 
+          salesData = await customSalesData(startDate,endDate); 
             break;   
         case "total":
           salesData = await totalSalesData();
             break;
     
-        // default:
-        //   salesData = weeklySalesData();
-        //     break;
+        default:
+          salesData = totalSalesData();
+            break;
     }
     totalSales = salesData.reduce((sum, order) => sum + order.orderValue, 0)
     return res.json({
