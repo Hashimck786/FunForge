@@ -389,7 +389,7 @@ const loadProfile = async(req,res) => {
     const userData = await User.findOne({_id:userId})
     const userAddress = userData.address;
     const addressData = await Address.find({_id:{$in:userAddress}})
-    const orders = await Order.find({userId:userId})
+    const orders = await Order.find({userId:userId}).sort({date: -1})
     res.render('userProfile.ejs',{user:userData,address:addressData,orders:orders})
   } catch (error) {
     console.error(error.message)

@@ -281,12 +281,14 @@ const userOrders = async(req,res) => {
       page = req.query.page
     }
 
+
     const limit = 15;
 
 
     const ordersData = await Order.find({})
-    .limit(limit*1)
-    .skip((page-1)*limit)
+    .sort({ date: -1 })
+    .limit(limit * 1)
+    .skip((page - 1) * limit)
     .populate('userId')
     .exec();
     const count = await Order.find({}).countDocuments();

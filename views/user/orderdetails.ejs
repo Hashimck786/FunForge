@@ -239,6 +239,8 @@
                       </form>
                 <%  }else if(orderData.deliveryStatus === "cancelled"){ %>
                 <h4 class="text-danger">Order has been cancelled!</h4>
+                <% }else if(orderData.deliveryStatus === "returned"){ %>
+                <h4 class="text-danger">Order has been returned!</h4>
                 <% }else{ %>
                     <%if(orderData.cancellationStatus === "requested"){ %>
                         <h4>Requested for Cancellation</h4>
