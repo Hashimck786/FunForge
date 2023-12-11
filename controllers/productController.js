@@ -83,7 +83,7 @@ const addProduct = async(req,res) => {
 
    await  sharp(imagePath)
   .rotate()
-  .resize(200)
+  .resize(300,300)
   .jpeg({ mozjpeg: true })
   .toFile(croppedImagePath)
 
@@ -101,7 +101,7 @@ const addProduct = async(req,res) => {
       categoryId:req.body.product_categoryId,
       salePrice:req.body.product_sprice,
       Stock:req.body.product_stock,
-      image:images
+      image:croppedImages
     });
     const productData = await product.save();
     if(productData){

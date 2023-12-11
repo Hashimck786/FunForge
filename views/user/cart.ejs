@@ -189,7 +189,7 @@
                                     <%if( cart && typeof cart != "undefined" && cart.products){
                                         cart.products.forEach(product=>{  %>
                                             <tr>
-                                                <td class="image product-thumbnail"><img src="/admin-assets/imgs/productImages/<%= product.productId.image[0] %>" alt="#"></td>
+                                                <td class="image product-thumbnail"><img src="/admin-assets/imgs/productImages/<%= product.productId.image[0] %>" style="width: 100px; height: 100px; border-radius: 5%;" alt="#"></td>
                                                 <td class="product-des product-name">
                                                     <h5 class="product-name"><a href="shop-product-right.html"><%= product.productId.productName %></a></h5>
                                                     <p class="font-xs"><%= product.productId.productDescription %>

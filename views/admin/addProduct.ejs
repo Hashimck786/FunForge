@@ -34,7 +34,7 @@
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$" type="text" class="form-control" id="product_price" name="product_price" oninput="validateProductPrice()">
+                                                <input placeholder="$" type="number" class="form-control" id="product_price" name="product_price" oninput="validateProductPrice()">
                                                 <span id="errorProductPrice" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -42,7 +42,7 @@
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control" id="product_sprice" name="product_sprice" oninput="validateProductSprice()">
+                                            <input placeholder="$" type="number" class="form-control" id="product_sprice" name="product_sprice" oninput="validateProductSprice()">
                                             <span id="errorProductSprice" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Stock</label>
-                                    <input type="text" placeholder="%" class="form-control" id="product_stock" name="product_stock" oninput="validateProductStock()">
+                                    <input type="number" placeholder="%" class="form-control" id="product_stock" name="product_stock" oninput="validateProductStock()">
                                     <span id="errorProductStock" class="text-danger"></span>
                                 </div>
                                 <div class="input-upload">
@@ -82,85 +82,6 @@
                             </form>
                         </div>
                     </div> <!-- card end// -->
-                    <!-- <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Shipping</h4>
-                        </div>
-                        <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Width</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Height</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Weight</label>
-                                    <input type="text" placeholder="gam" class="form-control" id="product_name">
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Shipping fees</label>
-                                    <input type="text" placeholder="$" class="form-control" id="product_name">
-                                </div>
-                            </form>
-                        </div>
-                    </div>  -->
-                    <!-- card end// -->
-                <!-- </div>
-                <div class="col-lg-3">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Media</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-upload">
-                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file">
-                            </div>
-                        </div>
-                    </div> card end// -->
-                    <!-- <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Organization</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row gx-2">
-                                <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Category</label>
-                                    <select class="form-select">
-                                        <option> Automobiles </option>
-                                        <option> Home items </option>
-                                        <option> Electronics </option>
-                                        <option> Smartphones </option>
-                                        <option> Sport items </option>
-                                        <option> Baby and Tous </option>
-                                    </select>
-                                </div>
-                                <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Sub-category</label>
-                                    <select class="form-select">
-                                        <option> Nissan </option>
-                                        <option> Honda </option>
-                                        <option> Mercedes </option>
-                                        <option> Chevrolet </option>
-                                    </select>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Tags</label>
-                                    <input type="text" class="form-control">
-                                </div>
-                            </div> <!-- row.// -->
-                        <!-- </div> -->
-                    <!-- </div> --> -->
-                     <!-- card end// -->
                 </div>
             </div>
         </section> <!-- content-main end// -->
@@ -281,6 +202,9 @@
                 if(productPrice === ""){
                     document.getElementById('errorProductPrice').innerHTML="product Price required"
                     event.preventDefault();
+                }else if(productPrice <=0){
+                    document.getElementById('errorProductPrice').innerHTML="product Price can't be negative"
+                    event.preventDefault();
                 }else{
                     document.getElementById('errorProductPrice').innerHTML=""
                 }
@@ -288,12 +212,21 @@
                 if(productSPrice === ""){
                     document.getElementById('errorProductSprice').innerHTML="product sale price required"
                     event.preventDefault();
+                }else if(productSPrice <=0){
+                    document.getElementById('errorProductSprice').innerHTML="product sale price can't be negative"
+                    event.preventDefault();
+                }else if(productSPrice > productPrice){
+                    document.getElementById('errorProductSprice').innerHTML="sale price should be lower that regular price"
+                    event.preventDefault();
                 }else{
                     document.getElementById('errorProductSprice').innerHTML="";
                 }
                 const productStock = document.getElementById('product_stock').value.trim();
                 if(productStock === ""){
                     document.getElementById('errorProductStock').innerHTML="product Stock required";
+                    event.preventDefault();
+                }else if(productStock < 0){
+                    document.getElementById('errorProductStock').innerHTML="product Stock can't be negative";
                     event.preventDefault();
                 }else{
                     document.getElementById('errorProductStock').innerHTML=""

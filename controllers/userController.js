@@ -341,6 +341,7 @@ const loadContact = async(req,res) => {
       sortOptions.salePrice = -1;
     }
 
+    console.log(category)
 
     const productData = await Product.find(filter)
     .sort(sortOptions)
@@ -356,7 +357,7 @@ const loadContact = async(req,res) => {
       search:searchTerm,
       sort:sort,
       category:categoryData,
-      categorySearch:category,
+      categorySearch:filter.categoryId,
       totalCount:Math.ceil(count/limit),
       currentPage:page,
       productSearch:true

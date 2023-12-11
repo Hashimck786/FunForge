@@ -294,7 +294,7 @@
                             <ul class="categories">
                                 <% if(typeof category != "undefined" && category.length >0 ){
                                     category.forEach((category)=>{ %>
-                                        <li><a href="/gadgetly/shop/?category=<%=category._id%>"><%= category.categoryName %></a></li>
+                                        <li><a href="/gadgetly/shop/?category=<%=category._id%>" ><%= category.categoryName %></a></li>
                                 <%  })                             
                                 } %>
                             </ul>

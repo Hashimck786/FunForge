@@ -188,7 +188,7 @@
                                     <% if(typeof product != "undefined" && product.length>0){
                                         for(let i=0; i<product.length; i++){    %>
                                             <tr>
-                                                <td class="image product-thumbnail"><img src="/admin-assets/imgs/productImages/<%=product[i].image[0] %>" alt="#"></td>
+                                                <td class="image product-thumbnail"><img src="/admin-assets/imgs/productImages/<%=product[i].image[0] %>" style="width: 100px; height: 100px; border-radius: 5%;" alt="#"></td>
                                                 <td class="product-des product-name">
                                                     <h5 class="product-name"><a href=""><%=product[i].productName %></a></h5>
                                                     <p class="font-xs"><%=product[i].productDescription %>
