@@ -25,8 +25,14 @@
        </div>
        <!-- New button fixed to the right end -->
        <div>
-        <a href="/gadgetly/admin/dowload-report/?type=<%=type%>"><button class="btn btn-danger">Dowload Pdf</button></a>
-        <a href="/gadgetly/admin/dowload-excel/?type=<%=type%>"><button class="btn btn-danger">Dowload Excel</button></a>
+        <% if( typeof startDate != "undefined" && typeof endDate != "undefined"){ %>
+            <a href="/gadgetly/admin/dowload-report/?type=<%=type%>&startDate=<%=startDate%>&endDate=<%=endDate%>"><button class="btn btn-danger">Dowload Pdf</button></a>
+            <a href="/gadgetly/admin/dowload-excel/?type=<%=type%>&startDate=<%=startDate%>&endDate=<%=endDate%>"><button class="btn btn-danger">Dowload Excel</button></a>
+        <% }else{ %>
+            <a href="/gadgetly/admin/dowload-report/?type=<%=type%>"><button class="btn btn-danger">Dowload Pdf</button></a>
+            <a href="/gadgetly/admin/dowload-excel/?type=<%=type%>"><button class="btn btn-danger">Dowload Excel</button></a>
+        <% } %>
+       
 
        </div>
       

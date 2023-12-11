@@ -527,7 +527,7 @@ const customSales = async(req,res)=>{
   
       const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
   
-      res.render('salesReport', { salesData,message:"CustomSales",type:"custom" ,totalPages:Math.ceil(count/limit)});
+      res.render('salesReport', { salesData,message:"CustomSales",type:"custom" ,startDate,endDate,totalPages:Math.ceil(count/limit)});
     } catch (error) {
       console.error('Error fetching sales data:', error);
       res.status(500).send('Internal Server Error');
@@ -538,6 +538,8 @@ const customSales = async(req,res)=>{
 const downloadReport = async(req,res) => {
   try {
     const type = req.query.type;
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
     let salesData ;
     switch (type) {
         case "week":
@@ -558,6 +560,9 @@ const downloadReport = async(req,res) => {
         case "total":
           salesData = await totalSalesData();
             break;
+        case "custom":
+          salesData = await customSalesData(startDate,endDate);
+            break;             
     
         // default:
         //   salesData = weeklySalesData();
@@ -605,6 +610,8 @@ const downloadReport = async(req,res) => {
 const dowloadExcel = async(req,res) =>{
   try{
     const type = req.query.type;
+    const startDate = req.query.startDate;
+    const endDate = req.query.endDate;
     let salesData ;
     switch (type) {
         case "week":
@@ -625,6 +632,9 @@ const dowloadExcel = async(req,res) =>{
         case "total":
           salesData = await totalSalesData();
             break;
+        case "custom":
+          salesData = await customSalesData(startDate,endDate);
+          break;    
     
         // default:
         //   salesData = weeklySalesData();
