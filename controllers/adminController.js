@@ -281,17 +281,34 @@ const userOrders = async(req,res) => {
       page = req.query.page
     }
 
+    const paymentMethod = req.query.paymentMethod || '';
+    const deliveryStatus = req.query.deliveryStatus || '';
+    const cancellationStatus = req.query.cancellationStatus || '';
 
-    const limit = 15;
+    const filter = {}
+    if(paymentMethod){
+      filter.paymentMethod = paymentMethod
+    }
+    if(deliveryStatus){
+      filter.deliveryStatus = deliveryStatus
+    }
+    if(cancellationStatus){
+      filter.cancellationStatus = cancellationStatus
+    }
+
+    
 
 
-    const ordersData = await Order.find({})
+    const limit = 10;
+
+
+    const ordersData = await Order.find(filter)
     .sort({ date: -1 })
     .limit(limit * 1)
     .skip((page - 1) * limit)
     .populate('userId')
     .exec();
-    const count = await Order.find({}).countDocuments();
+    const count = await Order.find(filter).countDocuments();
     res.render('userorders',{
       orders:ordersData,
       totalPages:Math.ceil(count/limit)
@@ -333,7 +350,6 @@ const salesReport = async(req,res) => {
     if(req.query.page){
       page = req.query.page
     }
-
     const limit = 7;
 
     const salesData = await Order.find({deliveryStatus:"delivered"})

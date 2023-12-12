@@ -101,10 +101,12 @@ const sendOtpMail = async(name,email,id,otp) => {
 
 const loadHome = async (req,res) =>{
   try{
-    userData=req.session.data;
+    const userData= req.session.data;
     const productData = await Product.find().limit(8);
     const categoryData= await Category.find();
-    console.log(productData,"product DAta")
+    // const wishlistCount = userData.wishlist.length;
+    // const cartData = await Cart.findOne({userId:userData._id})
+    // const cartCount = cartData.products.length;
     res.render('index.ejs',{user:userData,products:productData,category:categoryData})
   }catch(error){
     res.send(error.message)

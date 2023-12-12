@@ -1,0 +1,53 @@
+<%- include('../layout/adminheader') %>
+<section class="pb-15">
+  <div class="card mb-4">
+    <header class="card-header">
+        <h4 class="card-title"> Inactive Coupons</h4>
+        <div class="row ">
+          <div class="col">
+            <a href="/gadgetly/admin/createcoupon" class="btn btn-small btn-primary">CreateCoupon</a>
+            <a href="/gadgetly/admin/coupons" class="btn btn-small btn-primary">Active Coupons</a>
+          </div>
+      </div>
+      
+    </header>
+    <div class="card-body">
+        <div class="table-responsive">
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle table-nowrap mb-0" >
+                <thead class="table-light">
+                    <tr>
+                        <th class="align-middle" scope="col">CouponCode</th>
+                        <th class="align-middle" scope="col">CouponDiscount</th>
+                        <th class="align-middle" scope="col">ExpirationDate</th>
+                        <th class="align-middle" scope="col">Activate</th>
+                        <th class="align-middle" scope="col">Limit</th>
+                        <th class="align-middle" scope="col">CreationDate</th>
+                        <th class="align-middle" scope="col">Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if(typeof coupons != "undefined" && coupons.length>0){
+                        coupons.forEach((coupon)=>{ %>
+                            <tr>
+                                <td><%=coupon.couponCode%></td>
+                                <td><%=coupon.couponDiscount%></td>
+                                <td><%=coupon.expirationDate.toLocaleDateString()%></td>
+                                <td><a  class="btn btn-small btn-success" href="/gadgetly/admin/activatecoupon/?couponId=<%=coupon._id%>">Activate</a></td>
+                                <td><%=coupon.usageLimit%></td>
+                                <td><%=coupon.created_at.toLocaleDateString()%></td>
+                                <td><a class="btn btn-small btn-primary" href="/gadgetly/admin/editcoupon/?couponId=<%=coupon._id%>">Edit</a></td>
+                            </tr>
+                    <%    })
+                    }else{ %>
+                     <h4>no coupons added</h4>   
+                    <% } %>
+                    
+                </tbody>
+            </table>
+            </div>
+        </div> <!-- table-responsive end// -->
+    </div>
+</div>
+</section>
+<%-include('../layout/adminfooter') %>

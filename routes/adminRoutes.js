@@ -41,6 +41,7 @@ const auth = require('../middlewares/adminAuth.js')
 const adminController = require('../controllers/adminController')
 const productController = require('../controllers/productController')
 const categoryController = require('../controllers/categoryController')
+const couponController = require('../controllers/couponController.js')
 
 
 adminRoute.get('/',auth.isLogout,adminController.loadAdminLogin);
@@ -85,6 +86,17 @@ adminRoute.post('/custom-sales',auth.isLogin,adminController.customSales)
 adminRoute.get('/dowload-report',auth.isLogin,adminController.downloadReport)
 adminRoute.get('/dowload-excel',auth.isLogin,adminController.dowloadExcel)
 adminRoute.post('/fetchSalesData',auth.isLogin,adminController.fetchSalesData)
+
+
+adminRoute.get('/coupons',auth.isLogin,couponController.couponList)
+adminRoute.get('/createcoupon',auth.isLogin,couponController.loadCreateCoupon)
+adminRoute.post('/createcoupon',auth.isLogin,couponController.createCoupon)
+adminRoute.get('/editcoupon',auth.isLogin,couponController.loadEditCoupon)
+adminRoute.post('/editcoupon',auth.isLogin,couponController.editCoupon)
+adminRoute.get('/inactivecouponlist',auth.isLogin,couponController.inactiveCouponList);
+adminRoute.get('/deactivatecoupon',auth.isLogin,couponController.deactivateCoupon);
+adminRoute.get('/activatecoupon',auth.isLogin,couponController.activateCoupon)
+
 
 adminRoute.get('/allowcancel',auth.isLogin,adminController.allowCancel);
 adminRoute.get('/denycancel',auth.isLogin,adminController.denyCancel);

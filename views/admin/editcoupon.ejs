@@ -1,0 +1,63 @@
+<%- include('../layout/adminheader') %>
+<section class="content-main">
+  <div class="row">
+      <div class="col-9">
+          <div class="content-header">
+              <h2 class="content-title">Create New Coupon</h2>
+          </div>
+      </div>
+      <div class="col-lg-6">
+          <div class="card mb-4">
+              <div class="card-header">
+                  <h4>Here you can create coupun</h4>
+              </div>
+              <div class="card-body">
+                  <form method="post" action="/gadgetly/admin/editcoupon/?couponId=<%=coupon._id%>"  class="create-coupun" id="CoupuForm">
+                      <div class="mb-4">
+                          <label for="coupon_code" class="form-label">CouponCode</label>
+                          <input type="text" placeholder="Type here"  value="<%=coupon.couponCode%>" class="form-control" id="coupon_code" name="coupon_code" oninput="">
+                          <span id="errorCouponCode" class="text-danger"></span>
+                          <% if(typeof message!= "undefined" ){ %>
+                              <span id="errorCouponCode" class="text-danger"><%= message %></span> 
+                          <% } %>
+                      </div>
+                      <div class="mb-4">
+                          <label for="coupon_description" class="form-label">Coupon Description</label>
+                          <input type="text" placeholder="Type here" class="form-control" value="<%=coupon.couponDescription%>" id="coupon_description" name="coupon_description" oninput="">
+                          <span id="errorCouponDescription" class="text-danger"></span>
+                      </div>
+                      <div class="row">
+                          <div class="col-lg-4">
+                              <div class="mb-4">
+                                  <label  for="coupon_discount" class="form-label">Coupon Discount</label>
+                                  <div class="row gx-2">
+                                      <input placeholder="%" type="number" class="form-control"  value="<%=coupon.couponDiscount%>"id="coupon_discount" name="coupon_discount" oninput="">
+                                      <span id="errorCouponDiscount" class="text-danger"></span>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <div class="mb-4">
+                                  <label for="coupon_limit" class="form-label">Coupon Limit</label>
+                                  <input placeholder="" type="number" class="form-control" id="coupon_limit" value="<%=coupon.usageLimit%>" name="coupon_limit" oninput="">
+                                  <span id="errorCouponLimit" class="text-danger"></span>
+                              </div>
+                          </div>
+                          <div class="col-lg-4">
+                              <label for="coupon_expiry" class="form-label">Coupon Expiry</label>
+                              <input placeholder="" type="date" class="form-control" id="coupon_expiry" value="<%=coupon.expirationDate.toISOString().slice(0, 10) %>" name="coupon_expiry" oninput="">
+                              <span id="errorCoupunExpiry" class="text-danger"></span>
+
+                          </div>
+                      </div>
+                      <div>
+                          <button type="submit" class="btn btn-md rounded font-sm hover-up" name="submit">Edit Coupon</button>
+                      </div>
+                  </form>
+              </div>
+          </div> <!-- card end// -->
+      </div>
+  </div>
+</section> <!-- content-main end// -->
+
+<%-include('../layout/adminfooter') %>
