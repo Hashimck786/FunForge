@@ -1,4 +1,6 @@
 const Coupon = require('../models/couponModel')
+const Cart = require('../models/cartModel')
+const User = require('../models/userModel')
 
 
 const couponList = async(req,res)=>{
@@ -92,6 +94,57 @@ const deactivateCoupon =  async(req,res)=>{
   res.redirect('/gadgetly/admin/coupons')
 }
 
+// applycoupon...........................................................
+
+const applyCoupon = async(req,res)=>{
+  try{
+    const userId = req.session.data._id;
+    const couponId = req.query.couponId;
+    const cart = await Cart.findOne({userId:userId})
+    console.log("cart",cart)
+    console.log(couponId)
+    if(couponId){
+      const coupon = await Coupon.findOne({_id:couponId});
+      if(coupon){
+        const usedcoupon = await User.findOne({coupons:couponId});
+        if(usedcoupon){
+          res.json({
+            usedcoupon:true
+          })
+        }else{
+        const originalGrandTotal = cart.cartSubTotal;
+        const discountPercentage = coupon.couponDiscount;
+        console.log(originalGrandTotal);
+        console.log(discountPercentage);
+
+        // Calculate the discounted amount
+        const discountAmount = (originalGrandTotal * discountPercentage) / 100;
+        console.log(discountAmount)
+
+        // Calculate the new grandtotal after applying the discount
+        const newGrandTotal = originalGrandTotal - discountAmount;
+        const updatedgrand = await Cart.updateOne({userId:userId},{$set:{cartGrandtotal:newGrandTotal,couponDiscount:discountAmount,couponId:couponId}})
+        console.log(newGrandTotal)
+        
+         res.json({
+          couponapplied:true,
+          grandtotal:newGrandTotal,
+          couponDiscount:discountAmount
+
+        })
+       }
+      }else{
+       res.json({
+        noCoupon:true
+      })
+    }
+  }
+  }catch(error){
+    console.error(error.message)
+  }
+  
+}
+
 module.exports={
   couponList,
   loadCreateCoupon,
@@ -100,5 +153,6 @@ module.exports={
   editCoupon,
   inactiveCouponList,
   activateCoupon,
-  deactivateCoupon
+  deactivateCoupon,
+  applyCoupon
 }

@@ -93,13 +93,15 @@ const addProduct = async(req,res) => {
     }));
 
       console.log('Image Path:', croppedImages);
-
+    const discount = (req.body.product_price*req.body.product_discount)/100;
+    const salePrice = req.body.product_price-discount;
     const product =new Product ({
       productName : req.body.product_name,
       productDescription:req.body.product_description,
       productPrice:req.body.product_price,
+      productDiscount:req.body.product_discount,
       categoryId:req.body.product_categoryId,
-      salePrice:req.body.product_sprice,
+      salePrice:salePrice,
       Stock:req.body.product_stock,
       image:croppedImages
     });
@@ -166,25 +168,31 @@ const editProduct = async(req,res) => {
     const images = req.files.map(file=>file.filename);
     const id = req.query.id;
     if(images.length<1 || images.length>5){
+      const discount = (req.body.product_price*req.body.product_discount)/100;
+      const salePrice = req.body.product_price-discount;
+
       const updated = await Product.updateOne({_id:id},{$set : {
         productName : req.body.product_name,
         productDescription:req.body.product_description,
         productPrice:req.body.product_price,
         categoryId:req.body.product_categoryId,
-        salePrice:req.body.product_sprice,
+        productDiscount:req.body.product_discount,
+        salePrice:salePrice,
         Stock:req.body.product_stock,
         
       }})
       return res.redirect('/gadgetly/admin/productList')
     }
-
+    const discount = (req.body.product_price*req.body.product_discount)/100;
+    const salePrice = req.body.product_price-discount;
     
     const updated = await Product.updateOne({_id:id},{$set : {
       productName : req.body.product_name,
       productDescription:req.body.product_description,
       productPrice:req.body.product_price,
       category:req.body.product_category,
-      salePrice:req.body.product_sprice,
+      productDiscount:req.body.product_discount,
+      salePrice:salePrice,
       Stock:req.body.product_stock,
       image:images
     }})

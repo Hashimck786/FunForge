@@ -19,6 +19,7 @@ const userBlockMiddleware = require('../middlewares/userBlock.js')
 const userController = require('../controllers/userController')
 const cartController = require('../controllers/cartController')
 const wishlistController = require('../controllers/wishlistController')
+const couponController = require('../controllers/couponController')
 
 
 userRoute.get("/",userController.loadHome);
@@ -60,6 +61,7 @@ userRoute.get('/cart',userAuth.isLogin,cartController.loadCart);
 userRoute.get('/addtocart',userAuth.isLogin,cartController.addToCart);
 userRoute.get('/removefromcart',userAuth.isLogin,cartController.removeFromCart);
 userRoute.post('/updatequantity',userAuth.isLogin,cartController.updateQuantity)
+userRoute.get('/applycoupon',userAuth.isLogin,couponController.applyCoupon);
 
 userRoute.get('/checkout',userAuth.isLogin,userController.loadCheckout)
 userRoute.post('/placeorder',userAuth.isLogin,userController.placeOrder)

@@ -1,5 +1,6 @@
 const Product = require('../models/productModel')
 const Cart = require('../models/cartModel')
+const Coupon = require('../models/couponModel')
 
 
 
@@ -10,15 +11,17 @@ const loadCart = async(req,res) => {
   try {
       const userId = req.session.data._id;
       const cart =await  Cart.findOne({userId:userId}).populate('products.productId')
+      const coupons = await Coupon.find({is_Active:true,usageLimit:{$gt:0}})
 
       if(cart){
         cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
+        cart.cartGrandtotal = cart.cartSubTotal;
         await cart.save()
       }
 
       
       
-      res.render('cart.ejs',{cart:cart,user:userId})
+      res.render('cart.ejs',{cart:cart,user:userId,coupons})
   } catch (error) {
       console.error(error.message)
   }
@@ -104,6 +107,7 @@ const removeFromCart = async(req,res) => {
 
       const productIndex = cart.products.findIndex(product => product.productId.toString() === productId)
         cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
+        cart.cartGrandtotal =cart.cartSubTotal;
         await cart.save()
 
 
@@ -117,7 +121,7 @@ const removeFromCart = async(req,res) => {
         res.json({
           success:true,
           subtotal:cart.cartSubTotal,
-          grandtotal:cart.cartSubTotal
+          grandtotal:cart.cartGrandtotal
         })
       }else{
         res.json({
@@ -158,13 +162,14 @@ const updateQuantity = async(req,res)=>{
   cart.products[productIndex].quantity = newQuantity
   cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
   cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
+  cart.cartGrandtotal = cart.cartSubTotal
   await cart.save();
 
   res.json({
     success:true,
     total:cart.products[productIndex].total,
     subtotal:cart.cartSubTotal,
-    grandtotal:cart.cartSubTotal
+    grandtotal:cart.cartGrandtotal
   })
   
 

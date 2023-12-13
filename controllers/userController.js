@@ -6,6 +6,7 @@ const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel')
 const Wallet = require('../models/walletModel')
+const Coupon = require('../models/couponModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -603,7 +604,10 @@ const placeOrder = async(req,res) =>{
       const order = new Order({
         userId:userId,
         date:date,
-        orderValue:cart.cartSubTotal,
+        couponDiscount:cart.couponDiscount,
+        couponId:cart.couponId,
+        preDiscountAmount:cart.cartSubTotal,
+        orderValue:cart.cartGrandtotal,
         paymentMethod:paymentMethod,
         orderStatus:orderStatus,
         deliveryStatus:orderStatus,
@@ -671,6 +675,9 @@ const placeOrder = async(req,res) =>{
 const loadOrderSummary = async(req,res) => {
   try {
       const userId = req.session.data._id;
+      const cart = await Cart.findOne({userId:userId})
+      const couponlimit = await Coupon.updateOne({_id:cart.couponId},{$inc:{usageLimit:-1}})
+      const updateuser = await User.updateOne({_id:userId},{$addToSet:{coupons:cart.couponId}})
       const deleted = await Cart.deleteOne({userId:userId})
       res.render('ordersummary',{orderId:req.query.orderId,user:userId})
   } catch (error) {

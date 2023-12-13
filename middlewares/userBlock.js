@@ -6,8 +6,10 @@
       const email = req.body.email;
       const userData = await User.findOne({email:email});
       // userData = await User.findOne({_id:userId})
-      if(userData.is_block=== 1){
-         return res.render('blockeduser.ejs')
+      if(userData){
+        if(userData.is_block=== 1){
+          return res.render('blockeduser.ejs')
+       }
       }
       next()
     }catch(error){

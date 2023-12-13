@@ -337,12 +337,12 @@
                                             <td class="product-subtotal" colspan="2"><%= cart.cartSubTotal %></td>
                                         </tr>
                                         <tr>
-                                            <th>Shipping</th>
-                                            <td colspan="2"><em>Free Shipping</em></td>
+                                            <th>Coupon Discount</th>
+                                            <td colspan="2"><em><%= cart.couponDiscount %></em></td>
                                         </tr>
                                         <tr>
                                             <th>Total</th>
-                                            <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900"><%= cart.cartSubTotal %></span></td>
+                                            <td colspan="2" class="product-subtotal"><span class="font-xl text-brand fw-900"><%= cart.cartGrandtotal %></span></td>
                                         </tr>
                                     </tbody>
                                 </table>

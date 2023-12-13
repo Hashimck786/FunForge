@@ -3,16 +3,16 @@
   <div class="row">
       <div class="col-9">
           <div class="content-header">
-              <h2 class="content-title">Create New Coupon</h2>
+              <h2 class="content-title">Edit Coupon</h2>
           </div>
       </div>
       <div class="col-lg-6">
           <div class="card mb-4">
               <div class="card-header">
-                  <h4>Here you can create coupun</h4>
+                  <h4>Here you can edit coupon</h4>
               </div>
               <div class="card-body">
-                  <form method="post" action="/gadgetly/admin/editcoupon/?couponId=<%=coupon._id%>"  class="create-coupun" id="CoupuForm">
+                  <form method="post" action="/gadgetly/admin/editcoupon/?couponId=<%=coupon._id%>"  class="create-coupun" id="CouponForm">
                       <div class="mb-4">
                           <label for="coupon_code" class="form-label">CouponCode</label>
                           <input type="text" placeholder="Type here"  value="<%=coupon.couponCode%>" class="form-control" id="coupon_code" name="coupon_code" oninput="">
@@ -60,4 +60,60 @@
   </div>
 </section> <!-- content-main end// -->
 
+<!-- coupon validation -->
+<script>
+  document.getElementById("CouponForm").addEventListener("submit", function (event) {
+
+      
+    document.getElementById("errorCouponCode").innerText = "";
+    document.getElementById("errorCouponDescription").innerText = "";
+    document.getElementById("errorCouponDiscount").innerText = "";
+    document.getElementById("errorCouponLimit").innerText = "";
+    document.getElementById("errorCoupunExpiry").innerText = "";
+
+    // Validate Coupon Code
+    var couponCode = document.getElementById("coupon_code").value.trim();
+    if (couponCode === "") {
+      document.getElementById("errorCouponCode").innerText = "Coupon Code is required";
+      event.preventDefault();
+    }else if(couponCode.length<=6||couponCode.lenght <=10 ) {
+      document.getElementById("errorCouponCode").innerText = "Coupon shouldbe inbetween 6 or 10 letters";
+      event.preventDefault();
+    }
+
+    // Validate Coupon Description
+    var couponDescription = document.getElementById("coupon_description").value.trim();
+    if (couponDescription === "") {
+      document.getElementById("errorCouponDescription").innerText = "Coupon Description is required";
+      event.preventDefault();
+    }
+
+    // Validate Coupon Discount
+    var couponDiscount = document.getElementById("coupon_discount").value.trim();
+    if (couponDiscount === "") {
+      document.getElementById("errorCouponDiscount").innerText = "Coupon Discount is required";
+      event.preventDefault();
+    }else if(couponDiscount<1 || couponDiscount>100){
+      document.getElementById("errorCouponDiscount").innerText = "Coupon Discount shoulbe inbetween 1 and 100 ";
+      event.preventDefault();
+    }
+
+    // Validate Coupon Limit
+    var couponLimit = document.getElementById("coupon_limit").value.trim();
+    if (couponLimit === "") {
+      document.getElementById("errorCouponLimit").innerText = "Coupon Limit is required";
+      event.preventDefault();
+    }else if(couponLimit <0){
+      document.getElementById("errorCouponLimit").innerText = "Coupon Limit should be positive";
+      event.preventDefault();  
+    }
+
+    // Validate Coupon Expiry
+    var couponExpiry = document.getElementById("coupon_expiry").value.trim();
+    if (couponExpiry === "") {
+      document.getElementById("errorCoupunExpiry").innerText = "Coupon Expiry is required";
+      event.preventDefault();
+    }
+  });
+</script>
 <%-include('../layout/adminfooter') %>

@@ -41,9 +41,9 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="number" class="form-control" id="product_sprice" name="product_sprice" oninput="validateProductSprice()">
-                                            <span id="errorProductSprice" class="text-danger"></span>
+                                            <label class="form-label">Product Discount</label>
+                                            <input placeholder="%" type="number" class="form-control" id="product_discount" name="product_discount" oninput="validateProductDiscount()">
+                                            <span id="errorProductDiscount" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
@@ -149,13 +149,15 @@
 
         }
 
-        function validateProductSprice(){
-            var productsprice = document.getElementById('product_sprice').value;
-            var errorProductSprice = document.getElementById('errorProductSprice');
-            errorProductSprice.innerHTML = ""
+        function validateProductDiscount(){
+            var productdiscount = document.getElementById('product_discount').value.trim();
+            var errorProductDiscount = document.getElementById('errorProductDiscount');
+            errorProductDiscount.innerHTML = ""
 
-            if(productsprice.trim() === ""){
-                errorProductSprice.innerHTML = "product sale price required"
+            if(productdiscount === ""){
+                errorProductDiscount.innerHTML = "product discount required"
+            }else if(productdiscount<0 || productdiscount>100){
+                errorProductDiscount.innerHTML = "product discount inbetween 1 and 100"
             }
         }
 
@@ -208,18 +210,15 @@
                 }else{
                     document.getElementById('errorProductPrice').innerHTML=""
                 }
-                const productSPrice =document.getElementById('product_sprice').value.trim();
-                if(productSPrice === ""){
-                    document.getElementById('errorProductSprice').innerHTML="product sale price required"
+                const productdiscount =document.getElementById('product_discount').value.trim();
+                if(productdiscount === ""){
+                    document.getElementById('errorProductDiscount').innerHTML="product discount required"
                     event.preventDefault();
-                }else if(productSPrice <=0){
-                    document.getElementById('errorProductSprice').innerHTML="product sale price can't be negative"
-                    event.preventDefault();
-                }else if(productSPrice > productPrice){
-                    document.getElementById('errorProductSprice').innerHTML="sale price should be lower that regular price"
+                }else if(productdiscount <0 || productdiscount >100){
+                    document.getElementById('errorProductDiscount').innerHTML="product discount inbetween 1 and 100"
                     event.preventDefault();
                 }else{
-                    document.getElementById('errorProductSprice').innerHTML="";
+                    document.getElementById('errorProductDiscount').innerHTML="";
                 }
                 const productStock = document.getElementById('product_stock').value.trim();
                 if(productStock === ""){

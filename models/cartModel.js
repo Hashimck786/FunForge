@@ -25,6 +25,17 @@ const cartSchema = new mongoose.Schema({
   cartSubTotal:{
     type:Number,
     default:0
+  },
+  cartGrandtotal:{
+    type:Number,
+    default:0
+  },
+  couponDiscount:{
+    type:Number,
+    default:0
+  },
+  couponId:{
+    type:ObjectId,
   }
 });
 
