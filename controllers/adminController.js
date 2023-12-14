@@ -6,6 +6,7 @@ const Product = require('../models/productModel')
 const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel');
 const Wallet = require('../models/walletModel')
+const Transaction = require('../models/transactionModel')
 const ejs = require('ejs');
 const fs = require('fs');
 const pdf = require('html-pdf');
@@ -875,7 +876,15 @@ const allowReturn = async(req,res)=>{
   try {
     const orderId = req.query.orderId;
     const orderData = await Order.findOneAndUpdate({_id:orderId},{$set:{deliveryStatus:"returned" ,cancellationStatus:"return allowed"}});
-    const walletupdated = await Wallet.updateOne({user:orderData.userId},{$inc:{balance:orderData.orderValue}})
+    const wallet = await Wallet.findOne({user:orderData.userId})
+    const transaction=new Transaction({
+      wallet:wallet._id,
+      amount:orderData.orderValue,
+      type:'credit'
+    
+     })
+     const transactiondata = await transaction.save()
+    const walletupdated = await Wallet.updateOne({user:orderData.userId},{$inc:{balance:orderData.orderValue},$push: { transactions: transactiondata._id }})
     res.redirect('/gadgetly/admin/userorders')
   } catch (error) {
     console.error(error.message);

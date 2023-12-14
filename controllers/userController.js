@@ -7,6 +7,7 @@ const Order = require('../models/orderModel')
 const Category = require('../models/categoryModel')
 const Wallet = require('../models/walletModel')
 const Coupon = require('../models/couponModel')
+const Transaction = require('../models/transactionModel')
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -15,6 +16,7 @@ const ejs = require('ejs');
 const fs = require('fs');
 const pdf = require('html-pdf');
 const path = require('path');
+
 
 var instance = new Razorpay({
   key_id: 'rzp_test_dTVkgmpPZxBcHY',
@@ -637,7 +639,22 @@ const placeOrder = async(req,res) =>{
       }else if(paymentMethod === "Wallet"){
         if(wallet.balance >= orderData.orderValue){
            await Order.updateOne({_id:orderData._id},{$set:{deliveryStatus:"placed"}});
-           await Wallet.updateOne({user:userId},{$inc:{balance:-orderData.orderValue}});
+           const transaction=new Transaction({
+            wallet:wallet._id,
+            amount:orderData.orderValue,
+            type:'debit'
+          
+           })
+           const transactiondata = await transaction.save()
+
+           await Wallet.updateOne(
+            { user: userId },
+            {
+              $inc: { balance: -orderData.orderValue },
+              $push: { transactions: transactiondata._id }
+            }
+          );
+          
            res.json({
              walletSuccess:true,
              orderId:orderData._id
@@ -798,19 +815,17 @@ const returnOrder = async (req,res)=>{
 const userWallet = async (req,res) => {
   try {
     const userId = req.session.data._id;
-    let Credits = await Order.find({userId:userId,paymentMethod:"Wallet",deliveryStatus:{$in:["returned","cancelled"]}})
-    let Debits = await Order.find({userId:userId,paymentMethod:"Wallet",deliveryStatus:"delivered"})
 
-    let wallet = await Wallet.findOne({user:userId});
+    let wallet = await Wallet.findOne({user:userId}).populate('transactions');
     if(!wallet){
       wallet = new Wallet ({
       user:userId,
       transactions:[]
     })
-    await wallet.save()
+    wallet = await wallet.save()
   }
 
-  res.render('userwallet',{wallet,Credits,Debits})
+  res.render('userwallet',{wallet})
   } catch (error) {
     console.error(error.message)
   }
@@ -821,10 +836,18 @@ const userWallet = async (req,res) => {
 // adding money to wallet.............................................................
 
 const AddMoneyToWallet = async(req,res) =>{
-
   const userId = req.session.data._id;
+  const wallet = await Wallet.findOne({user:userId})
   const amount = req.body.rechargeAmount;
-  const updated = await Wallet.findOneAndUpdate({user:userId},{$inc:{balance:amount}},{new:true});
+  const transaction=new Transaction({
+    wallet:wallet._id,
+    amount:amount,
+    type:'credit'
+  
+   })
+   const transactiondata = await transaction.save()
+
+  const updated = await Wallet.findOneAndUpdate({user:userId},{$inc:{balance:amount},$push: { transactions: transactiondata._id }},{new:true});
   res.json({
     updated
   })

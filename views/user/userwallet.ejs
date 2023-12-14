@@ -31,20 +31,27 @@
         
             <!-- Credits Table -->
             <div class="mb-4">
-                <h4 class="text-center text-success">Credits</h4>
-                <table class="table table-bordered">
+                <h4 class="text-center text-success">transactions</h4>
+                <table class="table table-bordered" id="myTable">
                     <thead>
                         <tr>
                             <th>Date</th>
+                            <th>Type</th>
                             <th>Order Value</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <% if(typeof Credits != "undefined" && Credits.length > 0 ){
-                            Credits.forEach((credit)=>{ %>
+                        <% if(typeof wallet != "undefined"){
+                            wallet.transactions.forEach((transaction)=>{ %>
                                 <tr>
-                                    <td><%= new Date(credit.date).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) %></td>
-                                    <td><%= credit.orderValue %></td>
+                                    <td><%= transaction.date.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' }) %></td>
+                                    <%if(transaction.type == 'debit'){ %>
+                                        <td class="text-danger"><%= transaction.type%></td>
+                                    <%}else{ %>
+                                        <td class="text-success"><%= transaction.type%></td>
+                                    <% } %>
+                                     
+                                    <td><%= transaction.amount %></td>
                                 </tr>
                             <% });
                         } %>
@@ -54,7 +61,7 @@
             <hr>
         
             <!-- Debits Table -->
-            <div class="mb-4">
+            <!-- <div class="mb-4">
               <h4 class="text-center text-danger">Debits</h4>
               <table class="table table-bordered">
                   <thead>
@@ -74,7 +81,7 @@
                       } %>
                   </tbody>
               </table>
-          </div>
+          </div> -->
         </div>
         
           
@@ -136,6 +143,11 @@
           console.error('Error', error);
           // Handle errors or display a message to the user
       });
+  });
+</script>
+<script>
+    $(document).ready(function() {
+      $('#myTable').DataTable();
   });
 </script>
 
