@@ -98,9 +98,6 @@ adminRoute.get('/deactivatecoupon',auth.isLogin,couponController.deactivateCoupo
 adminRoute.get('/activatecoupon',auth.isLogin,couponController.activateCoupon)
 
 
-adminRoute.get('/allowcancel',auth.isLogin,adminController.allowCancel);
-adminRoute.get('/denycancel',auth.isLogin,adminController.denyCancel);
-
 adminRoute.get('/allowreturn',auth.isLogin,adminController.allowReturn);
 adminRoute.get('/denyreturn',auth.isLogin,adminController.denyReturn);
 

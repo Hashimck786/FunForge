@@ -790,7 +790,22 @@ const orderDowloadPdf = async(req,res) => {
 const cancelOrder = async(req,res)=>{
   try {
     const orderId = req.query.orderId;
-    const updated = await Order.updateOne({_id:orderId},{cancellationStatus:'requested'})
+    const orderData = await Order.findOneAndUpdate({_id:orderId},{$set:{deliveryStatus:'cancelled'}});
+    if(orderData.paymentMethod != 'Cash On Delivery'){
+      const wallet = await Wallet.findOne({user:orderData.userId})
+      const amount = orderData.orderValue;
+      const transaction=new Transaction({
+        wallet:wallet._id,
+        amount:amount,
+        type:'credit'
+    
+      })
+      const transactiondata = await transaction.save()
+  
+      const walletupdated = await Wallet.findOneAndUpdate({user:orderData.userId},{$inc:{balance:amount},$push: { transactions: transactiondata._id }},{new:true});
+    }
+    
+
     return res.redirect('/gadgetly/myaccount')
   } catch (error) {
     console.error(error.message);
@@ -802,7 +817,7 @@ const cancelOrder = async(req,res)=>{
 const returnOrder = async (req,res)=>{
   try {
     const orderId = req.query.orderId;
-    const updated = await Order.updateOne({_id:orderId},{cancellationStatus:'return requested'})
+    const updated = await Order.updateOne({_id:orderId},{$set:{cancellationStatus:'return requested'}})
     return res.redirect('/gadgetly/myaccount') 
   } catch (error) {
     console.error(error.message)

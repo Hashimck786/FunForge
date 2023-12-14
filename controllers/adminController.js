@@ -844,32 +844,6 @@ const fetchSalesData = async (req,res) => {
   }
 }
 
-
-// allow cancel ..........................................................
-
-const allowCancel = async(req,res)=>{
-  try{
-    const orderId = req.query.orderId;
-    const orderData = await Order.findOneAndUpdate({_id:orderId},{$set:{deliveryStatus:"cancelled" ,cancellationStatus:"allowed"}});
-    if(orderData.paymentMethod != "Cash On Delivery"){
-      const walletupdated = await Wallet.updateOne({user:orderData.userId},{$inc:{balance:orderData.orderValue}}) 
-    }
-    res.redirect('/gadgetly/admin/userorders')
-  }catch(error){
-    console.error(error.message);
-  }
-}
-// denieying cancel ..........................................................
-const denyCancel = async(req,res)=>{
-  try {
-    const orderId = req.query.orderId;
-    const updated = await Order.updateOne({_id:orderId},{$set:{cancellationStatus:"denied"}});
-    res.redirect('/gadgetly/admin/userorders')
-  } catch (error) {
-      console.error(error.message)
-  }
-}
-
 // allowing Return.................................................
 
 const allowReturn = async(req,res)=>{
@@ -925,8 +899,6 @@ const denyReturn = async(req,res)=>{
   downloadReport,
   dowloadExcel,
   fetchSalesData,
-  allowCancel,
-  denyCancel,
   viewOrderDetails,
   allowReturn,
   denyReturn,
