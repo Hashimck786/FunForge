@@ -221,7 +221,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
+                                                    <table class="table" id="myTable">
                                                         <thead>
                                                             <tr>
                                                                 <th>Order</th>
@@ -229,7 +229,8 @@
                                                                 <th>Status</th>
                                                                 <th>paymentmethod</th>
                                                                 <th>Total</th>
-                                                                <th>Actions</th>
+                                                                <th>View</th>
+                                                                <th>Dowload</th>
 
                                                             </tr>
                                                         </thead>
@@ -238,8 +239,8 @@
                                                                 orders.forEach((order,index)=>{  %>
 
                                                                     <tr>
-                                                                        <td><%= index+1 %></td>
-                                                                        <td><%= order.date %></td>
+                                                                        <td><%= order._id %></td>
+                                                                        <td><%= order.date.toLocaleDateString()%></td>
                                                                         <%if(order.deliveryStatus == "delivered"){ %>
                                                                             <td class="text-success"><%= order.deliveryStatus %></td>
                                                                         <% }else if(order.deliveryStatus == "returned" || order.deliveryStatus == "cancelled"){ %>
@@ -250,8 +251,8 @@
                                                                         <td><%= order.paymentMethod %></td>
                                                                         <td><%=order.orderValue %></td>
                                                                         <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" style="background-color: rgb(15, 163, 22) ; color: white;" class="btn btn-small  d-block">View</a>
-                                                                        <br>
-                                                                        <a href="/gadgetly/orderDowloadPdf/?orderId=<%= order._id %>"  style="background-color: rgb(219, 55, 18) ; color: white;" class="btn btn-small d-block">Dowload receipt</a></td>
+                                                                        </td>
+                                                                        <td><a href="/gadgetly/orderDowloadPdf/?orderId=<%= order._id %>"  style="background-color: rgb(219, 55, 18) ; color: white;" class="btn btn-small d-block">Dowload receipt</a></td>
                                                                     </tr>
                                                             <%    })
                                                             }else{ %>
@@ -480,5 +481,10 @@
             }
         });
     });
+</script>
+<script>
+    $(document).ready(function() {
+      $('#myTable').DataTable();
+  });
 </script>
 <%-include('../layout/footer') %>

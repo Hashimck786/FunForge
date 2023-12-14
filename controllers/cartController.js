@@ -15,7 +15,7 @@ const loadCart = async(req,res) => {
 
       if(cart){
         cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-        cart.cartGrandtotal = cart.cartSubTotal;
+        cart.cartGrandtotal = cart.cartSubTotal-cart.couponDiscount;
         await cart.save()
       }
 

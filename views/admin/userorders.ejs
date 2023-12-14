@@ -2,28 +2,10 @@
         <section class="pb-15">
           <div class="card mb-4">
             <header class="card-header">
-                <h4 class="card-title">Latest orders</h4>
+                <h3 class="card-title">Orders</h3>
                 <div class="row align-items-center">
                     <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                        <div class="custom_select">
-                            <select class="form-select select-nice">
-                                <option selected>All Categories</option>
-                                <option>Women's Clothing</option>
-                                <option>Men's Clothing</option>
-                                <option>Cellphones</option>
-                                <option>Computer & Office</option>
-                                <option>Consumer Electronics</option>
-                                <option>Jewelry & Accessories</option>
-                                <option>Home & Garden</option>
-                                <option>Luggage & Bags</option>
-                                <option>Shoes</option>
-                                <option>Mother & Kids</option>
-                            </select>
-                        </div>
                     </div>
-                    <!-- <div class="col-md-2 col-6">
-                        <input type="date" value="02.05.2021" class="form-control">
-                    </div> -->
                     <div class="col-md-2 col-6">
                         <div class="custom_select">
                             <select class="form-select select-nice"  onchange="filter(this)"  >
@@ -44,7 +26,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <div class="table-responsive">
-                        <table class="table table-bordered align-middle table-nowrap mb-0">
+                        <table class="table table-bordered align-middle table-nowrap mb-0" id="myTable">
                             <thead class="table-light">
                                 <tr>
                                     <!-- <th scope="col" class="text-center">
@@ -127,15 +109,7 @@
                 </div> <!-- table-responsive end// -->
             </div>
         </div>
-        <div class="pagination-area mt-30 mb-50">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-start">
-                    <% for(i=1; i<=totalPages; i++){ %>
-                        <li class="page-item"><a class="page-link" href="?page=<%= i %>"><%= i %></a></li> 
-                    <% } %> 
-                </ul>
-            </nav>
-        </div>
+ -->
     </section> <!-- content-main end// -->
     <script>
         function filter(selectedElement){
@@ -149,5 +123,10 @@
             }
             
         }
+    </script>
+    <script>
+        $(document).ready(function() {
+          $('#myTable').DataTable();
+      });
     </script>
     <%-include('../layout/adminfooter') %>

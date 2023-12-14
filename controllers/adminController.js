@@ -188,41 +188,41 @@ const passwordUpdate = async(req,res) => {
 
 
 const loadUserList = async(req,res) => {
-  try {
+  try { 
 
-    var search = '';
-    if(req.query.search){
-      search = req.query.search
-    }
+    // var search = '';
+    // if(req.query.search){
+    //   search = req.query.search
+    // }
 
-    var page = 1;
-    if(req.query.page){
-      page = req.query.page
-    }
+    // var page = 1;
+    // if(req.query.page){
+    //   page = req.query.page
+    // }
 
-    const limit = 8;
-
-    const usersData = await User.find({
-      $or:[
-        {name:{$regex:'.*' +search+'.*' , $options:'i'}},
-        {email:{$regex:'.*' +search+'.*', $options:'i'}},
-      ]
-    })
-    .limit(limit*1)
-    .skip((page-1)*limit)
-    .exec();
+    // const limit = 8;
+    const usersData = await User.find({})
+    // const usersData = await User.find({
+    //   $or:[
+    //     {name:{$regex:'.*' +search+'.*' , $options:'i'}},
+    //     {email:{$regex:'.*' +search+'.*', $options:'i'}},
+    //   ]
+    // })
+    // .limit(limit*1)
+    // .skip((page-1)*limit)
+    // .exec();
     
-    const count = await User.find({
-      $or:[
-        {name:{$regex:'.*' +search+'.*' , $options:'i'}},
-        {email:{$regex:'.*' +search+'.*', $options:'i'}}
-      ]
-    }).countDocuments();
+    // const count = await User.find({
+    //   $or:[
+    //     {name:{$regex:'.*' +search+'.*' , $options:'i'}},
+    //     {email:{$regex:'.*' +search+'.*', $options:'i'}}
+    //   ]
+    // }).countDocuments();
     res.render('usersList',{
       users:usersData,
-      totalPages:Math.ceil(count/limit),
-      searchTerm:search,
-      Search:true
+      // totalPages:Math.ceil(count/limit),
+      // searchTerm:search,
+      // Search:true
     })
   } catch (error) {
     console.log(error.message);
@@ -276,10 +276,10 @@ const unblockUser = async(req,res) => {
 const userOrders = async(req,res) => {
   try {
     
-    var page = 1;
-    if(req.query.page){
-      page = req.query.page
-    }
+    // var page = 1;
+    // if(req.query.page){
+    //   page = req.query.page
+    // }
 
     const paymentMethod = req.query.paymentMethod || '';
     const deliveryStatus = req.query.deliveryStatus || '';
@@ -303,15 +303,15 @@ const userOrders = async(req,res) => {
 
 
     const ordersData = await Order.find(filter)
-    .sort({ date: -1 })
-    .limit(limit * 1)
-    .skip((page - 1) * limit)
-    .populate('userId')
-    .exec();
-    const count = await Order.find(filter).countDocuments();
+    // .sort({ date: -1 })
+    // .limit(limit * 1)
+    // .skip((page - 1) * limit)
+    // .populate('userId')
+    // .exec();
+    // const count = await Order.find(filter).countDocuments();
     res.render('userorders',{
       orders:ordersData,
-      totalPages:Math.ceil(count/limit)
+      // totalPages:Math.ceil(count/limit)
     })
   } catch (error) {
     console.error(error)
