@@ -347,19 +347,13 @@ const viewOrderDetails = async(req,res) =>{
 
 const salesReport = async(req,res) => {
   try {
-    var page = 1;
-    if(req.query.page){
-      page = req.query.page
-    }
-    const limit = 7;
+
 
     const salesData = await Order.find({deliveryStatus:"delivered"})
-    .limit(limit*1)
-    .skip((page-1)*limit)
     .populate('userId')
-    .exec();
-    const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
-    res.render('salesReport',{salesData , message:"TotalSales",type:"total",totalPages:Math.ceil(count/limit)})
+ 
+    // const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
+    res.render('salesReport',{salesData , message:"TotalSales",type:"total",})
   } catch (error) {
     console.error(error.message);
   }
@@ -369,12 +363,6 @@ const salesReport = async(req,res) => {
 
 const dailySales = async (req, res) => {
 
-  var page = 1;
-  if(req.query.page){
-    page = req.query.page
-  }
-
-  const limit = 7;
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -391,13 +379,11 @@ const dailySales = async (req, res) => {
         $lt: tomorrow,
       },
     })
-    .limit(limit*1)
-    .skip((page-1)*limit)
     .populate('userId')
-    .exec();
+
 
     const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
-    res.render('salesReport', { salesData, message:"DailySales",type:"daily" ,totalPages:Math.ceil(count/limit)});
+    res.render('salesReport', { salesData, message:"DailySales",type:"daily" });
   } catch (error) {
     console.error('Error fetching sales data:', error);
     res.status(500).send('Internal Server Error');
@@ -408,12 +394,6 @@ const dailySales = async (req, res) => {
 
 const monthlySales = async (req, res) => {
 
-  var page = 1;
-  if(req.query.page){
-    page = req.query.page
-  }
-
-  const limit = 7;
 
   const today = new Date();
 
@@ -428,14 +408,11 @@ const monthlySales = async (req, res) => {
         $lt: new Date(), // Represents the current date
       },
     })
-    .limit(limit*1)
-    .skip((page-1)*limit)
     .populate('userId')
-    .exec();
 
     const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
 
-    res.render('salesReport', { salesData ,message:"MonthlySales",type:"month",totalPages:Math.ceil(count/limit)});
+    res.render('salesReport', { salesData ,message:"MonthlySales",type:"month",});
   } catch (error) {
     console.error('Error fetching sales data:', error);
     res.status(500).send('Internal Server Error');
@@ -446,12 +423,6 @@ const monthlySales = async (req, res) => {
 
 async function weeklySales(req, res) {
 
-  var page = 1;
-  if(req.query.page){
-    page = req.query.page
-  }
-
-  const limit = 7;
 
   const today = new Date();
 
@@ -467,14 +438,12 @@ async function weeklySales(req, res) {
         $lt: today,
       },
     })
-    .limit(limit*1)
-    .skip((page-1)*limit)
     .populate('userId')
-    .exec();
+
 
     const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
 
-    res.render('salesReport', { salesData,message:"WeeklySales",type:"week",totalPages:Math.ceil(count/limit)});
+    res.render('salesReport', { salesData,message:"WeeklySales",type:"week"});
   } catch (error) {
     console.error('Error fetching sales data:', error);
     res.status(500).send('Internal Server Error');
@@ -484,12 +453,6 @@ async function weeklySales(req, res) {
 //  yearly sales report...........................................................
 
 const yearlySales = async (req, res) => {
-  var page = 1;
-  if(req.query.page){
-    page = req.query.page
-  }
-
-  const limit = 7;
 
   const today = new Date();
 
@@ -505,14 +468,12 @@ const yearlySales = async (req, res) => {
         $lt: today, // Represents the current date
       },
     })
-    .limit(limit*1)
-    .skip((page-1)*limit)
     .populate('userId')
-    .exec();
+
 
     const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
 
-    res.render('salesReport', { salesData,message:"YearlySales",type:"year" ,totalPages:Math.ceil(count/limit)});
+    res.render('salesReport', { salesData,message:"YearlySales",type:"year" });
   } catch (error) {
     console.error('Error fetching sales data:', error);
     res.status(500).send('Internal Server Error');
@@ -522,12 +483,7 @@ const yearlySales = async (req, res) => {
 // custom sales............................................................
 
 const customSales = async(req,res)=>{
-    var page = 1;
-    if(req.query.page){
-      page = req.query.page
-    }
 
-    const limit = 7;
 
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
@@ -539,14 +495,12 @@ const customSales = async(req,res)=>{
           $lt: endDate, // Represents the current date
         },
       })
-      .limit(limit*1)
-      .skip((page-1)*limit)
       .populate('userId')
-      .exec();
+
   
       const count = await Order.find({deliveryStatus:"delivered"}).countDocuments()
   
-      res.render('salesReport', { salesData,message:"CustomSales",type:"custom" ,startDate,endDate,totalPages:Math.ceil(count/limit)});
+      res.render('salesReport', { salesData,message:"CustomSales",type:"custom" ,startDate,endDate,});
     } catch (error) {
       console.error('Error fetching sales data:', error);
       res.status(500).send('Internal Server Error');

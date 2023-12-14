@@ -8,32 +8,14 @@ const sharp = require('sharp');
 const loadProductList = async(req,res) => {
   try {
 
-    var search = '';
-    if(req.query.search){
-      search = req.query.search
-    }
 
-    var page = 1;
-    if(req.query.page){
-      page = req.query.page
-    }
 
-    const limit = 5;
+ 
 
-    const productsData = await Product.find({
-      productName:{$regex:'.*' +search+'.*' , $options:'i'}
-    })
-    .limit(limit*1)
-    .skip((page-1)*limit)
-    .exec();
-    const count = await Product.find({
-      productName:{$regex:'.*' +search+'.*' , $options:'i'}
-    }).countDocuments();
+    const productsData = await Product.find({})
+
     res.render('productList.ejs',{
-      product:productsData,
-      totalPages:Math.ceil(count/limit),
-      searchTerm:search,
-      Search:true
+      product:productsData
       
     })
   } catch (error) {

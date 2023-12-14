@@ -840,7 +840,7 @@ const userWallet = async (req,res) => {
     wallet = await wallet.save()
   }
 
-  res.render('userwallet',{wallet})
+  res.render('userwallet',{wallet,user:userId})
   } catch (error) {
     console.error(error.message)
   }

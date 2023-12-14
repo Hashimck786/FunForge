@@ -18,14 +18,22 @@ const ordersSchema = new mongoose.Schema({
     type:String,
     require:true
   },
-  // couponCode:{
-  //   type:String,
+  couponCode:{
+    type:String,
    
-  // },
-  // couponDiscount:{
-  //   type:Number,
-  //   default:0
-  // },
+  },
+  couponDiscount:{
+    type:Number,
+    default:0
+  },
+  couponId:{
+    type:mongoose.Schema.Types.ObjectId,
+    ref:'Coupon'
+  },
+  preDiscountAmount:{
+    type:Number,
+    require:true
+  },
   orderStatus:{
     type:String,
     require:true

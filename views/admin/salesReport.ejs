@@ -42,7 +42,7 @@
     <div class="card-body">
         <div class="table-responsive">
             <div class="table-responsive">
-                <table class="table align-middle table-nowrap mb-0" >
+                <table class="table table-striped align-middle table-nowrap mb-0 table-hover"  id="myTable">
                     <thead class="table-light">
                         <tr>
                             <th class="align-middle" scope="col">Order ID</th>
@@ -74,9 +74,9 @@
                         </tr>
                        <%})
                       } else{ %>
-                        <tr>
+                        <!-- <tr>
                           <td colspan="4">no orders yet...............</td>
-                        </tr>
+                        </tr> -->
                       <% } %>
 
                     </tbody>
@@ -85,7 +85,7 @@
         </div> <!-- table-responsive end// -->
     </div>
 </div>
-<div class="pagination-area mt-15 mb-50">
+<!-- <div class="pagination-area mt-15 mb-50">
     <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-start">
             <%if(typeof totalPages != "undefined"){
@@ -95,9 +95,14 @@
            } %>
         </ul>
     </nav>
-</div>
+</div> -->
 
 </section> <!-- content-main end// -->
 
+<script>
+    $(document).ready(function() {
+      $('#myTable').DataTable();
+  });
+</script>
 
 <%-include('../layout/adminfooter') %>
