@@ -25,7 +25,7 @@ const couponController = require('../controllers/couponController')
 userRoute.get("/",userController.loadHome);
 userRoute.get('/signup',userController.loadSignup);
 userRoute.post('/signup',[ 
-  body('username').trim().isLength({min:3,max:10}).withMessage('Enter minimum 3 characters'),
+  body('username').trim().isLength({min:3,max:12}).withMessage('Enter minimum 3 to 12 characters'),
   body('email').isEmail().withMessage('invalid email'),
   body('mobile').isNumeric().isLength({min:10,max:10}).withMessage('invalid mobilenumber'),
   body('password').isLength({min:8}).withMessage('enter minimum 8 characters')
