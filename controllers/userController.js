@@ -391,11 +391,12 @@ const loadProductDetail = async(req,res) => {
 const loadProfile = async(req,res) => {
   try {
     const userId = req.session.data._id
+    const checkout = req.query.checkout || '';
     const userData = await User.findOne({_id:userId})
     const userAddress = userData.address;
     const addressData = await Address.find({_id:{$in:userAddress}})
     const orders = await Order.find({userId:userId}).sort({date: -1})
-    res.render('userProfile.ejs',{user:userData,address:addressData,orders:orders})
+    res.render('userProfile.ejs',{user:userData,address:addressData,orders:orders,checkout})
   } catch (error) {
     console.error(error.message)
   }
@@ -433,8 +434,9 @@ const editProfile = async(req,res) => {
 const loadAddAddress = async(req,res) => {
   try {
       const userId = req.session.data._id;
+      const checkout = req.query.checkout || '';
       const userData = await User.findOne({_id:userId})
-      res.render("addaddress.ejs",{user:userData}) 
+      res.render("addaddress.ejs",{user:userData,checkout}) 
   } catch (error) {
       console.error(error)
   }
@@ -445,6 +447,7 @@ const loadAddAddress = async(req,res) => {
 const addAddress = async(req,res) => {
   try {
     const userId = req.session.data._id;
+    const checkout = req.query.checkout;
     const address = new Address({
       addressname:req.body.addressname,
       name:req.body.name,
@@ -468,7 +471,14 @@ const addAddress = async(req,res) => {
       const userAddress = userData.address
       const remove = await Address.updateMany({_id:{$in:userAddress}},{$set:{is_Default:false}})
       const updated = await User.updateOne({_id:userId},{$addToSet:{address:addressData._id}})
-      res.redirect('/gadgetly/myaccount')
+      if(checkout){
+        res.redirect('/gadgetly/checkout')
+      }else{
+        res.redirect('/gadgetly/myaccount')
+      }
+        
+
+      
     }else{
       res.render('addaddress.ejs',{message:"Error in address adding"})
     }
@@ -536,12 +546,18 @@ const deleteAddress = async(req,res) =>{
 const defaultAddress = async(req,res) => {
   try {
       const id = req.query.id ;
+      const checkout = req.query.checkout;
       const userId = req.session.data._id;
       const userData = await User.findOne({_id:userId})
       const userAddress = userData.address
       const remove = await Address.updateMany({_id:{$in:userAddress}},{$set:{is_Default:false}})
       const updated = await Address.updateOne({_id:id},{$set :{is_Default:true}})
-      res.redirect('/gadgetly/myaccount')
+      if(checkout){
+        res.redirect('/gadgetly/checkout')
+      }else{
+        res.redirect('/gadgetly/myaccount')
+      }
+
   } catch (error) {
       console.error(error.message)
   }

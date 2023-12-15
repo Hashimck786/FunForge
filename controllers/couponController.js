@@ -106,7 +106,7 @@ const applyCoupon = async(req,res)=>{
     if(couponId){
       const coupon = await Coupon.findOne({_id:couponId});
       if(coupon){
-        const usedcoupon = await User.findOne({coupons:couponId});
+        const usedcoupon = await User.findOne({_id:userId,coupons:couponId});
         if(usedcoupon){
           res.json({
             usedcoupon:true

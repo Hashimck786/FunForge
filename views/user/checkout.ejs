@@ -229,8 +229,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class=" text-left mb-25 ">
-                            <a href="/gadgetly/addAddress"><button type="button" class="btn btn-primary">Add Address</button></a>
-                            <a href="/gadgetly/myaccount"><button type="button" class="btn btn-secondary">Manage Address</button></a>
+                            <a href="/gadgetly/addAddress/?checkout=true"><button type="button" class="btn btn-primary">Add Address</button></a>
+                            <a href="/gadgetly/myaccount/?checkout=true"><button type="button" class="btn btn-secondary">Manage Address</button></a>
                         </div>
                         <div class="mb-25">
                             <h4>Billing Details</h4>
@@ -311,27 +311,6 @@
                                                 <td colspan="3">item not found</td>
                                             </tr>
                                         <% } %>
-                                        <!-- <tr>
-                                            <td class="image product-thumbnail"><img src="/assets/imgs/shop/product-1-1.jpg" alt="#"></td>
-                                            <td>
-                                                <h5><a href="shop-product-full.html">Yidarton Women Summer Blue</a></h5> <span class="product-qty">x 2</span>
-                                            </td>
-                                            <td>$180.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="image product-thumbnail"><img src="/assets/imgs/shop/product-2-1.jpg" alt="#"></td>
-                                            <td>
-                                                <h5><a href="shop-product-full.html">LDB MOON Women Summe</a></h5> <span class="product-qty">x 1</span>
-                                            </td>
-                                            <td>$65.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="image product-thumbnail"><img src="/assets/imgs/shop/product-3-1.jpg" alt="#"></td>
-                                            <td><i class="ti-check-box font-small text-muted mr-10"></i>
-                                                <h5><a href="shop-product-full.html">Women's Short Sleeve Loose</a></h5> <span class="product-qty">x 1</span>
-                                            </td>
-                                            <td>$35.00</td>
-                                        </tr> -->
                                         <tr>
                                             <th>SubTotal</th>
                                             <td class="product-subtotal" colspan="2"><%= cart.cartSubTotal %></td>

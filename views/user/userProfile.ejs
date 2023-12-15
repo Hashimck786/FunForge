@@ -285,7 +285,7 @@
                                                                 <a style="background-color: blue;" href="/gadgetly/editaddress/?id=<%= address[i]._id %>" class="btn btn-warning btn-sm" role="button">Edit</a>
                                                                 <a style="background-color: red;" href="/gadgetly/deleteaddress/?id=<%= address[i]._id %>" class="btn btn-danger btn-sm" role="button">Delete</a>
                                                                 <% if(address[i].is_Default == false){ %>
-                                                                <a style="background-color: green;" href="/gadgetly/defaultaddress/?id=<%= address[i]._id %>" class="btn btn-danger btn-sm" role="button">Make Default</a>
+                                                                <a style="background-color: green;" href="/gadgetly/defaultaddress/?id=<%= address[i]._id %>&checkout=<%=checkout%>" class="btn btn-danger btn-sm" role="button">Make Default</a>
                                                                 <% } %>
                                                             </div>
                                                         </div>
