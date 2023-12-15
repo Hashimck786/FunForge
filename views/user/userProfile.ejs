@@ -404,14 +404,27 @@
         form.addEventListener('submit', function (event) {
             // Validate username
             
-            const username = document.getElementById('username').value.trim();
+            const usernameInput = document.getElementById('username');
+            const errorUsername = document.getElementById('errorusername');
+            const username = usernameInput.value.trim();
+
             if (username === '') {
-                document.getElementById('errorusername').innerText = 'Username is required';
+                errorUsername.innerText = 'Username is required';
+                event.preventDefault();
+            } else if (!isValidUsername(username)) {
+                errorUsername.innerText = 'Invalid username';
                 event.preventDefault();
             } else {
-                document.getElementById('errorusername').innerText = '';
+                errorUsername.innerText = '';
             }
 
+            function isValidUsername(username) {
+            // Define a regular expression to allow only alphanumeric characters and underscore
+            const regex = /^[a-zA-Z0-9_]+$/;
+            return regex.test(username);
+            }
+
+    
             // Validate email
             const email = document.getElementById('email').value.trim();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
