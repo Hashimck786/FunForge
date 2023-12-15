@@ -346,7 +346,7 @@ const loadContact = async(req,res) => {
       sortOptions.salePrice = -1;
     }
 
-    console.log(category)
+    
 
     const productData = await Product.find(filter)
     .sort(sortOptions)
