@@ -420,7 +420,13 @@
                         title:'INSUFFICIENT BALANCE',
                         text:'Please recharge your wallet and try again!'
                     })
-                }
+            }if(data.noaddress){
+                swal.fire({
+                    icon:'error',
+                    title:'Address Not Found',
+                    text:'please add address to place order'
+                })
+            }
                 if(data.order){
 
                     var options = {

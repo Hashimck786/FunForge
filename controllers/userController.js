@@ -454,7 +454,8 @@ const addAddress = async(req,res) => {
       country:req.body.country,
       pincode:req.body.pincode,
       phone:req.body.phone,
-      alterphone:req.body.alterphone
+      alterphone:req.body.alterphone,
+      is_Default:true
     })
 
 
@@ -463,6 +464,9 @@ const addAddress = async(req,res) => {
 
     const addressData = await address.save();
     if(addressData){
+      const userData = await User.findOne({_id:userId})
+      const userAddress = userData.address
+      const remove = await Address.updateMany({_id:{$in:userAddress}},{$set:{is_Default:false}})
       const updated = await User.updateOne({_id:userId},{$addToSet:{address:addressData._id}})
       res.redirect('/gadgetly/myaccount')
     }else{
@@ -574,6 +578,10 @@ const placeOrder = async(req,res) =>{
     const orderedProductDetails = [];
     const paymentMethod = req.query.paymentmethod;
     let orderStatus = "pending";
+    const addressArray = await Address.find({_id:{$in:user.address},is_Default:true});
+    const address = addressArray[0]
+
+    if(typeof addressArray != "undefined" && addressArray.length>0){
 
     if(paymentMethod === 'Cash On Delivery'){
       orderStatus = "placed"
@@ -598,8 +606,6 @@ const placeOrder = async(req,res) =>{
   
   
   
-      const addressArray = await Address.find({_id:{$in:user.address},is_Default:true});
-      const address = addressArray[0]
       
       
   
@@ -679,7 +685,11 @@ const placeOrder = async(req,res) =>{
 
        
       }
-
+    }else{
+      res.json({
+        noaddress:true
+      })
+    }
 
     
 } catch (error) {

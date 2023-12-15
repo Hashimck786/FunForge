@@ -1,6 +1,7 @@
 const Product = require('../models/productModel')
 const Cart = require('../models/cartModel')
 const Coupon = require('../models/couponModel')
+const User = require('../models/userModel')
 
 
 
@@ -32,6 +33,7 @@ const loadCart = async(req,res) => {
 const addToCart = async(req,res) =>{
   try {
       const userId = req.session.data._id;
+      const wishlist = req.query.wishlist;
       const productId = req.query.id;
       const productData = await Product.findOne({_id:productId});
       let cart = await Cart.findOne({userId:userId});
@@ -71,12 +73,16 @@ const addToCart = async(req,res) =>{
         const cartData =  await cart.save()
   
         if(cartData){
-          // res.redirect('/gadgetly/shop')
+          if(wishlist){
+            const updated = await User.updateOne({_id:userId},{$pull:{wishlist:productId}})
+          }
+  
           res.json({
             success:true
           })
+
         }else{
-          // res.redirect('/gadgetly/shop')
+
           res.json({
             success:false
           })

@@ -314,7 +314,7 @@
                         event.preventDefault();
                         const productId = this.getAttribute('productId');
                         console.log('productId', productId);
-                        const response = await fetch(`/gadgetly/addtocart/?id=${productId}`, {
+                        const response = await fetch(`/gadgetly/addtocart/?id=${productId}&wishlist=true`, {
                             method: 'GET'
                         });
                         const productData = await response.json();
@@ -326,6 +326,10 @@
                                 title: 'Added to Cart',
                                 text: 'The product has been added to the cart'
                             });
+                        // removes the closest ancestor when we hit on add to cart without refreshing
+                        const tableRow = this.closest('tr');
+                        tableRow.parentNode.removeChild(tableRow);  
+
                         }
                         if(productData.outofstock) {
                             swal.fire({
