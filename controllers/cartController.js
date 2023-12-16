@@ -16,7 +16,12 @@ const loadCart = async(req,res) => {
 
       if(cart){
         cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-        cart.cartGrandtotal = cart.cartSubTotal-cart.couponDiscount;
+        if(!cart.cartSubTotal == 0){
+          cart.cartGrandtotal = cart.cartSubTotal-cart.couponDiscount;
+        }else{
+          cart.cartGrandtotal = cart.cartSubTotal
+        }
+        
         await cart.save()
       }
 
@@ -113,7 +118,11 @@ const removeFromCart = async(req,res) => {
 
       const productIndex = cart.products.findIndex(product => product.productId.toString() === productId)
         cart.cartSubTotal = cart.cartSubTotal - cart.products[productIndex].total;
-        cart.cartGrandtotal =cart.cartSubTotal;
+        if(!cart.cartSubTotal == 0){
+          cart.cartGrandtotal = cart.cartSubTotal-cart.couponDiscount;
+        }else{
+          cart.cartGrandtotal = cart.cartSubTotal
+        }
         await cart.save()
 
 
@@ -168,7 +177,7 @@ const updateQuantity = async(req,res)=>{
   cart.products[productIndex].quantity = newQuantity
   cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
   cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
-  cart.cartGrandtotal = cart.cartSubTotal
+  cart.cartGrandtotal = cart.cartSubTotal-cart.couponDiscount
   await cart.save();
 
   res.json({

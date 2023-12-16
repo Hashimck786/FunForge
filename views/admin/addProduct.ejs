@@ -34,7 +34,7 @@
                                         <div class="mb-4">
                                             <label class="form-label">Regular price</label>
                                             <div class="row gx-2">
-                                                <input placeholder="$" type="number" class="form-control" id="product_price" name="product_price" oninput="validateProductPrice()">
+                                                <input placeholder="$" type="number" min="0" class="form-control" id="product_price" name="product_price" oninput="validateProductPrice()">
                                                 <span id="errorProductPrice" class="text-danger"></span>
                                             </div>
                                         </div>
@@ -42,7 +42,7 @@
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Product Discount</label>
-                                            <input placeholder="%" type="number" class="form-control" id="product_discount" name="product_discount" oninput="validateProductDiscount()">
+                                            <input placeholder="%" type="number" min="0" class="form-control" id="product_discount" name="product_discount" oninput="validateProductDiscount()">
                                             <span id="errorProductDiscount" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Stock</label>
-                                    <input type="number" placeholder="%" class="form-control" id="product_stock" name="product_stock" oninput="validateProductStock()">
+                                    <input type="number" placeholder="" min="0" class="form-control" id="product_stock" name="product_stock" oninput="validateProductStock()">
                                     <span id="errorProductStock" class="text-danger"></span>
                                 </div>
                                 <div class="input-upload">

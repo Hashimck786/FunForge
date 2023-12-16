@@ -573,9 +573,15 @@ const loadCheckout = async(req,res) => {
   try {
       const userId = req.session.data._id;
       const user = await User.findOne({_id:userId});
-      const cart = await Cart.findOne({userId:userId}).populate('products.productId')
+      const cart = await Cart.findOne({userId:userId})
       const defaultAddress = await Address.find({_id:{$in:user.address},is_Default:true})
-      res.render('checkout.ejs',{cart:cart,user:userId,address:defaultAddress[0]})
+      if(cart.products.length >0){
+        const cartData = await Cart.findOne({userId:userId}).populate('products.productId')
+        res.render('checkout.ejs',{cart:cartData,user:userId,address:defaultAddress[0]})
+      }else{
+        res.redirect('/gadgetly/cart')
+      }
+      
   } catch (error) {
       console.error(error.message);
   }
