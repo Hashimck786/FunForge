@@ -42,6 +42,7 @@ const adminController = require('../controllers/adminController')
 const productController = require('../controllers/productController')
 const categoryController = require('../controllers/categoryController')
 const couponController = require('../controllers/couponController.js')
+const referralController = require('../controllers/referralController.js')
 
 
 adminRoute.get('/',auth.isLogout,adminController.loadAdminLogin);
@@ -96,6 +97,9 @@ adminRoute.post('/editcoupon',auth.isLogin,couponController.editCoupon)
 adminRoute.get('/inactivecouponlist',auth.isLogin,couponController.inactiveCouponList);
 adminRoute.get('/deactivatecoupon',auth.isLogin,couponController.deactivateCoupon);
 adminRoute.get('/activatecoupon',auth.isLogin,couponController.activateCoupon)
+
+adminRoute.get('/referrals',auth.isLogin,referralController.loadreferrals)
+adminRoute.post('/referraledit',auth.isLogin,referralController.editReferral)
 
 
 adminRoute.get('/allowreturn',auth.isLogin,adminController.allowReturn);

@@ -8,6 +8,8 @@ const Category = require('../models/categoryModel')
 const Wallet = require('../models/walletModel')
 const Coupon = require('../models/couponModel')
 const Transaction = require('../models/transactionModel')
+
+
 const bcrypt = require('bcrypt')
 const { validationResult  } = require('express-validator');
 const nodemailer = require('nodemailer');
@@ -37,37 +39,6 @@ const securePassword = async(password) => {
  
 }
 
-// sending verification mail.......................................
-
-const sendVerificationMail = async(name,email,id) => {
-  try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-          user: 'hashimckdev@gmail.com',
-          pass: 'xzdg nfal lsyt szsg'
-
-      }
-  });
-  const mailOptions = {
-    from:'hashimckdev@gmail.com',
-    to:email,
-    subject:'Verification Email',
-    html:`<p>HI ${name} <a href="http://localhost:3000/gadgetly/verify?id=${id}>click here to verify mail<a> </p>`
-  };
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        console.log(error);
-        
-    } else {
-        console.log("Email has been send",info.response)
-    }
-});
-  } catch (error) {
-    console.log(error.message);
-  }
-}
-
 
 // sending verification mail.......................................
 
@@ -85,7 +56,7 @@ const sendOtpMail = async(name,email,id,otp) => {
     from:'hashimckdev@gmail.com',
     to:email,
     subject:'Verification Email',
-    text:"This is the otp to Reset your password"+otp
+    text:"Here is your otp."+otp
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -178,7 +149,12 @@ const loginSubmission= async(req,res) => {
 const signupSubmission = async(req,res) => {
 
   const errors = validationResult(req);
-  
+  if(req.body.referralCode){
+    const isreferral = await User.find({referralCode:req.body.referralCode});
+    if(isreferral.length<1){
+      return res.render('signup',{message:'invalid referral code'})
+    }
+  }
  
   if(!errors.isEmpty()){
     return res.render('signup.ejs',{error:errors.mapped()})
@@ -189,24 +165,48 @@ const signupSubmission = async(req,res) => {
       return res.render('signup',{message:"Email already exists"})
     }
     const sPassword = await securePassword(req.body.password)
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
     
     const user = new User({
       name : req.body.username,
       mobile : req.body.mobile,
       email : req.body.email,
       password : sPassword,
+      referredBy:req.body.referralCode,
+      otp:otp
+      
       
       
     });
   const userData = await user.save();
-  sendVerificationMail(req.body.username,req.body.email,userData._id)
+  // sendVerificationMail(req.body.username,req.body.email,userData._id)
+
   if(userData){
-        res.redirect('/gadgetly/login')
+    sendOtpMail(userData.name,userData.email,userData.mobile,otp);
+    res.render('otpValidation.ejs',{user:userData,signup:true})
   }else{
        res.render('signup',{message:"submission failed"})
   }
   } catch (error) {
     res.send(error.message)
+  }
+}
+
+// signup otp verification ...........................................................
+
+const signupVerifyOtp = async(req,res) => {
+  try {
+    const id = req.query.id;
+    const otpEntered = req.body.otp;
+    const userData = await User.findOne({_id:id});
+    if(userData.otp == otpEntered){
+       const updated = await User.updateOne({_id:id},{$set: {otp:"",is_verified:1}})
+       res.redirect('/gadgetly/login')
+    }else{
+       res.render('otpValidation.ejs',{message:"invalid Otp"})
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 }
 
@@ -933,5 +933,6 @@ module.exports = {
   returnOrder,
   userWallet,
   AddMoneyToWallet,
+  signupVerifyOtp
 
 }

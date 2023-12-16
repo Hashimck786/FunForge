@@ -1,0 +1,48 @@
+<%- include('../layout/adminheader') %>
+<section class="content-main">
+  <div class="content-header">
+      <div>
+          <h2 class="content-title card-title">Referrals </h2>
+          <!-- <p>Add, edit or delete a category</p> -->
+      </div>
+      <div>
+          <input type="text" placeholder="Search Categories" class="form-control bg-white">
+      </div>
+  </div>
+  <% if(typeof referral != "undefined"){ %>
+  <div class="card">
+      <div class="card-body">
+          <div class="row">
+              <div class="col-md-3">
+                  <form method="post" action="/gadgetly/admin/referraledit/?referralId=<%=referral._id%>" id="ReferralForm">
+                      <div class="mb-4">
+                          <label for="referral_amount" class="form-label">Referral Amount</label>
+                          <input type="number" min="0" placeholder="Enter Referral Amount" class="form-control" id="referral_amount" name="referral_amount"  value="<%=referral.referralAmount%>" oninput="validateCategoryName()"/>
+                          <span class="text-danger" id="errorCategoryName"></span>
+                      </div>
+                      <div class="mb-4">
+                          <label for="referrer_amount" class="form-label">Referrer Amount</label>
+                          <input type="number" min="0" placeholder="Enter Referrer Amount" class="form-control" id="referrer_amount" name="referrer_amount"  value="<%=referral.referrerAmount%>" oninput="validateCategoryName()"/>
+                          <span class="text-danger" id="errorCategoryName"></span>
+                      </div>
+                      
+                      <div class="d-grid">
+                          <button class="btn btn-primary" type="submit" value="referral Submit">UPDATE</button>
+                      </div>
+                  </form>
+              </div>
+            </div> <!-- .row // -->
+          </div> <!-- card body .// -->
+      </div> <!-- card .// -->
+      <% }else{ %>
+        <div class="col-lg-6">
+          <div class="card mb-4">
+              <div class="card-header">
+                  <h4>Can't Edit this product</h4>
+              </div>
+              
+          </div> <!-- card end// -->
+        </div>  
+      <% } %>
+  </section> <!-- content-main end// -->
+<%-include('../layout/adminfooter') %>

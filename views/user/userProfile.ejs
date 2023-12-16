@@ -308,7 +308,7 @@
                                                     >
                                                     <div class="row">
                                                         <div class="form-group col-md-12">
-                                                            <label>USername <span class="required">*</span></label>
+                                                            <label>Username <span class="required">*</span></label>
                                                             <input required="true" class="form-control square"  id="username" name="name" type="text" value="<%= user.name %>" oninput="validateUsername()">
                                                             <span id="errorusername" class="text-danger"></span>
                                                         </div>
@@ -342,6 +342,10 @@
                                             <% if(typeof message != "undefined"){ %>
                                                 <div class="text-center text-danger"><%= message %></div>
                                             <% } %>
+                                            <div class="referral-code-container">
+                                                <p class="referral-code-label">Your Referral Code:</p>
+                                                <p class="referral-code"><%=user.referralCode%></p>
+                                            </div>
                                             <% }else{  %>
                                                 <h4>account not found</h4>
                                                 <% }  %>

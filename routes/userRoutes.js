@@ -30,6 +30,7 @@ userRoute.post('/signup',[
   body('mobile').isNumeric().isLength({min:10,max:10}).withMessage('invalid mobilenumber'),
   body('password').isLength({min:8}).withMessage('enter minimum 8 characters')
 ],userController.signupSubmission)
+userRoute.post('/signupotpvalidation',userController.signupVerifyOtp)
 userRoute.get('/login',userAuth.isLogout,userController.loadLoginPage)
 userRoute.post('/login',userBlockMiddleware, userController.loginSubmission);
 userRoute.get('/logout',userController.logingOut)

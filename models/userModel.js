@@ -1,5 +1,6 @@
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 
 const userSchema = new mongoose.Schema(
@@ -51,10 +52,23 @@ const userSchema = new mongoose.Schema(
         type:mongoose.Schema.Types.ObjectId,
         required:true
       }
-    ]
-      
+    ],
+    referralCode: {
+      type: String,
+      default: uuidv4(),
+    },
+    referredBy:{
+      type:String
+    }
     
   }
 )
+
+// userSchema.pre('save', function (next) {
+//   if (!this.referralCode) {
+//     this.referralCode = uuidv4();
+//   }
+//   next();
+// });
 
 module.exports = mongoose.model("User",userSchema);
