@@ -8,6 +8,7 @@ const Category = require('../models/categoryModel')
 const Wallet = require('../models/walletModel')
 const Coupon = require('../models/couponModel')
 const Transaction = require('../models/transactionModel')
+const Referral = require('../models/referralModel')
 
 
 const bcrypt = require('bcrypt')
@@ -129,7 +130,7 @@ const loginSubmission= async(req,res) => {
           // }
 
         }else{
-          res.render('login.ejs',{message:"Please verify your email by clicking the link sent to your email."})
+          res.render('login.ejs',{message:"Please verify your email otp."})
         }
         
         
@@ -151,6 +152,8 @@ const signupSubmission = async(req,res) => {
   const errors = validationResult(req);
   if(req.body.referralCode){
     const isreferral = await User.find({referralCode:req.body.referralCode});
+    console.log(isreferral)
+    console.log(isreferral.length)
     if(isreferral.length<1){
       return res.render('signup',{message:'invalid referral code'})
     }
@@ -196,11 +199,48 @@ const signupSubmission = async(req,res) => {
 
 const signupVerifyOtp = async(req,res) => {
   try {
-    const id = req.query.id;
+    const userId = req.query.id;
     const otpEntered = req.body.otp;
-    const userData = await User.findOne({_id:id});
+    const userData = await User.findOne({_id:userId});
     if(userData.otp == otpEntered){
-       const updated = await User.updateOne({_id:id},{$set: {otp:"",is_verified:1}})
+       const updated = await User.updateOne({_id:userId},{$set: {otp:"",is_verified:1}})
+       if(userData.referredBy){
+       const referralData = await Referral.findOne({})
+       const referralAmout = referralData.referralAmount;
+       const referrerAmount = referralData.referrerAmount;
+       let wallet = await Wallet.findOne({user:userId}).populate('transactions');
+       if(!wallet){
+         wallet = new Wallet ({
+         user:userId,
+         transactions:[]
+       })
+       wallet = await wallet.save()
+     }
+
+     const transaction=new Transaction({
+      wallet:wallet._id,
+      amount:referralAmout,
+      type:'referral'
+    
+     })
+     const transactiondata = await transaction.save()
+  
+    const walletupdated = await Wallet.findOneAndUpdate({user:userId},{$inc:{balance:referralAmout},$push: { transactions: transactiondata._id }},{new:true});
+
+
+    const referrerData = await User.findOne({referralCode:userData.referredBy});
+    const refferrerId = referrerData._id;
+    const referrertransaction=new Transaction({
+      wallet:wallet._id,
+      amount:referrerAmount,
+      type:'referral'
+    
+     })
+     const referrertransactiondata = await referrertransaction.save()
+     const referrerwalletupdated = await Wallet.findOneAndUpdate({user:refferrerId},{$inc:{balance:referrerAmount},$push: { transactions: referrertransactiondata._id }},{new:true});
+    
+         }
+
        res.redirect('/gadgetly/login')
     }else{
        res.render('otpValidation.ejs',{message:"invalid Otp"})

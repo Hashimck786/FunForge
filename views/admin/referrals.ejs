@@ -3,17 +3,14 @@
   <div class="content-header">
       <div>
           <h2 class="content-title card-title">Referrals </h2>
-          <!-- <p>Add, edit or delete a category</p> -->
       </div>
-      <div>
-          <input type="text" placeholder="Search Categories" class="form-control bg-white">
-      </div>
+
   </div>
   <% if(typeof referral != "undefined"){ %>
-  <div class="card">
-      <div class="card-body">
-          <div class="row">
-              <div class="col-md-3">
+  <div class="card col-md-3">
+      <div class="card-body ">
+          <div class="row  ">
+              <div class="">
                   <form method="post" action="/gadgetly/admin/referraledit/?referralId=<%=referral._id%>" id="ReferralForm">
                       <div class="mb-4">
                           <label for="referral_amount" class="form-label">Referral Amount</label>
