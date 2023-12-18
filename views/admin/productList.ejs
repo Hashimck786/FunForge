@@ -6,8 +6,6 @@
                     <p>Admin can edit , list and unlist products here</p>
                 </div>
                 <div>
-                    <!-- <a href="#" class="btn btn-light rounded font-md">Export</a>
-                    <a href="#" class="btn btn-light rounded  font-md">Import</a> -->
                     <a href="/gadgetly/admin/loadAddProduct" class="btn btn-primary btn-sm rounded">Create new</a>
                 </div>
             </div>
@@ -22,8 +20,8 @@
                                             <th class="align-middle" scope="col">Price</th>
                                             <th class="align-middle" scope="col">discount%</th>
                                             <th class="align-middle" scope="col">OfferPrice</th>
-                                            <th class="align-middle" scope="col">Edit</th>
                                             <th class="align-middle" scope="col">Stock</th>
+                                            <th class="align-middle" scope="col">Edit</th>                                            
                                             <th class="align-middle" scope="col">List/unList</th>
                                         </tr>
                                     </thead>
@@ -43,15 +41,13 @@
                                                 <%= product.salePrice %>
                                             </td>
                                             <td>
+                                                <%= product.Stock %>
+                                             </td>
+                                            <td>
                                                 <a href="/gadgetly/admin/edit?id=<%=product._id %>" class="btn btn-sm font-sm rounded btn-brand">
                                                     <i class="material-icons md-edit"></i> Edit
                                                 </a>
                                             </td>
-
-                                            <td>
-                                               <%= product.Stock %>
-                                            </td>
-
                                             <td>
                                                 <%if(product.is_listed ==0 ){ %>
                                                     <a href="/gadgetly/admin/list?id=<%=product._id %>" class="btn btn-sm font-sm btn-light rounded  list-btn"  productId="<%=product._id %>" style="background-color: green;">
