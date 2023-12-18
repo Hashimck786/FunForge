@@ -66,12 +66,13 @@
                                     <span id="errorProductStock" class="text-danger"></span>
                                 </div>
                                 
-                                <div class="left">
-                                    <img style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[0] %>" class="img-sm img-thumbnail" alt="Item">
-                                    <img  style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[1] %>" class="img-sm img-thumbnail" alt="Item">
-                                    <img style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[2] %>" class="img-sm img-thumbnail" alt="Item">
-                                    <img style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[3] %>" class="img-sm img-thumbnail" alt="Item">
-                                    <img  style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[4] %>" class="img-sm img-thumbnail" alt="Item">
+                                <div class="left" style="display: flex; flex-wrap: wrap;">
+                                    <% for (let i = 0; i < product.image.length; i++) { %>
+                                        <div id="imageContainer<%= i %>" style="display: flex; flex-direction: column; align-items: center; margin-right: 10px; margin-bottom: 10px;">
+                                            <img style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[i] %>" class="img-sm img-thumbnail" alt="Item">
+                                            <!-- <a href="#" class="btn btn-danger delete-button" data-image-index="<%= i %>">Delete</a> -->
+                                        </div>
+                                    <% } %>
                                 </div>
                                 <div class="input-upload">
                                     <div id="imagePreviewContainer" class="image-preview-container"></div>
@@ -247,4 +248,5 @@
                 })
             })
         </script>
+
         <%-include('../layout/adminfooter') %>

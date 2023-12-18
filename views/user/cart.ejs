@@ -197,11 +197,7 @@
                                                 </td>
                                                 <td class="price" data-title="Price"><span><%= product.productId.salePrice %></span></td>
                                                 <td class="text-center" data-title="Stock">
-                                                    <!-- <div class="detail-qty border radius m-auto"> -->
-                                                        <!-- <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a> -->
-                                                        <input type="number" min="1"  productId="<%=product.productId._id %>" class="qty-val quantity-input" value="<%= product.quantity %>" />
-                                                        <!-- <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a> -->
-                                                    <!-- </div> -->
+                                                        <input type="number" min="1"  productId="<%=product.productId._id %>"  id="nonNegativeInput" class="qty-val quantity-input" value="<%= product.quantity %>" />
                                                     
                                                 </td>
                                                 <td class="text-right" data-title="Cart" >
@@ -414,6 +410,14 @@
 
             })
         })
+    </script>
+    <script>
+            document.getElementById('nonNegativeInput').addEventListener('input', function () {
+                var inputValue = this.value;
+                if (inputValue < 1) {
+                    this.value = 1;
+                }
+            });
     </script>
 
 <%-include('../layout/footer') %>
