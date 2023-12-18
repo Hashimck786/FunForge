@@ -79,10 +79,16 @@ const loadHome = async (req,res) =>{
     const userData= req.session.data;
     const productData = await Product.find().limit(8);
     const categoryData= await Category.find();
-    // const wishlistCount = userData.wishlist.length;
-    // const cartData = await Cart.findOne({userId:userData._id})
-    // const cartCount = cartData.products.length;
-    res.render('index.ejs',{user:userData,products:productData,category:categoryData})
+    let wishlistCount;
+    let cartCount;
+    if(typeof userData != "undefined"){
+      const user = await User.findOne({_id:userData._id})
+      wishlistCount = user.wishlist.length;
+      const cartData = await Cart.findOne({userId:userData._id})
+      cartCount = cartData.products.length;
+    }
+
+    res.render('index.ejs',{user:userData,products:productData,category:categoryData,wishlistCount,cartCount})
   }catch(error){
     res.send(error.message)
   }
