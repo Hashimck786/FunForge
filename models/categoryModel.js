@@ -6,12 +6,8 @@ const categorySchema = mongoose.Schema({
     type:String,
     required:true
   },
-  categorySlug:{
-    type:String,
-    required:true
-  },
-  categoryParent:{
-    type:String,
+  categoryDiscount:{
+    type:Number,
     required:true
   },
   categoryDescription:{

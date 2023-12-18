@@ -75,7 +75,12 @@ const addProduct = async(req,res) => {
     }));
 
       console.log('Image Path:', croppedImages);
-    const discount = (req.body.product_price*req.body.product_discount)/100;
+      let discount ;
+      if(categoryDiscount > req.body.product_discount){
+        discount = Math.floor((req.body.product_price*categoryDiscount)/100);
+      }else{
+        discount = Math.floor((req.body.product_price*req.body.product_discount)/100);
+      }
     const salePrice = req.body.product_price-discount;
     const product =new Product ({
       productName : req.body.product_name,
@@ -150,7 +155,16 @@ const editProduct = async(req,res) => {
     const images = req.files.map(file=>file.filename);
     const id = req.query.id;
     if(images.length<1 || images.length>5){
-      const discount = (req.body.product_price*req.body.product_discount)/100;
+      const categoryData = await Category.findOne({_id:req.body.product_categoryId})
+      const categoryDiscount = categoryData.categoryDiscount;
+      let discount ;
+      if(categoryDiscount > req.body.product_discount){
+        discount = Math.floor((req.body.product_price*categoryDiscount)/100);
+      }else{
+        discount = Math.floor((req.body.product_price*req.body.product_discount)/100);
+      }
+      
+
       const salePrice = req.body.product_price-discount;
 
       const updated = await Product.updateOne({_id:id},{$set : {

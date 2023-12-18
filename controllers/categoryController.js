@@ -22,8 +22,7 @@ const createCategory = async(req,res) => {
   try {
 
     const name = req.body.category_name;
-    const slug = req.body.category_slug;
-    const parent = req.body.category_parent;
+    const discount = req.body.category_discount;
     const description = req.body.category_description;
     
     const categoriesData = await Category.find({})
@@ -37,8 +36,7 @@ const createCategory = async(req,res) => {
 
     const category = new Category({
       categoryName:name,
-      categorySlug:slug,
-      categoryParent:parent,
+      categoryDiscount:discount,
       categoryDescription:description
     });
 
@@ -81,13 +79,11 @@ const  categoryEdit = async(req,res) => {
   try {
     const id = req.query.id;
     const name = req.body.category_name;
-    const slug = req.body.category_slug;
-    const parent = req.body.category_parent;
+    const discount = req.body.category_discount;
     const description = req.body.category_description;
     const updated = await Category.updateOne({_id:id},{ $set : {
       categoryName:name,
-      categorySlug:slug,
-      categoryParent:parent,
+      categoryDiscount:discount,
       categoryDescription:description
     }})
     res.redirect('/gadgetly/admin/categories')

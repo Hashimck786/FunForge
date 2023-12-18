@@ -23,16 +23,9 @@
                                     <% } %>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="category_slug" class="form-label">Slug</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="category_slug"  name="category_slug" oninput="validateCategorySlug()"/>
-                                    <span id="errorCategorySlug" class="text-danger"></span>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Parent</label>
-                                    <select class="form-select" name="category_parent">
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
-                                    </select>
+                                    <label for="category_discount" class="form-label">Category Discount</label>
+                                    <input type="Number" min="0" max="100" placeholder="%" class="form-control" id="category_discount"  name="category_discount" oninput="validateCategoryDiscount()"/>
+                                    <span id="errorCategoryDiscount" class="text-danger"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
@@ -54,8 +47,7 @@
                                                 </div>
                                             </th> -->
                                             <th>Name</th>
-                                            <th>Slug</th>
-                                            <th>Parent</th>
+                                            <th>CategoryDiscount</th>
                                             <th>Description</th>
                                             <th >Edit</th>
                                             <th>list/unlist</th>
@@ -73,8 +65,7 @@
                                                     </div>
                                                 </td> -->
                                                 <td><b><%= category[i].categoryName %></b></td>
-                                                <td><%= category[i].categorySlug %></td>
-                                                <td><%= category[i].categoryParent %></td>
+                                                <td><%= category[i].categoryDiscount %></td>
                                                 <td><%= category[i].categoryDescription %></td>
                                                 <td>
                                                     <a href="/gadgetly/admin/category_edit?id=<%=category[i]._id%>" class="btn btn-sm font-sm rounded btn-brand">
@@ -138,13 +129,13 @@
             }
         }
 
-        function validateCategorySlug(){
-            var categorySlug = document.getElementById('category_slug').value;
-            var errorCategorySlug = document.getElementById('errorCategorySlug');
-            errorCategorySlug.innerHTML = "";
+        function validateCategoryDiscount(){
+            var categoryDiscount = document.getElementById('category_discount').value;
+            var errorCategoryDiscount = document.getElementById('errorCategoryDiscount');
+            errorCategoryDiscount.innerHTML = "";
 
-            if(categorySlug.trim() === ""){
-                errorCategorySlug.innerHTML = "category slug required"
+            if(categoryDiscount.trim() === ""){
+                errorCategoryDiscount.innerHTML = "category discount required"
             }
         }
     </script>
@@ -160,12 +151,17 @@
                     document.getElementById('errorCategoryName').innerHTML="";
 
                 }
-                const categorySlug = document.getElementById('category_slug').value.trim();
-                if(categorySlug === ""){
-                    document.getElementById('errorCategorySlug').innerHTML = "categorySlug required";
+                const categoryDiscount = document.getElementById('category_discount').value.trim();
+                if(categoryDiscount === ""){
+                    document.getElementById('errorCategoryDiscount').innerHTML = "categoryDiscount required";
                     event.preventDefault();
+
+                }else if(categoryDiscount <0 || categoryDiscount >100){
+                    document.getElementById('errorCategoryDiscount').innerHTML = "categoryDiscount should be inbtw 1 and 100";
+                    event.preventDefault();
+                
                 }else{
-                    document.getElementById('errorCategorySlug').innerHTML = "";
+                    document.getElementById('errorCategoryDiscount').innerHTML = "";
                 }
 
             })

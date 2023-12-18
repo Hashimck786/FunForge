@@ -21,16 +21,9 @@
                                     <span class="text-danger" id="errorCategoryName"></span>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="category_slug" class="form-label">Slug</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="category_slug"  name="category_slug"   value="<%=category.categorySlug%>" oninput="validateCategorySlug()"/>
-                                    <span class="text-danger" id="errorCategorySlug"></span>
-                                </div>
-                                <div class="mb-4">
-                                    <label class="form-label">Parent</label>
-                                    <select class="form-select" name="category_parent"   value="<%=category.categoryParent%>" >
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
-                                    </select>
+                                    <label for="category_discount" class="form-label">Category Discount</label>
+                                    <input type="number" max="100" min="0" placeholder="Type here" class="form-control" id="category_discount"  name="category_discount"   value="<%=category.categoryDiscount%>" oninput="validateCategoryDiscount()"/>
+                                    <span class="text-danger" id="errorCategoryDiscount"></span>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
@@ -56,31 +49,31 @@
                 <% } %>
             </section> <!-- content-main end// -->
 
-        <script>
-            function validateCategoryName(){
-                var categoryName = document.getElementById('category_name').value;
-                var errorCategoryName = document.getElementById('errorCategoryName');
-                errorCategoryName.innerText = "";
-    
-                if(categoryName.trim() === ""){
-                    errorCategoryName.innerHTML = "category name required"
-                }else if(categoryName.length<3 || categoryName.length>10){
-                    errorCategoryName.innerHTML = "category name must be 3 to 10 characters"
-                }else{
-                    errorCategoryName.innerHTML = ""
+            <script>
+                function validateCategoryName(){
+                    var categoryName = document.getElementById('category_name').value;
+                    var errorCategoryName = document.getElementById('errorCategoryName');
+                    errorCategoryName.innerText = "";
+        
+                    if(categoryName.trim() === ""){
+                        errorCategoryName.innerHTML = "category name required"
+                    }else if(categoryName.length<3 || categoryName.length>10){
+                        errorCategoryName.innerHTML = "category name must be 3 to 10 characters"
+                    }else{
+                        errorCategoryName.innerHTML = ""
+                    }
                 }
-            }
-    
-            function validateCategorySlug(){
-                var categorySlug = document.getElementById('category_slug').value;
-                var errorCategorySlug = document.getElementById('errorCategorySlug');
-                errorCategorySlug.innerHTML = "";
-    
-                if(categorySlug.trim() === ""){
-                    errorCategorySlug.innerHTML = "category slug required"
+        
+                function validateCategoryDiscount(){
+                    var categoryDiscount = document.getElementById('category_discount').value;
+                    var errorCategoryDiscount = document.getElementById('errorCategoryDiscount');
+                    errorCategoryDiscount.innerHTML = "";
+        
+                    if(categoryDiscount.trim() === ""){
+                        errorCategoryDiscount.innerHTML = "category discount required"
+                    }
                 }
-            }
-        </script>
+            </script>
             <script>
                 document.addEventListener('DOMContentLoaded',function(){
                     const categoryForm = document.getElementById('categoryForm')
@@ -93,12 +86,16 @@
                             document.getElementById('errorCategoryName').innerHTML="";
         
                         }
-                        const categorySlug = document.getElementById('category_slug').value.trim();
-                        if(categorySlug === ""){
-                            document.getElementById('errorCategorySlug').innerHTML = "categorySlug required";
+                        const categoryDiscount = document.getElementById('category_discount').value.trim();
+                        if(categoryDiscount === ""){
+                            document.getElementById('errorCategoryDiscount').innerHTML = "categoryDiscount required";
                             event.preventDefault();
+                        }else if(categoryDiscount <0 || categoryDiscount >100){
+                            document.getElementById('errorCategoryDiscount').innerHTML = "categoryDiscount should be inbtw 1 and 100";
+                            event.preventDefault();
+                
                         }else{
-                            document.getElementById('errorCategorySlug').innerHTML = "";
+                            document.getElementById('errorCategoryDiscount').innerHTML = "";
                         }
         
                     })
