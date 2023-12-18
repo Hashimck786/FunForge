@@ -101,8 +101,6 @@ const applyCoupon = async(req,res)=>{
     const userId = req.session.data._id;
     const couponId = req.query.couponId;
     const cart = await Cart.findOne({userId:userId})
-    console.log("cart",cart)
-    console.log(couponId)
     if(couponId){
       const coupon = await Coupon.findOne({_id:couponId});
       if(coupon){
@@ -111,6 +109,7 @@ const applyCoupon = async(req,res)=>{
           res.json({
             usedcoupon:true
           })
+        
         }else{
         const originalGrandTotal = cart.cartSubTotal;
         const discountPercentage = coupon.couponDiscount;

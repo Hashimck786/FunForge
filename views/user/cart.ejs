@@ -365,6 +365,8 @@
                 }
                 if(responseData.grandtotal){
                     document.getElementById('grandtotal').textContent = `${responseData.grandtotal}`
+                }if(responseData.couponDiscount){
+                    document.getElementById('couponDiscount').textContent = `${responseData.couponDiscount}`
                 }
 
                 }

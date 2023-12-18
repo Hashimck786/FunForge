@@ -177,6 +177,24 @@ const updateQuantity = async(req,res)=>{
   cart.products[productIndex].quantity = newQuantity
   cart.products[productIndex].total = productData.salePrice * cart.products[productIndex].quantity;
   cart.cartSubTotal = cart.products.reduce((cartSubTotal,product)=> cartSubTotal += product.total,0);
+
+  if(cart.couponId){
+    const coupon = await Coupon.findOne({_id:cart.couponId})
+    const originalGrandTotal = cart.cartSubTotal;
+    const discountPercentage = coupon.couponDiscount;
+    console.log(originalGrandTotal);
+    console.log(discountPercentage);
+  
+    // Calculate the discounted amount
+    cart.couponDiscount = (originalGrandTotal * discountPercentage) / 100;
+    
+  
+    // Calculate the new grandtotal after applying the discount
+    // const newGrandTotal = originalGrandTotal - discountAmount;
+  }
+
+  
+  
   cart.cartGrandtotal = cart.cartSubTotal-cart.couponDiscount
   await cart.save();
 
@@ -184,7 +202,8 @@ const updateQuantity = async(req,res)=>{
     success:true,
     total:cart.products[productIndex].total,
     subtotal:cart.cartSubTotal,
-    grandtotal:cart.cartGrandtotal
+    grandtotal:cart.cartGrandtotal,
+    couponDiscount:cart.couponDiscount
   })
   
 
