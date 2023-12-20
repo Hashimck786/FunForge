@@ -48,8 +48,8 @@ const sendOtpMail = async(name,email,id,otp) => {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-          user: 'hashimckdev@gmail.com',
-          pass: 'xzdg nfal lsyt szsg'
+          user: process.env.NODEMAILER_EMAIL,
+          pass: process.env.NODEMAILER_PASS
 
       }
   });
@@ -85,7 +85,12 @@ const loadHome = async (req,res) =>{
       const user = await User.findOne({_id:userData._id})
       wishlistCount = user.wishlist.length;
       const cartData = await Cart.findOne({userId:userData._id})
-      cartCount = cartData.products.length;
+      if(typeof cartData != "undefined" && cartData){
+        cartCount = cartData.products.length;
+      }else{
+        cartCount = 0
+      }
+      
     }
 
     res.render('index.ejs',{user:userData,products:productData,category:categoryData,wishlistCount,cartCount})
