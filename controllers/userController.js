@@ -19,11 +19,12 @@ const ejs = require('ejs');
 const fs = require('fs');
 const pdf = require('html-pdf');
 const path = require('path');
+const { log } = require('console')
 
 
 var instance = new Razorpay({
-  key_id: 'rzp_test_dTVkgmpPZxBcHY',
-  key_secret: 'RxW23Efaou9qiPCgUxEoNxR0',
+  key_id: process.env.RAZORPAY_KEYID,
+  key_secret: process.env.RAZORPAY_KEYSECRET,
 });
 
 
@@ -54,7 +55,7 @@ const sendOtpMail = async(name,email,id,otp) => {
       }
   });
   const mailOptions = {
-    from:'hashimckdev@gmail.com',
+    from: process.env.NODEMAILER_EMAIL,
     to:email,
     subject:'Verification Email',
     text:"Here is your otp."+otp
@@ -197,7 +198,7 @@ const signupSubmission = async(req,res) => {
 
   if(userData){
     sendOtpMail(userData.name,userData.email,userData.mobile,otp);
-    res.render('otpValidation.ejs',{user:userData,signup:true})
+    res.render('otpValidation.ejs',{user:userData,signup:1})
   }else{
        res.render('signup',{message:"submission failed"})
   }
@@ -293,7 +294,7 @@ const sendOtp = async(req,res) => {
     if(userData){
       const name = userData.name
       const email = userData.email
-      const id = userData._id
+      const id = userData._id;
       sendOtpMail(name,email,id,otp);
       res.render('otpValidation.ejs',{user:userData})
       
@@ -309,9 +310,13 @@ const sendOtp = async(req,res) => {
 
 const verifyOtp = async(req,res) => {
   try {
+    console.log('enteringverifyOtp')
      const id = req.query.id;
+     console.log(id)
      const otpEntered = req.body.otp;
+     console.log(otpEntered);
      const userData = await User.findOne({_id:id});
+     console.log(userData)
      if(userData.otp == otpEntered){
         const updated = await User.updateOne({_id:id},{$set: {otp:""}})
         res.render('updatePassword.ejs',{user:userData})
@@ -790,7 +795,7 @@ const loadOrderSummary = async(req,res) => {
 const verifyPayment = async(req,res) => {
   try {
     const crypto = require('crypto');
-    let hmac = crypto.createHmac('sha256','RxW23Efaou9qiPCgUxEoNxR0')
+    let hmac = crypto.createHmac('sha256',process.env.RAZORPAY_KEYSECRET)
 
     hmac.update(req.body.payment.razorpay_order_id + '|' + req.body.payment.razorpay_payment_id);
     hmac =hmac.digest('hex')
