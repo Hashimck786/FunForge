@@ -82,14 +82,6 @@ const ordersSchema = new mongoose.Schema({
         type:String,
         require:true
       },
-      // addressLine1:{
-      //   type:String,
-      //   require:true
-      // },
-      // addressLine2:{
-      //   type:String,
-      //   require:true
-      // },
       streetaddress:{
         type:String,
         require:true
@@ -98,10 +90,6 @@ const ordersSchema = new mongoose.Schema({
         type:Number,
         require:true
       },
-      // area:{
-      //   type:String,
-      //   require:true
-      // },
       city:{
         type:String,
         require:true

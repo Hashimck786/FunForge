@@ -48,8 +48,9 @@
                             <th class="align-middle" scope="col">Order ID</th>
                             <th class="align-middle" scope="col">Billing Name</th>
                             <th class="align-middle" scope="col">Date</th>
-                            <th class="align-middle" scope="col">Total</th>
-                            <th class="align-middle" scope="col">Payment Status</th>
+                            <th class="align-middle" scope="col">PrediscountAmount</th>
+                            <th class="align-middle" scope="col">CouponDiscount</th>
+                            <th class="align-middle" scope="col">Total</th>                            
                             <th class="align-middle" scope="col">Payment Method</th>
                         </tr>
                     </thead>
@@ -58,15 +59,18 @@
                         salesData.forEach((order,index)=>{  %>
                           <tr>
                             <td><a href="#" class="fw-bold"><%= order._id %></a> </td>
-                            <td><%= order.userId.name %></td>
+                            <td><%= order.userId ? order.userId.name : 'N/A' %></td>
                             <td>
-                                <%= order.date %>
+                                <%= order.date.toLocaleDateString() %>
+                            </td>
+                            <td>
+                                <%= order.preDiscountAmount %>
+                            </td>
+                            <td>
+                                <span ><%= order.couponDiscount %></span>
                             </td>
                             <td>
                                 <%= order.orderValue %>
-                            </td>
-                            <td>
-                                <span class="badge badge-pill badge-soft-success"><%= order.orderStatus %></span>
                             </td>
                             <td>
                                 <%= order.paymentMethod %>

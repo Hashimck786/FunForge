@@ -239,7 +239,7 @@
                     if(productStock === ""){
                         document.getElementById('errorProductStock').innerHTML="product Stock required";
                         event.preventDefault();
-                    }else if(productStock <=0){
+                    }else if(productStock <0){
                         document.getElementById('errorProductStock').innerHTML="product Stock can't be negative";
                         event.preventDefault();
                     }else{

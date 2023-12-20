@@ -20,6 +20,7 @@ const productSchema =new mongoose.Schema({
   },
   productDiscount: {
     type:Number,
+    default:0,
     required:true
   },
   salePrice:{
