@@ -70,7 +70,7 @@
                                     <% for (let i = 0; i < product.image.length; i++) { %>
                                         <div id="imageContainer<%= i %>" style="display: flex; flex-direction: column; align-items: center; margin-right: 10px; margin-bottom: 10px;">
                                             <img style="width: 50px; height: 50px;" src="/admin-assets/imgs/productImages/<%= product.image[i] %>" class="img-sm img-thumbnail" alt="Item">
-                                            <!-- <a href="#" class="btn btn-danger delete-button" data-image-index="<%= i %>">Delete</a> -->
+                                            <a href="#" class="btn btn-danger delete-button" productId="<%=product._id%>" data-image-index="<%= i %>" id="delete" data-image-id="<%= product.image[i] %>">Delete</a>
                                         </div>
                                     <% } %>
                                 </div>
@@ -80,12 +80,6 @@
                                    <input class="form-control"  type="file" name="image" multiple accept="image/*" id="imageInput" onchange="handleImageChange()">
                                     <span id="errorProductImage" class="text-danger"></span>
                                 </div>
-                                <!-- </div>
-                                <label class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    <span class="form-check-label"> Make a template </span>
-                                </label>
-                                <div> -->
                                     <button type="submit" class="btn btn-md rounded font-sm hover-up" name="submit">Publish</button>
                                 </div>
                             </form>
@@ -104,7 +98,7 @@
                 <% } %>
              
                         </div>
-                    </div> -->
+                    </div>
                      <!-- card end// -->
                 </div>
             </div>
@@ -248,5 +242,48 @@
                 })
             })
         </script>
+
+
+        <!-- deleting the image -->
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Add click event listener to all delete buttons
+                const deleteButtons = document.querySelectorAll(".delete-button");
+        
+                deleteButtons.forEach(button => {
+                    button.addEventListener("click", function (event) {
+                        event.preventDefault();
+        
+                        const imageId = this.getAttribute("data-image-id");
+                        const imageIndex = this.getAttribute("data-image-index");
+                        const productId = this.getAttribute('productId');
+        
+                        // Make a fetch request to the server to delete the image
+                        fetch(`/gadgetly/admin/deleteimage?imageId=${imageId}&productId=${productId}`, {
+                            method: "POST"
+                        })
+                        .then(response => response.json()) // Parse the JSON data
+                        .then(data => {
+                            console.log(data);
+                            if (data.success) {
+                                const imageContainer = document.getElementById(`imageContainer${imageIndex}`);
+                                if (imageContainer) {
+                                    imageContainer.remove();
+                                }
+                            } else {
+                                // Handle errors if needed
+                                console.error("Error deleting image");
+                            }
+                        })
+                        .catch(error => {
+                            console.error("Fetch error:", error);
+                        });
+                    });
+                });
+            });
+        </script>
+        
 
         <%-include('../layout/adminfooter') %>

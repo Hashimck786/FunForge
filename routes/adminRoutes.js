@@ -66,6 +66,7 @@ adminRoute.get('/list',auth.isLogin,productController.listProduct);
 adminRoute.get('/unlist',auth.isLogin,productController.unlistProduct);
 adminRoute.get('/edit',auth.isLogin,productController.loadEditPage);
 adminRoute.post('/edit',auth.isLogin,upload.array('image',5),productController.editProduct);
+adminRoute.post('/deleteimage',productController.deleteImage)
 
 adminRoute.get('/categories',auth.isLogin,categoryController.loadCategories);
 adminRoute.post('/createcategory',auth.isLogin,categoryController.createCategory);

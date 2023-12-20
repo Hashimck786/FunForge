@@ -200,6 +200,31 @@ const editProduct = async(req,res) => {
   }
 }
 
+
+// delete image ..............................
+
+const deleteImage = async (req, res) => {
+  try {
+    const imageId = req.query.imageId;
+    const productId = req.query.productId;
+
+    const result = await Product.findOneAndUpdate(
+      { _id: productId },
+      { $pull: { image: imageId } },
+      { new: true } 
+    );
+
+    if (!result) {
+      return res.status(404).json({ success: false, message: 'Product not found' });
+    }
+
+    return res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   loadProductList,
   loadAddProduct,
@@ -208,4 +233,5 @@ module.exports = {
   unlistProduct,
   editProduct,
   loadEditPage,
+  deleteImage
 }
