@@ -18,7 +18,7 @@
                         </div>
                         <div class="card-body">
 
-                            <form method="post" action="/gadgetly/admin/edit?id=<%= product._id %>" enctype="multipart/form-data" id='ProductForm'>
+                            <form method="post" action="/admin/edit?id=<%= product._id %>" enctype="multipart/form-data" id='ProductForm'>
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="product_name" value="<%=product.productName %>" oninput="validateProductName()">
@@ -261,7 +261,7 @@
                         const productId = this.getAttribute('productId');
         
                         // Make a fetch request to the server to delete the image
-                        fetch(`/gadgetly/admin/deleteimage?imageId=${imageId}&productId=${productId}`, {
+                        fetch(`/admin/deleteimage?imageId=${imageId}&productId=${productId}`, {
                             method: "POST"
                         })
                         .then(response => response.json()) // Parse the JSON data

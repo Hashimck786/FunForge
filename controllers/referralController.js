@@ -25,7 +25,7 @@ const editReferral = async(req,res)=>{
       referralAmount:req.body.referral_amount,
       referrerAmount:req.body.referrer_amount
     }})
-      res.redirect("/gadgetly/admin/referrals")
+      res.redirect("/admin/referrals")
   } catch (error) {
     console.log(error.message)
   }

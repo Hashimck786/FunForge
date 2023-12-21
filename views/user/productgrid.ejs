@@ -199,7 +199,7 @@
                                         <div class="product-cart-wrap mb-30">
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
-                                                    <a href="/gadgetly/productdetail/?id=<%= product[i]._id %>">
+                                                    <a href="/productdetail/?id=<%= product[i]._id %>">
                                                         <img class="default-img" src="/admin-assets/imgs/productImages/<%=product[i].image[0] %>" alt="">
                                                         <img class="hover-img" src="/admin-assets/imgs/productImages/<%=product[i].image[1] %>" alt="">
                                                     </a>
@@ -208,9 +208,9 @@
                                                     <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal">
                                                     <i class="fi-rs-search"></i></a>
                                                     <%if(typeof user != "undefined" && user){ %>
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up wish-btn" productId="<%=product[i]._id %>" href="/gadgetly/addwishlist?id=<%=product[i]._id %>"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up wish-btn" productId="<%=product[i]._id %>" href="/addwishlist?id=<%=product[i]._id %>"><i class="fi-rs-heart"></i></a>
                                                     <%}else{ %>
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" productId="<%=product[i]._id %>" href="/gadgetly/login %>"><i class="fi-rs-heart"></i></a>
+                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" productId="<%=product[i]._id %>" href="/login %>"><i class="fi-rs-heart"></i></a>
                                                     <%} %>
                                                     
                                                     <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
@@ -220,16 +220,16 @@
                                                 </div>
                                             </div>
                                             <div class="product-content-wrap">
-                                                <h2><a href="/gadgetly/productdetail/?id=<%= product[i]._id %>"><%= product[i].productName %></a></h2>
+                                                <h2><a href="/productdetail/?id=<%= product[i]._id %>"><%= product[i].productName %></a></h2>
                                                 <div class="product-price">
                                                     <span><%= product[i].salePrice %></span>
                                                     <span class="old-price"> <%= product[i].productPrice %></span>
                                                 </div>
                                                 <div class="product-action-1 show">
                                                     <%if(typeof user != "undefined" && user){ %>
-                                                        <a aria-label="Add To Cart" class="action-btn hover-up  cart-btn" href="/gadgetly/addtocart/?id=<%= product[i]._id %>"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up  cart-btn" href="/addtocart/?id=<%= product[i]._id %>"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
                                                     <% }else{  %>
-                                                        <a aria-label="Add To Cart" class="action-btn hover-up " href="/gadgetly/login"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                        <a aria-label="Add To Cart" class="action-btn hover-up " href="/login"  productId="<%=product[i]._id%>"><i class="fi-rs-shopping-bag-add"></i></a>
                                                     <% } %>
                                                    
                                                 </div>
@@ -260,9 +260,9 @@
                                 <% if(typeof category != "undefined" && category.length >0 ){
                                     category.forEach((category)=>{
                                         if(category._id.toString() === categorySearch){ %>
-                                            <li><a href="/gadgetly/shop/?category=<%=category._id%>" class="text-success"><strong><%= category.categoryName %></strong></a></li>
+                                            <li><a href="/shop/?category=<%=category._id%>" class="text-success"><strong><%= category.categoryName %></strong></a></li>
                                         <% }else{ %>
-                                            <li><a href="/gadgetly/shop/?category=<%=category._id%>"  ><strong><%= category.categoryName %></strong></a></li>
+                                            <li><a href="/shop/?category=<%=category._id%>"  ><strong><%= category.categoryName %></strong></a></li>
                                         <%} %>
                                         
                                         
@@ -285,7 +285,7 @@
                     event.preventDefault();
                     const productId = this.getAttribute('productId');
                     console.log('productId', productId);
-                    const response = await fetch(`/gadgetly/addtocart/?id=${productId}`, {
+                    const response = await fetch(`/addtocart/?id=${productId}`, {
                         method: 'GET'
                     });
                     const productData = await response.json();
@@ -320,7 +320,7 @@
                     event.preventDefault();
                     const productId = this.getAttribute('productId');
                     console.log('productId', productId);
-                    const response = await fetch(`/gadgetly/addwishlist/?id=${productId}`, {
+                    const response = await fetch(`/addwishlist/?id=${productId}`, {
                         method: 'GET'
                     });
                     const productData = await response.json();

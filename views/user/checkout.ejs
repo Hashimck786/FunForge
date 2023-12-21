@@ -229,8 +229,8 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class=" text-left mb-25 ">
-                            <a href="/gadgetly/addAddress/?checkout=true"><button type="button" class="btn btn-primary">Add Address</button></a>
-                            <a href="/gadgetly/myaccount/?checkout=true"><button type="button" class="btn btn-secondary">Manage Address</button></a>
+                            <a href="/addAddress/?checkout=true"><button type="button" class="btn btn-primary">Add Address</button></a>
+                            <a href="/myaccount/?checkout=true"><button type="button" class="btn btn-secondary">Manage Address</button></a>
                         </div>
                         <div class="mb-25">
                             <h4>Billing Details</h4>
@@ -355,7 +355,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="/gadgetly/placeorder?"  id="placeorder" class="btn btn-fill-out btn-block mt-30">Place Order</a>
+                            <a href="/placeorder?"  id="placeorder" class="btn btn-fill-out btn-block mt-30">Place Order</a>
                         </div>
                     </div>
                 </div>
@@ -382,16 +382,16 @@
                 var paymentMethod = selectedRadioButton.value;
                 console.log("payment:", paymentMethod);
 
-                const response = await fetch(`/gadgetly/placeorder?paymentmethod=${paymentMethod}`,{
+                const response = await fetch(`/placeorder?paymentmethod=${paymentMethod}`,{
                     method:'POST'
                 })
                 const data = await response.json();
 
                 if(data.codSuccess){
-                    window.location.href = `/gadgetly/ordersummary?orderId=${data.orderId}`
+                    window.location.href = `/ordersummary?orderId=${data.orderId}`
                 }
                 if(data.walletSuccess){
-                    window.location.href = `/gadgetly/ordersummary?orderId=${data.orderId}`
+                    window.location.href = `/ordersummary?orderId=${data.orderId}`
                 }
                 if(data.insufficientBalance){
                     swal.fire({
@@ -445,7 +445,7 @@
                     order
                 }
                 console.log("entered verify payment function");
-                 const response = await fetch('/gadgetly/verifypayment',{
+                 const response = await fetch('/verifypayment',{
                     method:'POST',
                     headers: {
                          'Content-Type': 'application/json',
@@ -455,7 +455,7 @@
                 })
                 const responseData = await response.json();
                 if(responseData.success){
-                    window.location.href = `/gadgetly/ordersummary?orderId=${responseData.orderId}`
+                    window.location.href = `/ordersummary?orderId=${responseData.orderId}`
                     alert('payment successful');
                     console.log('payment successful')
                 }else{

@@ -190,7 +190,7 @@
                                             <a class="nav-link" id="account-detail-tab" data-bs-toggle="tab" href="#account-detail" role="tab" aria-controls="account-detail" aria-selected="true"><i class="fi-rs-user mr-10"></i>Account details</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" href="/gadgetly/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
+                                            <a class="nav-link" href="/logout"><i class="fi-rs-sign-out mr-10"></i>Logout</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -206,7 +206,7 @@
                                                 <p>From your account dashboard. you can easily check &amp; view your <a href="#">recent orders</a>, manage your <a href="#">shipping and billing addresses</a> and <a href="#">edit your password and account details.</a></p>
                                             </div>
                                             <div class="text-center">
-                                                <a href="/gadgetly/wallet" style="background-color: blue;" class="btn mb-15">My Wallet</a>
+                                                <a href="/wallet" style="background-color: blue;" class="btn mb-15">My Wallet</a>
                                             </div>
                                             
                                         </div>
@@ -247,9 +247,9 @@
                                                                         <% } %>
                                                                         <td><%= order.paymentMethod %></td>
                                                                         <td><%=order.orderValue %></td>
-                                                                        <td><a href="/gadgetly/orderdetails/?orderId=<%= order._id %>" style="background-color: rgb(15, 163, 22) ; color: white;" class="btn btn-small  d-block">View</a>
+                                                                        <td><a href="/orderdetails/?orderId=<%= order._id %>" style="background-color: rgb(15, 163, 22) ; color: white;" class="btn btn-small  d-block">View</a>
                                                                         </td>
-                                                                        <td><a href="/gadgetly/orderDowloadPdf/?orderId=<%= order._id %>"  style="background-color: rgb(219, 55, 18) ; color: white;" class="btn btn-small d-block">Dowload receipt</a></td>
+                                                                        <td><a href="/orderDowloadPdf/?orderId=<%= order._id %>"  style="background-color: rgb(219, 55, 18) ; color: white;" class="btn btn-small d-block">Dowload receipt</a></td>
                                                                     </tr>
                                                             <%    })
                                                             }else{ %>
@@ -282,10 +282,10 @@
                                                             <div class="card-body">
                                                                 <address><%= address[i].streetaddress %><br><%= address[i].city %><br><%= address[i].state %><br><%= address[i].country %><br><%= address[i].pincode %><br><%= address[i].phone%><br><%= address[i].alterphone %></address>
                                                                 <p>New York</p>
-                                                                <a style="background-color: blue;" href="/gadgetly/editaddress/?id=<%= address[i]._id %>" class="btn btn-warning btn-sm" role="button">Edit</a>
-                                                                <a style="background-color: red;" href="/gadgetly/deleteaddress/?id=<%= address[i]._id %>" class="btn btn-danger btn-sm" role="button">Delete</a>
+                                                                <a style="background-color: blue;" href="/editaddress/?id=<%= address[i]._id %>" class="btn btn-warning btn-sm" role="button">Edit</a>
+                                                                <a style="background-color: red;" href="/deleteaddress/?id=<%= address[i]._id %>" class="btn btn-danger btn-sm" role="button">Delete</a>
                                                                 <% if(address[i].is_Default == false){ %>
-                                                                <a style="background-color: green;" href="/gadgetly/defaultaddress/?id=<%= address[i]._id %>&checkout=<%=checkout%>" class="btn btn-danger btn-sm" role="button">Make Default</a>
+                                                                <a style="background-color: green;" href="/defaultaddress/?id=<%= address[i]._id %>&checkout=<%=checkout%>" class="btn btn-danger btn-sm" role="button">Make Default</a>
                                                                 <% } %>
                                                             </div>
                                                         </div>
@@ -295,7 +295,7 @@
                                                 <h3>please click to add address</h3>
                                              <% } %>
                                         </div>
-                                        <a href="/gadgetly/addaddress"><button class="btn btn-fill-out submit">Add address</button></a>
+                                        <a href="/addaddress"><button class="btn btn-fill-out submit">Add address</button></a>
                                     </div>
                                     <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
                                         <div class="card">
@@ -304,7 +304,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <% if(user){ %>
-                                                <form method="post" action="/gadgetly/editProfile/?id=<%=user._id %>" id="editProfileForm"
+                                                <form method="post" action="/editProfile/?id=<%=user._id %>" id="editProfileForm"
                                                     >
                                                     <div class="row">
                                                         <div class="form-group col-md-12">

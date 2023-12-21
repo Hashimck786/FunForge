@@ -229,7 +229,7 @@
             <div class="card">
               <div class="card-body bg-light">
                 <%if(orderData.deliveryStatus === "delivered"){ %>
-                    <form action="/gadgetly/returnorder/?orderId=<%=orderData._id%>" method="post">
+                    <form action="/returnorder/?orderId=<%=orderData._id%>" method="post">
                         <div class="form-group">
                           <label for="textArea">Reason for return</label>
                           <textarea class="form-control" id="textArea" rows="4" cols="50"></textarea>
@@ -248,7 +248,7 @@
                     <% }else if(orderData.cancellationStatus === "denied"){ %> 
                         <h4 class="text-warning">Order cancelling has been denied!!</h4>   
                     <% }else {%>
-                        <form action="/gadgetly/cancelorder/?orderId=<%=orderData._id%>" method="post">
+                        <form action="/cancelorder/?orderId=<%=orderData._id%>" method="post">
                             <div class="form-group">
                               <label for="textArea">Reason for cancellation</label>
                               <textarea class="form-control" id="textArea" rows="4" cols="50"></textarea>

@@ -242,8 +242,8 @@
                                                     <button type="button" class="button button-add-to-cart cart-btn" productId="<%= product._id %>">Add to cart</button>
                                                     <a aria-label="Add To Wishlist" class="action-btn hover-up wish-btn" productId="<%= product._id %>" href=""><i class="fi-rs-heart"></i></a>
                                                 <% }else{ %>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" productId="<%= product._id %>" href="/gadgetly/login"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Add to cart" class="action-btn hover-up" productId="<%= product._id %>" href="/gadgetly/login"><i class="fas fa-shopping-cart"></i></a>
+                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" productId="<%= product._id %>" href="/login"><i class="fi-rs-heart"></i></a>
+                                                    <a aria-label="Add to cart" class="action-btn hover-up" productId="<%= product._id %>" href="/login"><i class="fas fa-shopping-cart"></i></a>
                                                 <% }%>
                                             </div>
                                         </div>
@@ -303,7 +303,7 @@
                     event.preventDefault();
                     const productId = this.getAttribute('productId');
                     console.log('productId', productId);
-                    const response = await fetch(`/gadgetly/addtocart/?id=${productId}`, {
+                    const response = await fetch(`/addtocart/?id=${productId}`, {
                         method: 'GET'
                     });
                     const productData = await response.json();
@@ -338,7 +338,7 @@
                        event.preventDefault();
                        const productId = this.getAttribute('productId');
                        console.log('productId', productId);
-                       const response = await fetch(`/gadgetly/addwishlist/?id=${productId}`, {
+                       const response = await fetch(`/addwishlist/?id=${productId}`, {
                            method: 'GET'
                        });
                        const productData = await response.json();

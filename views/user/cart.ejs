@@ -203,7 +203,7 @@
                                                 <td class="text-right" data-title="Cart" >
                                                     <span id="total"><%= product.total %></span>
                                                 </td>
-                                                <td class="action" data-title="Remove"><a href="/gadgetly/removefromcart/?id=<%=product.productId._id %>" class="text-muted rmv-btn" productId="<%=product.productId._id %>"><i class="fi-rs-trash"></i></a></td>
+                                                <td class="action" data-title="Remove"><a href="/removefromcart/?id=<%=product.productId._id %>" class="text-muted rmv-btn" productId="<%=product.productId._id %>"><i class="fi-rs-trash"></i></a></td>
                                             </tr>
                                        <% })
                                     }else{ %>
@@ -216,8 +216,8 @@
                             </table>
                         </div>
                         <div class="cart-action text-end">
-                            <a class="btn  mr-10 mb-sm-15" href="/gadgetly/cart"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a>
-                            <a class="btn " href="/gadgetly/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                            <a class="btn  mr-10 mb-sm-15" href="/cart"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a>
+                            <a class="btn " href="/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
                         </div>
                         <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                         <div class="row mb-50">
@@ -288,7 +288,7 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <a href="/gadgetly/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
+                                    <a href="/checkout" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
                                 </div>
                             </div>
                         </div>
@@ -308,7 +308,7 @@
                     event.preventDefault();
                     const productId = this.getAttribute('productId');
                     console.log('productId', productId);
-                    const response = await fetch(`/gadgetly/removefromcart/?id=${productId}`, {
+                    const response = await fetch(`/removefromcart/?id=${productId}`, {
                         method: 'GET'
                     });
                     const productData = await response.json();
@@ -344,7 +344,7 @@
                 console.log('productId',productId)
                 const newQuantity = parseInt(event.target.value)
                 console.log('newQuantity',newQuantity)
-                const response = await fetch(`/gadgetly/updatequantity/?productId=${productId}&quantity=${newQuantity}`,{
+                const response = await fetch(`/updatequantity/?productId=${productId}&quantity=${newQuantity}`,{
                     method:'POST'
                 })
 
@@ -386,7 +386,7 @@
                 event.preventDefault();
                 
                 const couponId = document.getElementById('Coupon').value;
-                const response = await fetch(`/gadgetly/applycoupon/?couponId=${couponId}`,{
+                const response = await fetch(`/applycoupon/?couponId=${couponId}`,{
                     method:'GET'
                 })
                 const responseData = await response.json();

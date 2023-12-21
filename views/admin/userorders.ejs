@@ -80,18 +80,18 @@
                                     </td>
                                     <% if(order.deliveryStatus == "placed"){ %>
                                     <td>
-                                        <a href="/gadgetly/admin/deliver/?orderId=<%=order._id %>" class="btn btn-xs"> Deliver</a>
+                                        <a href="/admin/deliver/?orderId=<%=order._id %>" class="btn btn-xs"> Deliver</a>
                                     </td>
                                     <% }else{ %>
                                         <td></td>
                                     <% } %>
                                     <%if(order.cancellationStatus === "requested"  || order.cancellationStatus === "return requested"){%>
                                         <td>
-                                            <a href="/gadgetly/admin/viewdetail/?orderId=<%=order._id %>" style="background-color: crimson;" class="btn btn-xs"> Review details</a>
+                                            <a href="/admin/viewdetail/?orderId=<%=order._id %>" style="background-color: crimson;" class="btn btn-xs"> Review details</a>
                                         </td>
                                     <%}else{%>
                                         <td>
-                                            <a href="/gadgetly/admin/viewdetail/?orderId=<%=order._id %>" class="btn btn-xs"> View details</a>
+                                            <a href="/admin/viewdetail/?orderId=<%=order._id %>" class="btn btn-xs"> View details</a>
                                         </td>
                                     <%}%>
                                     
@@ -112,11 +112,11 @@
         function filter(selectedElement){
             let filter = selectedElement.value;
             if(filter == 'pending' || 'delivered' || 'cancelled' || 'returned'){
-                window.location.href=`/gadgetly/admin/userorders/?deliveryStatus=${filter}`
+                window.location.href=`/admin/userorders/?deliveryStatus=${filter}`
             }else if(filter == 'requested'){
-                window.location.href = `/gadgetly/admin/useroders/?cancellationStatus=${filter}`
+                window.location.href = `/admin/useroders/?cancellationStatus=${filter}`
             }else{
-                window.location.href = `/gadgetly/admin/userorders/?paymentMethod=${filter}`
+                window.location.href = `/admin/userorders/?paymentMethod=${filter}`
             }
             
         }

@@ -67,7 +67,7 @@ const loginSubmission = async(req,res)=>{
         passwordVerified = await bcrypt.compare(password,adminData.password);
         if(passwordVerified){
           req.session.admin_id = adminData._id;
-          res.redirect('/gadgetly/admin/home')
+          res.redirect('/admin/home')
         }else{
           res.render('page-account-login.ejs',{message:"email and password is incorrect"})
         }
@@ -175,7 +175,7 @@ const passwordUpdate = async(req,res) => {
     const adminData =await Admin.findOne({_id:id});
     if(adminData){
       const updated = await Admin.updateOne({_id:id},{$set: {password:spassword}});
-      res.redirect('/gadgetly/admin/login')
+      res.redirect('/admin/login')
     }else{
       res.render("passwordUpdate",{message:"error changing password"})
     }
@@ -235,7 +235,7 @@ const loadUserList = async(req,res) => {
 const adminLogout = async(req,res) => {
   try {
     req.session.destroy();
-    res.redirect('/gadgetly/admin/login') 
+    res.redirect('/admin/login') 
   } catch (error) {
     console.log(error.message)
   }
@@ -250,7 +250,7 @@ const blockUser = async(req,res) => {
     // res.json({
     //   success:true
     // })
-    res.redirect('/gadgetly/admin/userlist')
+    res.redirect('/admin/userlist')
   } catch (error) {
     console.log(error.message)
   }
@@ -264,7 +264,7 @@ const unblockUser = async(req,res) => {
     // res.json({
     //   success:true
     // })
-    res.redirect('/gadgetly/admin/userlist')
+    res.redirect('/admin/userlist')
   } catch (error) {
     console.log(error.message)
   }
@@ -325,7 +325,7 @@ const deliverOrder = async(req,res) => {
   try {
     const orderId = req.query.orderId;
     const updated = await Order.updateOne({_id:orderId},{$set : {orderStatus:"delivered",deliveryStatus:"delivered"}})
-    res.redirect('/gadgetly/admin/userorders')
+    res.redirect('/admin/userorders')
   } catch (error) {
     console.error(error.message);
   }
@@ -813,7 +813,7 @@ const allowReturn = async(req,res)=>{
      })
      const transactiondata = await transaction.save()
     const walletupdated = await Wallet.updateOne({user:orderData.userId},{$inc:{balance:orderData.orderValue},$push: { transactions: transactiondata._id }})
-    res.redirect('/gadgetly/admin/userorders')
+    res.redirect('/admin/userorders')
   } catch (error) {
     console.error(error.message);
   }
@@ -823,7 +823,7 @@ const denyReturn = async(req,res)=>{
   try {
     const orderId = req.query.orderId;
     const updated = await Order.updateOne({_id:orderId},{$set:{cancellationStatus:"return denied"}});
-    res.redirect('/gadgetly/admin/userorders')
+    res.redirect('/admin/userorders')
   } catch (error) {
      console.error(error.message)
   }

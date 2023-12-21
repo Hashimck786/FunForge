@@ -6,7 +6,7 @@ const isLogin = async (req,res,next) => {
   try {
     if(req.session.admin_id){}
   else{
-    res.redirect('/gadgetly/admin/login')
+    res.redirect('/admin/login')
   }
   next();
   
@@ -24,7 +24,7 @@ const isLogin = async (req,res,next) => {
 const isLogout = async (req,res,next) => {
   try {
       if(req.session.admin_id){
-        res.redirect('/gadgetly/admin/home')
+        res.redirect('/admin/home')
       }
       next();
   } catch (error) {

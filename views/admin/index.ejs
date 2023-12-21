@@ -105,7 +105,7 @@
         typeDropdown.addEventListener('change',async()=>{
             console.log('entered change')
             const selectedType = typeDropdown.value;
-            const response = await fetch(`/gadgetly/admin/fetchSalesData/?type=${selectedType}`,{
+            const response = await fetch(`/admin/fetchSalesData/?type=${selectedType}`,{
                 method:'POST'
             });
             const data = await response.json();
@@ -132,7 +132,7 @@
             endDate
         }
 
-        const response = await fetch(`/gadgetly/admin/fetchSalesData/?type=custom`,{
+        const response = await fetch(`/admin/fetchSalesData/?type=custom`,{
                 method:'POST',
                 headers: {
                     'Content-Type': 'application/json'

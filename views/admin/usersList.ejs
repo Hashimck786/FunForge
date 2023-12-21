@@ -72,9 +72,9 @@
 
                           <td class="text-end">
                     <% if(users[i].is_block == 0) {   %>
-                        <a  class="btn btn-md rounded font-sm block-btn"  style="background-color: red;" href='/gadgetly/admin/block?id=<%= users[i]._id %>' userId="<%= users[i]._id %>" >Block</a>
+                        <a  class="btn btn-md rounded font-sm block-btn"  style="background-color: red;" href='/admin/block?id=<%= users[i]._id %>' userId="<%= users[i]._id %>" >Block</a>
                     <% }else{    %>
-                        <a  class="btn btn-md rounded font-sm  unblock-btn"  style="background-color: rgb(10, 149, 8);" href='/gadgetly/admin/unblock?id=<%= users[i]._id %>' userId="<%= users[i]._id %>"  >Unblock</a>
+                        <a  class="btn btn-md rounded font-sm  unblock-btn"  style="background-color: rgb(10, 149, 8);" href='/admin/unblock?id=<%= users[i]._id %>' userId="<%= users[i]._id %>"  >Unblock</a>
                     <% } %>  
                               
                               <div class="dropdown">

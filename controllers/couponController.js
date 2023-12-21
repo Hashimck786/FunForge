@@ -36,7 +36,7 @@ const createCoupon = async(req,res)=>{
 
   const couponData = await coupon.save()
 
-  res.redirect('/gadgetly/admin/coupons');
+  res.redirect('/admin/coupons');
 }
 
 
@@ -68,7 +68,7 @@ const editCoupon = async(req,res) =>{
     usageLimit:couponLimit
   }})
 
-  res.redirect('/gadgetly/admin/coupons')
+  res.redirect('/admin/coupons')
 }
 
 // loading inactive coupon list ...........................................
@@ -83,7 +83,7 @@ const inactiveCouponList = async(req,res)=>{
 const activateCoupon = async(req,res)=>{
   const coupon = req.query.couponId;
   const updated = await Coupon.updateOne({_id:coupon},{$set:{is_Active:true}})
-  res.redirect('/gadgetly/admin/inactivecouponlist')
+  res.redirect('/admin/inactivecouponlist')
 }
 
 // deactivate coupon.....................................................
@@ -91,7 +91,7 @@ const activateCoupon = async(req,res)=>{
 const deactivateCoupon =  async(req,res)=>{
   const coupon = req.query.couponId;
   const updated = await Coupon.updateOne({_id:coupon},{$set:{is_Active:false}})
-  res.redirect('/gadgetly/admin/coupons')
+  res.redirect('/admin/coupons')
 }
 
 // applycoupon...........................................................

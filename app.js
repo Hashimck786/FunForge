@@ -20,11 +20,11 @@ const adminRoute = require('./routes/adminRoutes');
 
 //for user routes
 
-app.use('/gadgetly',userRoute);
+app.use('/',userRoute);
 
 //for admin routes
 
-app.use('/gadgetly/admin',adminRoute);
+app.use('/admin',adminRoute);
 
 
 app.get('*',(req,res)=>{

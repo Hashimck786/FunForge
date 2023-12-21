@@ -8,7 +8,7 @@ const isLogin = async (req,res,next) => {
       }
     }
   else{
-    res.redirect('/gadgetly/login')
+    res.redirect('/login')
   }
   next();
   
@@ -24,7 +24,7 @@ const isLogout = async(req,res,next) => {
   try {
       if(req.session.data){
         console.log("is logout middleware")
-        res.redirect('/gadgetly')
+        res.redirect('/')
       }
       next();
   } catch (error) {

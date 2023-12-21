@@ -167,10 +167,10 @@
         <h4 class="text-center">Order Successful</h2>
         <div class="cart-action text-center pt-100 pb-100">
            <% if(typeof orderId != "undefined &&orderId"){ %>
-            <a class="btn  mr-10 mb-sm-15" href="/gadgetly/orderdetails/?orderId=<%=orderId %>"><i class="fi-rs-shuffle mr-10"></i>View OrderDetails</a>  
+            <a class="btn  mr-10 mb-sm-15" href="/orderdetails/?orderId=<%=orderId %>"><i class="fi-rs-shuffle mr-10"></i>View OrderDetails</a>  
            <% } %>
            
-            <a class="btn " href="/gadgetly/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+            <a class="btn " href="/shop"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
         </div>
     </main>
 <%-include('../layout/footer') %>

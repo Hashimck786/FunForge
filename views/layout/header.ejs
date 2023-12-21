@@ -221,12 +221,12 @@
             <div class="container">
                 <div class="header-wrap">
                     <div class="logo logo-width-1">
-                        <a href="/gadgetly"><img width="50px" height="50px" src="/assets/imgs/theme/FunForge.png" alt="logo"></a>
+                        <a href="/"><img width="50px" height="50px" src="/assets/imgs/theme/FunForge.png" alt="logo"></a>
                     </div>
                     <div class="header-right">
                       <%if(typeof productSearch !="undefined" && productSearch){ %>
                         <div class="search-style-2">
-                          <form action="/gadgetly/shop/">
+                          <form action="/shop/">
                                   <select class="select-active" name="category">
                                       <option value="">All Categories</option>
                                      <% if(category && category.length>0){
@@ -244,7 +244,7 @@
                       </div>
                       <% }else{ %>
                         <div class="search-style-2">
-                          <form action="/gadgetly/shop">
+                          <form action="/shop">
                               <select class="select-active">
                                   <option value="">All Categories</option>
                                   <% if(typeof category !="undefined" && category.length>0){
@@ -262,7 +262,7 @@
                         <div class="header-action-right">
                             <div class="header-action-2">
                                 <div class="header-action-icon-2">
-                                    <a href="/gadgetly/wishlist">
+                                    <a href="/wishlist">
                                         <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/icon-heart.svg">
                                         <%if(typeof wishlistCount != "undefined"){ %>
                                             <span class="pro-count blue"><%= wishlistCount%></span>
@@ -270,7 +270,7 @@
                                     </a>
                                 </div>
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="/gadgetly/cart">
+                                    <a class="mini-cart-icon" href="/cart">
                                         <img alt="Evara" src="/assets/imgs/theme/icons/icon-cart.svg">
                                         <%if(typeof cartCount != "undefined"){ %>
                                             <span class="pro-count blue"><%=cartCount %></span>
@@ -279,19 +279,19 @@
                                 </div>
                                 <div class="header-action-2">
                                     <div class="header-action-icon-2">
-                                        <a href="/gadgetly/myaccount">
+                                        <a href="/myaccount">
                                             <img class="svgInject" alt="Evara" src="/assets/imgs/theme/icons/profile.svg">
                                             
                                         </a>
                                     </div>
                             </div>
                                 <div class="header-action-2 pl-25"></div>
-                                <a href="/gadgetly/logout" style="background-color: rgb(107,29,29);color: white;" class="btn  btn-sm" style="display: inline;"><i class="fi-rs-user"></i>Logout</a>  
+                                <a href="/logout" style="background-color: rgb(107,29,29);color: white;" class="btn  btn-sm" style="display: inline;"><i class="fi-rs-user"></i>Logout</a>  
                             </div>
                         </div>
                         <% }else{ %>
-                            <a href="/gadgetly/login" style="background-color: rgb(43,138,194);color: white;" class="btn  btn-sm mr-10" style="display: inline;"><i class="fi-rs-user"></i>Login</a>
-                            <a href="/gadgetly/signup" style="background-color: rgb(43,138,194);color: white;" class="btn  btn-sm" style="display: inline;"><i class="fi-rs-user"></i>Signup</a>
+                            <a href="/login" style="background-color: rgb(43,138,194);color: white;" class="btn  btn-sm mr-10" style="display: inline;"><i class="fi-rs-user"></i>Login</a>
+                            <a href="/signup" style="background-color: rgb(43,138,194);color: white;" class="btn  btn-sm" style="display: inline;"><i class="fi-rs-user"></i>Signup</a>
                         <% }  %>
                     </div>
                 </div>
@@ -301,22 +301,22 @@
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
                     <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="/gadgetly"><img src="/assets/imgs/theme/funforge_logo.jpg" alt="logo"></a>
+                        <a href="/"><img src="/assets/imgs/theme/funforge_logo.jpg" alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
                                 <ul>
                                     <li>
-                                        <a class="active" href="/gadgetly">Home </a>   
+                                        <a class="active" href="/">Home </a>   
                                     </li>
                                     <!-- <li>
                                         <a href="page-about.html">About</a>
                                     </li> -->
                                     <li>
-                                        <a href="/gadgetly/shop">Shop </a>   
+                                        <a href="/shop">Shop </a>   
                                     <li>
-                                        <a href="/gadgetly/contact">Contact</a>
+                                        <a href="/contact">Contact</a>
                                     </li>
                                 </ul>
                             </nav>

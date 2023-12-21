@@ -6,7 +6,7 @@
                     <p>Admin can edit , list and unlist products here</p>
                 </div>
                 <div>
-                    <a href="/gadgetly/admin/loadAddProduct" class="btn btn-primary btn-sm rounded">Create new</a>
+                    <a href="/admin/loadAddProduct" class="btn btn-primary btn-sm rounded">Create new</a>
                 </div>
             </div>
             <div class="card mb-4">
@@ -44,17 +44,17 @@
                                                 <%= product.Stock %>
                                              </td>
                                             <td>
-                                                <a href="/gadgetly/admin/edit?id=<%=product._id %>" class="btn btn-sm font-sm rounded btn-brand">
+                                                <a href="/admin/edit?id=<%=product._id %>" class="btn btn-sm font-sm rounded btn-brand">
                                                     <i class="material-icons md-edit"></i> Edit
                                                 </a>
                                             </td>
                                             <td>
                                                 <%if(product.is_listed ==0 ){ %>
-                                                    <a href="/gadgetly/admin/list?id=<%=product._id %>" class="btn btn-sm font-sm btn-light rounded  list-btn"  productId="<%=product._id %>" style="background-color: green;">
+                                                    <a href="/admin/list?id=<%=product._id %>" class="btn btn-sm font-sm btn-light rounded  list-btn"  productId="<%=product._id %>" style="background-color: green;">
                                                         <i class="material-icons md-delete_forever"></i> List
                                                     </a>
                                                 <% }else{ %>
-                                                    <a href="/gadgetly/admin/unlist?id=<%=product._id %>"  class="btn btn-sm font-sm btn-light rounded unlist-btn" productId="<%=product._id %>"  style="background-color: red;">
+                                                    <a href="/admin/unlist?id=<%=product._id %>"  class="btn btn-sm font-sm btn-light rounded unlist-btn" productId="<%=product._id %>"  style="background-color: red;">
                                                         <i class="material-icons md-delete_forever"></i> Unlist
                                                     </a>
                                                <% } %>

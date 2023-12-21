@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form method="post" action="/gadgetly/admin/createcategory" id="categoryForm">
+                            <form method="post" action="/admin/createcategory" id="categoryForm">
                                 <div class="mb-4">
                                     <label for="category_name" class="form-label">Name</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="category_name" name="category_name" oninput="validateCategoryName()" />
@@ -68,17 +68,17 @@
                                                 <td><%= category[i].categoryDiscount %></td>
                                                 <td><%= category[i].categoryDescription %></td>
                                                 <td>
-                                                    <a href="/gadgetly/admin/category_edit?id=<%=category[i]._id%>" class="btn btn-sm font-sm rounded btn-brand">
+                                                    <a href="/admin/category_edit?id=<%=category[i]._id%>" class="btn btn-sm font-sm rounded btn-brand">
                                                         <i class="material-icons md-edit"></i> Edit
                                                     </a>
                                                 </td>
                                                 <td>
                                                     <%if(category[i].is_listed ==0 ){ %>
-                                                        <a href="/gadgetly/admin/category_list?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded list-btn" categoryId="<%=category[i]._id %>" style="background-color: green;">
+                                                        <a href="/admin/category_list?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded list-btn" categoryId="<%=category[i]._id %>" style="background-color: green;">
                                                             <i class="material-icons md-delete_forever"></i> List
                                                         </a>
                                                     <% }else{ %>
-                                                        <a href="/gadgetly/admin/category_unlist?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded unlist-btn"  categoryId="<%=category[i]._id %>"  style="background-color: red;">
+                                                        <a href="/admin/category_unlist?id=<%=category[i]._id %>" class="btn btn-sm font-sm btn-light rounded unlist-btn"  categoryId="<%=category[i]._id %>"  style="background-color: red;">
                                                             <i class="material-icons md-delete_forever"></i> Unlist
                                                         </a>
                                                    <% } %>

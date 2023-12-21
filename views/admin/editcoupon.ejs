@@ -12,7 +12,7 @@
                   <h4>Here you can edit coupon</h4>
               </div>
               <div class="card-body">
-                  <form method="post" action="/gadgetly/admin/editcoupon/?couponId=<%=coupon._id%>"  class="create-coupun" id="CouponForm">
+                  <form method="post" action="/admin/editcoupon/?couponId=<%=coupon._id%>"  class="create-coupun" id="CouponForm">
                       <div class="mb-4">
                           <label for="coupon_code" class="form-label">CouponCode</label>
                           <input type="text" placeholder="Type here"  value="<%=coupon.couponCode%>" class="form-control" id="coupon_code" name="coupon_code" oninput="">

@@ -181,9 +181,9 @@
                                             <h3 class="mb-30">OTP VALIDATION</h3>
                                         </div>
                                         <%if(typeof signup !== "undefined" && signup == 1){ %>
-                                            <form method="post" action="/gadgetly/signupotpvalidation/?id=<%= user._id %>">  
+                                            <form method="post" action="/signupotpvalidation/?id=<%= user._id %>">  
                                         <% }else{ %>
-                                            <form method="post" action="/gadgetly/otpvalidation/?id=<%= user._id %>">
+                                            <form method="post" action="/otpvalidation/?id=<%= user._id %>">
                                         <% } %>
                                             <div class="form-group">
                                                 <input type="text" required name="otp" placeholder="Enter OTP"  >

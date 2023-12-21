@@ -94,7 +94,7 @@ const addProduct = async(req,res) => {
     });
     const productData = await product.save();
     if(productData){
-      res.redirect('/gadgetly/admin/productList')
+      res.redirect('/admin/productList')
     }else{
       res.render('addProduct',{message:"can't add product now"})
     }
@@ -112,7 +112,7 @@ const listProduct = async(req,res) => {
     // res.json({
     //   success:true
     // })
-    res.redirect('/gadgetly/admin/productList')
+    res.redirect('/admin/productList')
 
   } catch (error) {
     console.log(error.message)
@@ -125,7 +125,7 @@ const unlistProduct = async(req,res) => {
   try {
     const product_id = req.query.id;
     const updated = await Product.updateOne({_id:product_id},{$set : {is_listed:0}})
-    res.redirect('/gadgetly/admin/productList')
+    res.redirect('/admin/productList')
     // res.json({
     //   success:true
     // })
@@ -177,7 +177,7 @@ const editProduct = async(req,res) => {
         Stock:req.body.product_stock,
         
       }})
-      return res.redirect('/gadgetly/admin/productList')
+      return res.redirect('/admin/productList')
     }
     const discount = (req.body.product_price*req.body.product_discount)/100;
     const salePrice = req.body.product_price-discount;
@@ -193,7 +193,7 @@ const editProduct = async(req,res) => {
       image:images
     }})
 
-    res.redirect('/gadgetly/admin/productList')
+    res.redirect('/admin/productList')
     
   } catch (error) {
     console.log(error.message)

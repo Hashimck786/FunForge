@@ -6,13 +6,13 @@
       <h4 class="p-2"><%= message %></h4>
       <div class="card-header d-flex justify-content-between align-items-center">
        <div>
-          <a href="/gadgetly/admin/daily-sales"><button class="btn btn-primary">Daily</button></a>
-          <a href="/gadgetly/admin/weekly-sales"><button class="btn btn-primary">Weekly</button></a>
-          <a href="/gadgetly/admin/monthly-sales"><button class="btn btn-primary">Monthly</button></a>
-          <a href="/gadgetly/admin/yearly-sales"><button class="btn btn-primary">Yearly</button></a>
-          <a href="/gadgetly/admin/salesreport"><button class="btn btn-primary">Total</button></a>
+          <a href="/admin/daily-sales"><button class="btn btn-primary">Daily</button></a>
+          <a href="/admin/weekly-sales"><button class="btn btn-primary">Weekly</button></a>
+          <a href="/admin/monthly-sales"><button class="btn btn-primary">Monthly</button></a>
+          <a href="/admin/yearly-sales"><button class="btn btn-primary">Yearly</button></a>
+          <a href="/admin/salesreport"><button class="btn btn-primary">Total</button></a>
           <div class="mt-20">
-            <form action="/gadgetly/admin/custom-sales" method="post">
+            <form action="/admin/custom-sales" method="post">
                 <label for="startDate" class="text-danger">Start Date:</label>
                 <input type="date" id="startDate" name="startDate">
             
@@ -26,11 +26,11 @@
        <!-- New button fixed to the right end -->
        <div>
         <% if( typeof startDate != "undefined" && typeof endDate != "undefined"){ %>
-            <a href="/gadgetly/admin/dowload-report/?type=<%=type%>&startDate=<%=startDate%>&endDate=<%=endDate%>"><button class="btn btn-danger">Dowload Pdf</button></a>
-            <a href="/gadgetly/admin/dowload-excel/?type=<%=type%>&startDate=<%=startDate%>&endDate=<%=endDate%>"><button class="btn btn-danger">Dowload Excel</button></a>
+            <a href="/admin/dowload-report/?type=<%=type%>&startDate=<%=startDate%>&endDate=<%=endDate%>"><button class="btn btn-danger">Dowload Pdf</button></a>
+            <a href="/admin/dowload-excel/?type=<%=type%>&startDate=<%=startDate%>&endDate=<%=endDate%>"><button class="btn btn-danger">Dowload Excel</button></a>
         <% }else{ %>
-            <a href="/gadgetly/admin/dowload-report/?type=<%=type%>"><button class="btn btn-danger">Dowload Pdf</button></a>
-            <a href="/gadgetly/admin/dowload-excel/?type=<%=type%>"><button class="btn btn-danger">Dowload Excel</button></a>
+            <a href="/admin/dowload-report/?type=<%=type%>"><button class="btn btn-danger">Dowload Pdf</button></a>
+            <a href="/admin/dowload-excel/?type=<%=type%>"><button class="btn btn-danger">Dowload Excel</button></a>
         <% } %>
        
 

@@ -5,8 +5,8 @@
         <h4 class="card-title"> Inactive Coupons</h4>
         <div class="row ">
           <div class="col">
-            <a href="/gadgetly/admin/createcoupon" class="btn btn-small btn-primary">CreateCoupon</a>
-            <a href="/gadgetly/admin/coupons" class="btn btn-small btn-primary">Active Coupons</a>
+            <a href="/admin/createcoupon" class="btn btn-small btn-primary">CreateCoupon</a>
+            <a href="/admin/coupons" class="btn btn-small btn-primary">Active Coupons</a>
           </div>
       </div>
       
@@ -33,10 +33,10 @@
                                 <td><%=coupon.couponCode%></td>
                                 <td><%=coupon.couponDiscount%></td>
                                 <td><%=coupon.expirationDate.toLocaleDateString()%></td>
-                                <td><a  class="btn btn-small btn-success" href="/gadgetly/admin/activatecoupon/?couponId=<%=coupon._id%>">Activate</a></td>
+                                <td><a  class="btn btn-small btn-success" href="/admin/activatecoupon/?couponId=<%=coupon._id%>">Activate</a></td>
                                 <td><%=coupon.usageLimit%></td>
                                 <td><%=coupon.created_at.toLocaleDateString()%></td>
-                                <td><a class="btn btn-small btn-primary" href="/gadgetly/admin/editcoupon/?couponId=<%=coupon._id%>">Edit</a></td>
+                                <td><a class="btn btn-small btn-primary" href="/admin/editcoupon/?couponId=<%=coupon._id%>">Edit</a></td>
                             </tr>
                     <%    })
                     }else{ %>

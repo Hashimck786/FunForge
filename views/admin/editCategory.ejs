@@ -14,7 +14,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form method="post" action="/gadgetly/admin/category_edit?id=<%= category._id %>" id="categoryForm">
+                            <form method="post" action="/admin/category_edit?id=<%= category._id %>" id="categoryForm">
                                 <div class="mb-4">
                                     <label for="category_name" class="form-label">Name</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="category_name" name="category_name"  value="<%=category.categoryName%>" oninput="validateCategoryName()"/>

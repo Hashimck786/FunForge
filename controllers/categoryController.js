@@ -41,7 +41,7 @@ const createCategory = async(req,res) => {
     });
 
     const categoryData = await category.save();
-    res.redirect('/gadgetly/admin/categories')
+    res.redirect('/admin/categories')
 
   } catch (error) {
     console.log(error.message)
@@ -54,7 +54,7 @@ const categoryList = async(req,res) => {
   const id = req.query.id;
   const updated = await Category.updateOne({_id:id},{$set : {is_listed:1}});
   const updateproduct = await Product.updateMany({categoryId:id},{$set : {is_listed:1}})
-  res.redirect('/gadgetly/admin/categories')
+  res.redirect('/admin/categories')
   // res.json({
   //   success:true
   // })
@@ -66,7 +66,7 @@ const categoryUnlist = async(req,res) => {
   const id = req.query.id;
   const updated = await Category.updateOne({_id:id},{$set : {is_listed:0}});
   const updateproduct = await Product.updateMany({categoryId:id},{$set : {is_listed:0}})
-  res.redirect('/gadgetly/admin/categories')
+  res.redirect('/admin/categories')
   // res.json({
   //   success:true
   // })
@@ -86,7 +86,7 @@ const  categoryEdit = async(req,res) => {
       categoryDiscount:discount,
       categoryDescription:description
     }})
-    res.redirect('/gadgetly/admin/categories')
+    res.redirect('/admin/categories')
   } catch (error) {
     console.log(error);
   }

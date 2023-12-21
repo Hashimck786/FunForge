@@ -205,7 +205,7 @@
                                                 <td class="text-right" data-title="Cart">
                                                     <button class="btn btn-sm cart-btn" productId="<%= product[i]._id %>"><i class="fi-rs-shopping-bag mr-5"></i>Add to cart</button>
                                                 </td>
-                                                <td class="action " data-title="Remove"><a href="/gadgetly/removewishlist?id=<%= product[i]._id %>" productId="<%= product[i]._id %>" class="rmv-btn"><i class="fi-rs-trash"></i></a></td>
+                                                <td class="action " data-title="Remove"><a href="/removewishlist?id=<%= product[i]._id %>" productId="<%= product[i]._id %>" class="rmv-btn"><i class="fi-rs-trash"></i></a></td>
                                             </tr>
                                        <% }
                                     }else{ %>
@@ -281,7 +281,7 @@
                     event.preventDefault();
                     const productId = this.getAttribute('productId');
                     console.log('productId', productId);
-                    const response = await fetch(`/gadgetly/removewishlist/?id=${productId}`, {
+                    const response = await fetch(`/removewishlist/?id=${productId}`, {
                         method: 'GET'
                     });
                     const productData = await response.json();
@@ -314,7 +314,7 @@
                         event.preventDefault();
                         const productId = this.getAttribute('productId');
                         console.log('productId', productId);
-                        const response = await fetch(`/gadgetly/addtocart/?id=${productId}&wishlist=true`, {
+                        const response = await fetch(`/addtocart/?id=${productId}&wishlist=true`, {
                             method: 'GET'
                         });
                         const productData = await response.json();

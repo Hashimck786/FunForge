@@ -133,10 +133,10 @@ const loginSubmission= async(req,res) => {
       if(passwordverified){
         if(userData.is_verified==1){
           req.session.data = userData;
-          res.redirect('/gadgetly')
+          res.redirect('/')
           // if(userData.is_block==0){
             // req.session.data = userData;
-          //   res.redirect('/gadgetly')
+          //   res.redirect('/')
           // }else{
           //   res.render('login.ejs',{message:"You are blocked by the admin"})
           // }
@@ -253,7 +253,7 @@ const signupVerifyOtp = async(req,res) => {
     
          }
 
-       res.redirect('/gadgetly/login')
+       res.redirect('/login')
     }else{
        res.render('otpValidation.ejs',{message:"invalid Otp"})
     }
@@ -268,7 +268,7 @@ const signupVerifyOtp = async(req,res) => {
 const logingOut = async(req,res) => {
   try {
     req.session.destroy()
-    res.redirect('/gadgetly')
+    res.redirect('/')
   } catch (error) {
       console.error(error.message)
   }
@@ -338,7 +338,7 @@ const updatePassword = async(req,res) => {
     const userData = await User.findOne({_id:id})
     if(userData){
       const updated = await User.updateOne({_id:id},{$set : {password:spassword}})
-      res.redirect('/gadgetly/login')
+      res.redirect('/login')
     }else{
       res.render('updatepassword.ejs',{message:"password verification gone wrong"})
     }
@@ -361,7 +361,7 @@ const loadContact = async(req,res) => {
  const verifyMail = async(req,res) => {
   try {
     const  updated = await User.updateOne({_id:req.query.id},{$set : {is_verified:1}})
-    res.redirect('/gadgetly/login');
+    res.redirect('/login');
   } catch (error) {
     console.log(error.message)
   }
@@ -479,7 +479,7 @@ const editProfile = async(req,res) => {
       mobile:req.body.mobile,
       email:req.body.email
     })
-    res.redirect('/gadgetly/myaccount')
+    res.redirect('/myaccount')
   }catch(error){
     console.error(error)
   }
@@ -528,9 +528,9 @@ const addAddress = async(req,res) => {
       const remove = await Address.updateMany({_id:{$in:userAddress}},{$set:{is_Default:false}})
       const updated = await User.updateOne({_id:userId},{$addToSet:{address:addressData._id}})
       if(checkout){
-        res.redirect('/gadgetly/checkout')
+        res.redirect('/checkout')
       }else{
-        res.redirect('/gadgetly/myaccount')
+        res.redirect('/myaccount')
       }
         
 
@@ -575,7 +575,7 @@ const editAddress = async(req,res) => {
       phone:req.body.phone,
       alterphone:req.body.alterphone
     })
-    res.redirect('/gadgetly/myaccount')
+    res.redirect('/myaccount')
   } catch (error) {
     console.error(error.message)
   }
@@ -590,7 +590,7 @@ const deleteAddress = async(req,res) =>{
     const id = req.query.id ;
     const updated = await User.updateOne({_id:userId},{$pull:{address:id}})
     const deleted = await Address.deleteOne({_id:id})
-    res.redirect('/gadgetly/myaccount')
+    res.redirect('/myaccount')
   } catch (error) {
     console.error(error.message)
   }
@@ -609,9 +609,9 @@ const defaultAddress = async(req,res) => {
       const remove = await Address.updateMany({_id:{$in:userAddress}},{$set:{is_Default:false}})
       const updated = await Address.updateOne({_id:id},{$set :{is_Default:true}})
       if(checkout){
-        res.redirect('/gadgetly/checkout')
+        res.redirect('/checkout')
       }else{
-        res.redirect('/gadgetly/myaccount')
+        res.redirect('/myaccount')
       }
 
   } catch (error) {
@@ -635,7 +635,7 @@ const loadCheckout = async(req,res) => {
         const cartData = await Cart.findOne({userId:userId}).populate('products.productId')
         res.render('checkout.ejs',{cart:cartData,user:userId,address:defaultAddress[0]})
       }else{
-        res.redirect('/gadgetly/cart')
+        res.redirect('/cart')
       }
       
   } catch (error) {
@@ -894,7 +894,7 @@ const cancelOrder = async(req,res)=>{
     }
     
 
-    return res.redirect('/gadgetly/myaccount')
+    return res.redirect('/myaccount')
   } catch (error) {
     console.error(error.message);
   }
@@ -906,7 +906,7 @@ const returnOrder = async (req,res)=>{
   try {
     const orderId = req.query.orderId;
     const updated = await Order.updateOne({_id:orderId},{$set:{cancellationStatus:'return requested'}})
-    return res.redirect('/gadgetly/myaccount') 
+    return res.redirect('/myaccount') 
   } catch (error) {
     console.error(error.message)
   }
