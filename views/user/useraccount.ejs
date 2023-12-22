@@ -1,0 +1,138 @@
+<%- include('../layout/header') %>
+
+  <div class="card">
+      <div class="card-header">
+          <h5>Account Details</h5>
+      </div>
+      <div class="card-body">
+          <% if(user){ %>
+          <form method="post" action="/editProfile/?id=<%=user._id %>" id="editProfileForm"
+              >
+              <div class="row">
+                  <div class="form-group col-md-12">
+                      <label>Username <span class="required">*</span></label>
+                      <input required="true" class="form-control square"  id="username" name="name" type="text" value="<%= user.name %>" oninput="validateUsername()">
+                      <span id="errorusername" class="text-danger"></span>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label>Mobile Number <span class="required">*</span></label>
+                      <input required="true" class="form-control square" name="mobile" id="mobile" type="number" value="<%= user.mobile %>" oninput="validateMobile()">
+                      <span id="errormobile" class="text-danger"></span>
+                  </div>
+                  <div class="form-group col-md-12">
+                      <label>Email Address <span class="required">*</span></label>
+                      <input required="true" class="form-control square" name="email" id="email" type="email" value="<%= user.email %>" oninput="validateEmail()">
+                      <span id="erroremail" class="text-danger"></span>
+                  </div>
+                  <div class="col-md-12">
+                      <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                  </div>
+              </div>
+          </form>
+      <% if(typeof message != "undefined"){ %>
+          <div class="text-center text-danger"><%= message %></div>
+      <% } %>
+      <div class="referral-code-container">
+          <p class="referral-code-label">Your Referral Code:</p>
+          <p class="referral-code"><%=user.referralCode%></p>
+      </div>
+      <% }else{  %>
+          <h4>account not found</h4>
+          <% }  %>
+      </div>
+  </div>
+
+
+
+<script>
+  function validateUsername() {
+      var username = document.getElementById("username").value;
+      var errorUsername = document.getElementById("errorusername");
+      errorUsername.innerHTML = "";
+
+      if (username.trim() === "") {
+          errorUsername.innerHTML = "Username is required";
+      } else if (username.length < 3 || username.length > 20) {
+          errorUsername.innerHTML = "Username must be between 3 and 20 characters";
+      }
+  }
+
+  function validateEmail() {
+      var email = document.getElementById("email").value;
+      var erroremail = document.getElementById('erroremail');
+      erroremail.innerHTML = "";
+
+      if(email.trim() === ""){
+          erroremail.innerHTML = "Email is required"
+      }
+  }
+
+  function validateMobile() {
+      var mobile = document.getElementById('mobile').value;
+      var errormobile = document.getElementById('errormobile');
+      errormobile.innerHTML = "";
+
+      if(mobile.trim() === ""){
+          errormobile.innerHTML = "mobile is required";
+      }else if(mobile.length !== 10){
+          errormobile.innerHTML = "mobile must be 10 digits"
+      }
+      else{
+          errormobile.innerHTML = ""
+      }
+  }
+
+  </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('editProfileForm');
+
+  form.addEventListener('submit', function (event) {
+      // Validate username
+      
+      const usernameInput = document.getElementById('username');
+      const errorUsername = document.getElementById('errorusername');
+      const username = usernameInput.value.trim();
+
+      if (username === '') {
+          errorUsername.innerText = 'Username is required';
+          event.preventDefault();
+      } else if (!isValidUsername(username)) {
+          errorUsername.innerText = 'Invalid username';
+          event.preventDefault();
+      } else {
+          errorUsername.innerText = '';
+      }
+
+      function isValidUsername(username) {
+      // Define a regular expression to allow only alphanumeric characters and underscore
+      const regex = /^[a-zA-Z0-9_]+$/;
+      return regex.test(username);
+      }
+
+
+      // Validate email
+      const email = document.getElementById('email').value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (email === '' || !emailRegex.test(email)) {
+          document.getElementById('erroremail').innerText = 'Enter a valid email address';
+          event.preventDefault();
+      } else {
+          document.getElementById('erroremail').innerText = '';
+      }
+
+      // Validate mobile number
+      const mobile = document.getElementById('mobile').value.trim();
+      const mobileRegex = /^[0-9]{10}$/;
+      if (mobile === '' || !mobileRegex.test(mobile)) {
+          document.getElementById('errormobile').innerText = 'Enter a valid 10-digit mobile number';
+          event.preventDefault();
+      } else {
+          document.getElementById('errormobile').innerText = '';
+      }
+  });
+});
+</script>
+
+<%-include('../layout/footer') %>

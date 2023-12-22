@@ -447,12 +447,8 @@ const loadProductDetail = async(req,res) => {
 const loadProfile = async(req,res) => {
   try {
     const userId = req.session.data._id
-    const checkout = req.query.checkout || '';
-    const userData = await User.findOne({_id:userId})
-    const userAddress = userData.address;
-    const addressData = await Address.find({_id:{$in:userAddress}})
-    const orders = await Order.find({userId:userId}).sort({date: -1})
-    res.render('userProfile.ejs',{user:userData,address:addressData,orders:orders,checkout})
+
+    res.render('userProfile.ejs',{user:userId})
   } catch (error) {
     console.error(error.message)
   }
@@ -956,6 +952,33 @@ const AddMoneyToWallet = async(req,res) =>{
   })
 }
 
+
+
+// userprofile modified.............................................................
+
+
+const loadUserAddress = async (req,res) => {
+  const userId = req.session.data._id;
+  const checkout = req.query.checkout || '';
+  const userData = await User.findOne({_id:userId})
+  const userAddress = userData.address;
+  const addressData = await Address.find({_id:{$in:userAddress}})
+
+  return res.render('address',{address:addressData,checkout,user:userId})
+}
+
+const loadUserAccount = async (req,res)=>{
+  const userId = req.session.data._id;
+  const userData = await User.findOne({_id:userId})
+  return res.render('useraccount',{user:userData})
+}
+
+const loadUserOrders = async (req,res) =>{
+  const userId = req.session.data._id;
+  const orders = await Order.find({userId:userId}).sort({date: -1})
+  return res.render('orders',{orders:orders,user:userId})
+}
+
 module.exports = {
   loadHome,
   loadLoginPage,
@@ -989,6 +1012,9 @@ module.exports = {
   returnOrder,
   userWallet,
   AddMoneyToWallet,
-  signupVerifyOtp
+  signupVerifyOtp,
+  loadUserAddress,
+  loadUserAccount,
+  loadUserOrders
 
 }

@@ -58,6 +58,11 @@ userRoute.post('/editaddress',userController.editAddress)
 userRoute.get('/deleteaddress',userAuth.isLogin,userController.deleteAddress)
 userRoute.get('/defaultaddress',userAuth.isLogin,userController.defaultAddress)
 
+// new routes for modifying userprofile......................................
+userRoute.get('/useraddresses',userAuth.isLogin,userController.loadUserAddress)
+userRoute.get('/useraccount',userAuth.isLogin,userController.loadUserAccount)
+userRoute.get('/userorders',userAuth.isLogin,userController.loadUserOrders)
+
 userRoute.get('/cart',userAuth.isLogin,cartController.loadCart);
 userRoute.get('/addtocart',userAuth.isLogin,cartController.addToCart);
 userRoute.get('/removefromcart',userAuth.isLogin,cartController.removeFromCart);
