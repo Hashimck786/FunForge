@@ -76,6 +76,8 @@ const addProduct = async(req,res) => {
 
       console.log('Image Path:', croppedImages);
       let discount ;
+      const categoryData = await Category.findOne({_id:req.body.product_categoryId})
+      const categoryDiscount = categoryData.categoryDiscount;
       if(categoryDiscount > req.body.product_discount){
         discount = Math.floor((req.body.product_price*categoryDiscount)/100);
       }else{
