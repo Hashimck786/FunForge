@@ -5,7 +5,7 @@
           <h5>Account Details</h5>
       </div>
       <div class="card-body">
-          <% if(user){ %>
+          <% if(typeof user != undefined){ %>
           <form method="post" action="/editProfile/?id=<%=user._id %>" id="editProfileForm"
               >
               <div class="row">

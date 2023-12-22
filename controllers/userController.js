@@ -458,24 +458,20 @@ const loadProfile = async(req,res) => {
 
 const editProfile = async(req,res) => {
   try {
+    const id = req.query.id;
+    const userData = await User.findOne({_id:id})
+    const existingemail = await User.findOne({email:req.body.email})
+    if(existingemail){
+      return res.render('useraccount',{message:"email already exists",user:userData})
+    }
 
     
-    // existing mail checking now commended because it want the user and address with it when rendering ....ask someone??????
-
-
-
-    // const existingemail = await User.findOne({email:req.body.email})
-    // if(existingemail){
-    //   return res.render('userProfile',{message:"email already exists"})
-    // }
-
-    const id = req.query.id;
     const updated = await User.updateOne({_id:id},{
       name:req.body.name,
       mobile:req.body.mobile,
       email:req.body.email
     })
-    res.redirect('/myaccount')
+    res.redirect('/useraccount')
   }catch(error){
     console.error(error)
   }
@@ -526,7 +522,7 @@ const addAddress = async(req,res) => {
       if(checkout){
         res.redirect('/checkout')
       }else{
-        res.redirect('/myaccount')
+        res.redirect('/useraddresses')
       }
         
 
@@ -571,7 +567,7 @@ const editAddress = async(req,res) => {
       phone:req.body.phone,
       alterphone:req.body.alterphone
     })
-    res.redirect('/myaccount')
+    res.redirect('/useraddresses')
   } catch (error) {
     console.error(error.message)
   }
@@ -586,7 +582,7 @@ const deleteAddress = async(req,res) =>{
     const id = req.query.id ;
     const updated = await User.updateOne({_id:userId},{$pull:{address:id}})
     const deleted = await Address.deleteOne({_id:id})
-    res.redirect('/myaccount')
+    res.redirect('/useraddresses')
   } catch (error) {
     console.error(error.message)
   }
@@ -607,7 +603,7 @@ const defaultAddress = async(req,res) => {
       if(checkout){
         res.redirect('/checkout')
       }else{
-        res.redirect('/myaccount')
+        res.redirect('/useraddresses')
       }
 
   } catch (error) {
