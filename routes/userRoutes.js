@@ -57,8 +57,6 @@ userRoute.get('/editaddress',userAuth.isLogin,userController.loadEditAddress);
 userRoute.post('/editaddress',userController.editAddress)
 userRoute.get('/deleteaddress',userAuth.isLogin,userController.deleteAddress)
 userRoute.get('/defaultaddress',userAuth.isLogin,userController.defaultAddress)
-
-// new routes for modifying userprofile......................................
 userRoute.get('/useraddresses',userAuth.isLogin,userController.loadUserAddress)
 userRoute.get('/useraccount',userAuth.isLogin,userController.loadUserAccount)
 userRoute.get('/userorders',userAuth.isLogin,userController.loadUserOrders)

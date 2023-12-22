@@ -25,47 +25,47 @@
                                       <div class="row">
                                           <div class="form-group col-md-12">
                                               <label>AddressName <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="addressname" type="text" id="addressName">
+                                              <input required class="form-control square" name="addressname" type="text" id="addressName">
                                               <span class="text-danger" id="errorAddressName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>name <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="name" type="text" id="name">
+                                              <input required class="form-control square" name="name" type="text" id="name">
                                               <span class="text-danger" id="errorName"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>country <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="country" type="text" id="country">
+                                              <input required class="form-control square" name="country" type="text" id="country">
                                               <span class="text-danger" id="errorCountry"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>streetaddress<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="streetaddress" type="text" id="streetAddress">
+                                              <input required class="form-control square" name="streetaddress" type="text" id="streetAddress">
                                               <span class="text-danger" id="errorStreetAddress"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>city <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="city" type="text" id="city">
+                                              <input required class="form-control square" name="city" type="text" id="city">
                                               <span class="text-danger" id="errorCity"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>state <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="state" type="text" id="state">
+                                              <input required class="form-control square" name="state" type="text" id="state">
                                               <span class="text-danger" id="errorState"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Pincode<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="pincode" type="number" id="pincode">
+                                              <input required class="form-control square" name="pincode" type="number" id="pincode">
                                               <span class="text-danger" id="errorPincode"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Mobile Number <span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="phone" type="number" id="mobileNumber">
+                                              <input required class="form-control square" name="phone" type="number" id="mobileNumber">
                                               <span id="errorMobileNumber"></span>
                                           </div>
                                           <div class="form-group col-md-12">
                                               <label>Alter Number<span class="required">*</span></label>
-                                              <input required="" class="form-control square" name="alterphone" type="number" id="alterNumber">
+                                              <input required class="form-control square" name="alterphone" type="number" id="alterNumber">
                                               <span class="text-danger" id="errorAlterNumber"></span>
                                           </div>
 
@@ -151,7 +151,7 @@
                 }
                 const mobileNumber = document.getElementById('mobileNumber').value.trim();
                 const mobileRegex = /^[0-9]{10}$/;
-                if(mobileNumber === "" || !mobileRegex.test(mobile)){
+                if(mobileNumber === "" || !mobileRegex.test(mobileNumber)){
                     document.getElementById('errorMobileNumber').innerHTML =  'Enter a valid 10-digit mobile number';
                     event.preventDefault();
                 }else{

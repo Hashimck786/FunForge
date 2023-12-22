@@ -134,12 +134,6 @@ const loginSubmission= async(req,res) => {
         if(userData.is_verified==1){
           req.session.data = userData;
           res.redirect('/')
-          // if(userData.is_block==0){
-            // req.session.data = userData;
-          //   res.redirect('/')
-          // }else{
-          //   res.render('login.ejs',{message:"You are blocked by the admin"})
-          // }
 
         }else{
           res.render('login.ejs',{message:"Please verify your email otp."})
