@@ -18,6 +18,7 @@ const Razorpay = require('razorpay');
 const ejs = require('ejs');
 const fs = require('fs');
 const pdf = require('html-pdf');
+const PDFDocument = require('pdfkit');
 const path = require('path');
 const { log } = require('console')
 
@@ -818,46 +819,106 @@ const orderDetails = async(req,res) => {
 
 // order reciept dowloading............................................................................
 
-const orderDowloadPdf = async(req,res) => {
+const orderDowloadPdf = async (req, res) => {
   try {
-     const orderId = req.query.orderId;
-     const orderData = await Order.findOne({_id:orderId});
-     const data = {
-      orderData : orderData
-     }
-     const filePathName = path.resolve(__dirname,'../views/user/htmlToPdf.ejs');
-     const htmlString = fs.readFileSync(filePathName).toString();
-     const ejsData = ejs.render(htmlString,data);
+    const orderId = req.query.orderId;
+    const orderData = await Order.findOne({ _id: orderId });
 
-     let options = {
-      format : 'A4',
-      orientation:'portrait',
-      border:'10mm'
-     }
+    const pdfDoc = new PDFDocument({
+      size: 'A4',
+      margin: 10
+    });
 
-     pdf.create(ejsData,options).toFile('order.pdf',(err,response)=>{
-      if(err){
-        console.error(err.message)
-      }
-      else{
-        const filePath = path.resolve(__dirname,'../order.pdf');
-        fs.readFile(filePath,(err,file)=>{
-          if(err){
-            return res.status(500).send("can't dowload pdf")
-          }else{
-            res.setHeader('Content-type','application/pdf');
-            res.setHeader('Content-Disposition','attachment;filename="order.pdf"');
+    // Pipe the PDF to a file stream
+    const fileStream = fs.createWriteStream('order.pdf');
+    pdfDoc.pipe(fileStream);
 
-            res.send(file);
+    // Add content to the PDF manually
+    pdfDoc
+      .font('Helvetica-Bold')
+      .fontSize(24)
+      .fillColor('#007bff')
+      .text('INVOICE', { align: 'center' })
+      .moveDown(1);
 
-          }
-        })
-      }
-     })
+    // Order Information Section
+    pdfDoc
+      .fontSize(18)
+      .fillColor('#333') // Change to your preferred color
+      .text('Order Information', { underline: true })
+      .moveDown(0.5);
+
+    pdfDoc
+      .fontSize(14)
+      .fillColor('#333') // Change to your preferred color
+      .text(`Order ID: ${orderData._id}`)
+      .text(`Order Date: ${orderData.date}`)
+      .text(`Order Value: $${orderData.orderValue.toFixed(2)}`)
+      .moveDown(1);
+
+    // Ordered Products Section
+    pdfDoc
+      .fontSize(18)
+      .fillColor('#333') // Change to your preferred color
+      .text('Ordered Products', { underline: true })
+      .moveDown(0.5);
+
+    // Product Details
+    pdfDoc.font('Helvetica').fillColor('#007bff');
+
+    orderData.products.forEach((product, index) => {
+      pdfDoc.fillColor('#333').text(`Product ID: ${product.productId}`);
+      pdfDoc.fillColor('#333').text(`Product Name: ${product.productName}`);
+      pdfDoc.fillColor('#333').text(`Quantity: ${product.quantity}`);
+      pdfDoc.fillColor('#333').text(`Product Price: $${product.productPrice.toFixed(2)}`);
+      pdfDoc.fillColor('#333').text(`Total: $${(product.quantity * product.productPrice).toFixed(2)}`).moveDown(0.5);
+    });
+
+    pdfDoc.moveDown(1);
+
+    // Shipping Address Section
+    pdfDoc
+      .fontSize(18)
+      .fillColor('#333') // Change to your preferred color
+      .text('Shipping Address', { underline: true })
+      .moveDown(0.5);
+
+    // Shipping Address Details
+    pdfDoc.font('Helvetica');
+    pdfDoc.fillColor('#333').text(`Name: ${orderData.addressDetails.name}`);
+    pdfDoc.fillColor('#333').text(`Postcode: ${orderData.addressDetails.postcode}`);
+    pdfDoc.fillColor('#333').text(`Phone: ${orderData.addressDetails.phone}`);
+    pdfDoc.fillColor('#333').text(`Street Address: ${orderData.addressDetails.streetaddress}`);
+    pdfDoc.fillColor('#333').text(`City: ${orderData.addressDetails.city}`);
+    pdfDoc.fillColor('#333').text(`State: ${orderData.addressDetails.state}`);
+    pdfDoc.fillColor('#333').text(`Country: ${orderData.addressDetails.country}`).moveDown(1);
+
+    // Finalize the PDF and close the stream
+    pdfDoc.end();
+
+    fileStream.on('finish', () => {
+      const filePath = path.resolve(__dirname, '../order.pdf');
+      fs.readFile(filePath, (err, file) => {
+        if (err) {
+          return res.status(500).send("Can't download pdf");
+        } else {
+          res.setHeader('Content-type', 'application/pdf');
+          res.setHeader('Content-Disposition', 'attachment;filename="order.pdf"');
+          res.send(file);
+        }
+      });
+    });
   } catch (error) {
-     console.error(error.message)
+    console.error(error.message);
+    res.status(500).send(error.message);
   }
-}
+};
+
+
+
+
+
+
 
 // requesting for cancel order..............................................................
 
