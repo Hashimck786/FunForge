@@ -54,7 +54,6 @@ const addToCart = async(req,res) =>{
 
 
       if(productData.Stock>0){
-        // find Index iterates through all the product and returns the index of the product that equals to the productId we are given
         const existingProductIndex = cart.products.findIndex(product => product.productId.toString() === productId)
           
 
