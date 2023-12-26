@@ -51,7 +51,6 @@ const removeFromWishlist = async(req,res) => {
     res.json({
       success:true
     })
-    // res.redirect('/wishlist')
   } catch (error) {
       console.error(error.message)
   }
